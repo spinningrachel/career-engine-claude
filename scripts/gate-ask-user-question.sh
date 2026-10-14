@@ -56,11 +56,19 @@ BLOCKER = re.compile(
     r'\b(error|errors|failed|failure|missing|not found|unreachable|permission|access denied|'
     r'required key|config key|pipeline-preferences|output_folder|database_id|crash(ed)?)\b', re.I)
 
+# In a session that spawned the prioritizer, a paste-the-JD offer is never legitimate even when the
+# question also mentions a failure ("LinkedIn fetch failed for 3 roles. Paste the JDs?") — the
+# pipeline's own doctrine makes a failed fetch a JD Fetch Status write, not a request for input.
+PASTE_JD = re.compile(r'\bpaste (the |these |those |me |a |your )?(\w+ )?(jds?|job descriptions?)\b', re.I)
+PRIORITIZER = re.compile(r'^(career-engine:)?role-prioritizer$')
+
 def run_evidence(path):
+    """Returns None (no run evidence), 'prioritizer' (a role-prioritizer spawn seen), or 'run'."""
+    found = None
     try:
         f = open(path, encoding='utf-8', errors='replace')
     except Exception:
-        return False
+        return None
     with f:
         for line in f:
             if '"tool_use"' not in line:
@@ -79,12 +87,14 @@ def run_evidence(path):
                     continue
                 name, inp = c.get('name', ''), c.get('input') or {}
                 if name in ('Agent', 'Task') and PIPELINE_AGENTS.match(str(inp.get('subagent_type', ''))):
-                    return True
-                if name in ('Write', 'Edit', 'MultiEdit') and RUN_PATHS.search(str(inp.get('file_path', ''))):
-                    return True
-                if name == 'Bash' and RUN_BASH.search(str(inp.get('command', ''))):
-                    return True
-    return False
+                    if PRIORITIZER.match(str(inp.get('subagent_type', ''))):
+                        return 'prioritizer'
+                    found = 'run'
+                elif name in ('Write', 'Edit', 'MultiEdit') and RUN_PATHS.search(str(inp.get('file_path', ''))):
+                    found = 'run'
+                elif name == 'Bash' and RUN_BASH.search(str(inp.get('command', ''))):
+                    found = 'run'
+    return found
 
 def question_text(tool_input):
     parts = []
@@ -98,10 +108,13 @@ def question_text(tool_input):
     return ' '.join(parts)
 
 text = question_text(d.get('tool_input'))
-if not (SCOPE.search(text) or INPUT_ASK.search(text)) or BLOCKER.search(text):
+evidence = run_evidence(d.get('transcript_path') or '')
+if not evidence:
     sys.exit(0)
-if not run_evidence(d.get('transcript_path') or ''):
-    sys.exit(0)
+prioritizer_paste = evidence == 'prioritizer' and PASTE_JD.search(text)
+if not prioritizer_paste:
+    if not (SCOPE.search(text) or INPUT_ASK.search(text)) or BLOCKER.search(text):
+        sys.exit(0)
 
 print(json.dumps({"hookSpecificOutput": {
     "hookEventName": "PreToolUse",
@@ -109,7 +122,12 @@ print(json.dumps({"hookSpecificOutput": {
     "permissionDecisionReason": (
         "career-engine pipelines run end-to-end per orchestrator-queue.md's Absolute Constraints "
         "- do not ask the user about scope/cost/volume mid-run. Continue processing the queue; "
-        "flagged or blocked roles are reported via halted-roles.json and the Final Chat Delivery.")}}))
+        "flagged or blocked roles are reported via halted-roles.json and the Final Chat Delivery. "
+        "In a Prioritization run, every fetch outcome has a defined write (agents/role-prioritizer.md, "
+        "the Prioritization outcome table): convert a tier label to its 1-6 number and write it; a role "
+        "with no usable JD text gets JD Fetch Status (LinkedIn-blocked or Unfetchable) only and stays New; "
+        "a closed posting or a non-listing URL is a line in the Step 4 report, never a question or a "
+        "paste-the-JD offer. Write, then end with the report.")}}))
 PY
 
 python3 -c "$PYBODY" "$PAYLOAD" 2>/dev/null || true

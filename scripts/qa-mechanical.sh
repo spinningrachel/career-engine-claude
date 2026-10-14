@@ -712,6 +712,9 @@ expect_ge "35e" "agents/role-prioritizer.md" "need your call first" 1
 expect_ge "35e" "skills/role-prioritizer/SKILL.md" "no human input" 1
 expect_ge "35e" "hooks/hooks.json" "role-prioritizer subagents" 1
 expect_ge "35e" "scripts/gate-ask-user-question.sh" "INPUT_ASK" 2
+expect_ge "35e" "agents/role-prioritizer.md" "open application only when the user has said so" 1
+expect_ge "35e" "agents/role-prioritizer.md" "never the archived/changed row" 1
+expect_ge "35e" "agents/qa-plugin.md" "Check 35e" 1
 expect_eq0 "35e" "agents/role-prioritizer.md" "paste the JD and I"
 
 # ================================================================

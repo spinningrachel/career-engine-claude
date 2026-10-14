@@ -795,6 +795,14 @@ Mechanized: covered by scripts/qa-mechanical.sh (CHECK 35d) — run via the Mech
 
 **FAIL condition:** any "must be >= N" count below its stated requirement, or the disproven-doctrine grep is nonzero.
 
+### Check 35e — Prioritization runs with zero human input (2026-10-14, per the user)
+
+A confirmed production failure: a real Prioritization run fetched six `New` roles and wrote nothing to the tracker — a correctly-returned tier label (`Fifth`) was held instead of converted to `6`, a closed role and two non-listing URLs were offered back as "Duplicate or Position Closed instead of scoring," and three LinkedIn-blocked roles were offered a "paste the three JDs here" path. Per the user: "This is supposed to be a simple automated process that needs no human input." Verify `agents/role-prioritizer.md` carries the Prioritization outcome table (every fetch outcome → one write + one summary line), the label-to-number conversion at Step 2.3 and in the scores-only caller contract, the skipped-role `JD Fetch Status` write (Step 2.1 skips only — never the archived/changed row), "This report ends the run" at Step 4, and the named anti-pattern; that the skill's Autonomy section, the Stop hook prompt, and the `AskUserQuestion` gate's `INPUT_ASK` pattern all name the same rule. Judgment half: the `no-public-jd` and user-declared open-application rows must agree with intake Step 0.45, the coach, and coach-gates item 14 (`Unfetchable`, never `Fetched`, no `JD Body`), and no sentence in the agent file may give any fetch outcome an "ask the user" disposition.
+
+Mechanized: covered by scripts/qa-mechanical.sh (CHECK 35e) — run via the Mechanical battery step; do not re-run these greps by hand. The gate battery (`scripts/test-ask-question-gate.sh`) is run separately and must pass.
+
+**FAIL condition:** any "must be >= N" count below its stated requirement, the gate battery failing, or (judgment) an outcome in the agent file whose write is a question to the user.
+
 ### Check 38 — Mechanical word count enforced, not self-estimated (2026-07-02 fix)
 
 A live production run had every writer self-report a word count 20-40 words under the true figure (measured via `wc -w`); two letters shipped over the 320 cap as a direct result. Fixed by giving letter-writer and gatekeeper Bash access and requiring a mechanical `wc -w` count instead of an LLM estimate.
@@ -1059,6 +1067,14 @@ For each finding, report: the step reference, the failure type (from the list be
 **FAIL condition:** any finding of type F1–F7. Type F7 is advisory — report it, do not FAIL on it. F8 is FAIL.
 
 **F8 note:** this was the failure mode on 2026-06-17 when the orchestrator asked "How should I scope this New Applications run?" instead of declaring the queue and proceeding. The instruction said "report the queue and proceed immediately" but did not say the report was a one-way declaration — so the agent asked. Any step with similar structure is F8.
+
+### Check 70 — Role-tailoring plan wired end-to-end (2026-09-17; entry added 2026-10-14 — the mechanization shipped without one)
+
+Verify the role-tailoring plan (`CV Titles` written by the coach at intake, `CV Title Preferences` never written by any agent, Step 0.titles / E0.titles resolving both into `$PIPE/cv-titles.md`, `CV_TITLES_PATH` on every cv-writer / gatekeeper CV Check / recruiter-reviewer spawn, Gate 6 and coach-gates item 15 enforcing) is present in every file the CLAUDE.md contract row names.
+
+Mechanized: covered by scripts/qa-mechanical.sh (CHECK 70) and the `term-role-tailoring-plan` parity set — run via the Mechanical battery step; do not re-run these greps by hand.
+
+**FAIL condition:** any "must be >= N" count below its stated requirement, or the parity set failing.
 
 ### Check 67 — Trace-a-run (semantic pass, 2026-07-13 addition)
 

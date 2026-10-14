@@ -53,9 +53,12 @@ check allow "pasted run output only"               "$PASTED" "$(q 'Should I cont
 check allow "real run, genuine blocker question"   "$RUN"  "$(q 'output_folder is missing from pipeline-preferences.json. Where should files go?')"
 check allow "real run, blocker worded with proceed"  "$RUN"  "$(q 'output_folder is missing from pipeline-preferences.json. How should I proceed?')"
 check allow "real run, error worded with continue"   "$RUN2" "$(q 'The Notion fetch failed with an error. Continue with the rest of the queue?')"
+check deny  "prio run + paste-JDs worded as failure"  "$PRIO" "$(q 'LinkedIn fetch failed for 3 roles. Paste the JDs here and I will score them?')"
+check deny  "prio run + paste-JDs worded as missing"  "$PRIO" "$(q 'Three JDs are missing. Can you paste the job descriptions?')"
+check allow "other run, paste-JD worded as failure" "$RUN"  "$(q 'The JD fetch failed for Acme. Paste the job description so the coach can run?')"
 check allow "dev session, prioritizer wording"     "$DEV"  "$(q 'Should the outcome table treat a position closed page as Unfetchable? Your call.')"
 check allow "career-data review, your-call wording" "$DATA" "$(q 'Two conflicting titles for Coro. Your call: which one does the skill keep?')"
-check allow "prio run, genuine blocker"            "$PRIO" "$(q 'database_id is missing from pipeline-preferences.json. Paste the JD or fix the config?')"
+check allow "prio run, genuine blocker"            "$PRIO" "$(q 'database_id is missing from pipeline-preferences.json. Stop here, or run scores-only?')"
 check allow "missing transcript"                   "$TMP/none.jsonl" "$(q 'Continue?')"
 out="$(printf 'not json' | bash "$GATE")"; [ -z "$out" ] && pass=$((pass+1)) || { fail=$((fail+1)); echo "FAIL: malformed payload not allowed"; }
 
