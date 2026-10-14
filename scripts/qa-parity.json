@@ -303,6 +303,17 @@
       "_comment": "2026-09-15: JD Fetch Status's Manual-entry value must stay defined in both coach-side files (added 2026-08-13, once already missed from one of the two). Deliberately NOT required in agents/role-prioritizer.md — that agent's three-value list (Fetched/LinkedIn-blocked/Unfetchable) is correct as-is; Prioritization has no interactive path to produce Manual-entry. See career-coach.md's parity note."
     },
     {
+      "id": "term-prioritization-outcome-table",
+      "_comment": "2026-10-14, per the user (\"This is supposed to be a simple automated process that needs no human input.\"): a real Prioritization run wrote nothing and ended with three questions (a Fifth label held instead of written as 6; closed/non-listing roles offered for reclassification; LinkedIn-blocked roles offered a paste-the-JD path). The agent's Prioritization outcome table gives every fetch outcome one write and one summary line; the skill, the Stop hook prompt, and the CLAUDE.md contract row cite it by that name. A rename in one place silently disconnects the hook's reason text from the doctrine it enforces.",
+      "term": "Prioritization outcome table",
+      "files": [
+        "agents/role-prioritizer.md",
+        "skills/role-prioritizer/SKILL.md",
+        "hooks/hooks.json",
+        "CLAUDE.md"
+      ]
+    },
+    {
       "id": "term-role-tailoring-plan",
       "_comment": "2026-09-17, per the user's direct instruction: each CV is tailored to one role — titles aligned (Retitle default / Descriptor / Keep / Fold), unrelated employers folded by name into the aggregation line, the whole CV written at the target role's level, inside four fixed honesty limits. The coach writes the plan (CV Titles) at intake; the user's own CV Title Preferences field is never written by any agent; both pipelines resolve it once (Step 0.titles / E0.titles) into $PIPE/cv-titles.md; cv-writer executes verbatim; Gate 6 and coach-gates item 15 enforce. Every file below must keep naming the plan.",
       "term": "role-tailoring plan",

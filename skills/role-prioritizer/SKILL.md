@@ -22,6 +22,7 @@ This is a deliberate, load-bearing design choice, not an oversight:
 | How to fetch a JD | `career-engine-intake/SKILL.md` Step 0.5 fetch ladder | Reuse exactly — same fallback order, same fetch markers |
 | What a `Role Summary` looks like | `career-coach/coach-output.md` → Output Format, the `Role summary` line | Same ≤400-char, JD-vocabulary-only content rule |
 | What counts as coach-complete | `career-engine-intake/SKILL.md` Step 0.8 | Prioritization never writes enough fields to satisfy this list (it writes 5 of 13–14 required fields) — a role that only went through Prioritization must always still reach the coach |
+| Which number a tier label writes | `skills/database/SKILL.md` → Priority Values | `Highest`→`1` … `Fifth`→`6`; the framework scores in labels, the tracker takes numbers, and the conversion happens before any write or scores-only return — never held for the user |
 
 ## What Prioritization explicitly does not do
 
@@ -33,6 +34,10 @@ This is a deliberate, load-bearing design choice, not an oversight:
 ## Environment portability — scores-only fallback
 
 The agent's declared database tools are bound to specific MCP server instances that not every session exposes (a Cowork VM session may carry only a different generic Notion connector). When the agent reports `SCORES-ONLY MODE`, the calling context becomes the I/O layer: it fetches the queue (database adapter §2), passes each role's data to the agent, receives the structured scores block, and performs the writeback (adapter §4) under exactly the rules in the agent's Step 3 — including the ≤400-char verification, the liveness re-check, and the Status promotion condition. The judgment stays in the agent; only the I/O moves. Never let the agent bail with a "no database tools" blocker — that is a mode switch, not an error.
+
+## Autonomy — no human input, by design
+
+Prioritization is the one pipeline the user expects to run unattended as a matter of course: "This is supposed to be a simple automated process that needs no human input" (2026-10-14). The agent's **Prioritization outcome table** gives every fetch outcome exactly one write and one summary line, so there is never a role whose handling is "ask the user." Concretely: a role with usable JD text is scored (tier label converted to the tracker's `1`–`6` — `skills/database/SKILL.md` → Priority Values), written, and promoted; a role without it gets `JD Fetch Status` only and stays `New` with its reason in the report. A closed posting, a saved URL that is a company page rather than a listing, and a LinkedIn auth wall are all reasons in the report, not questions to the user — this pipeline has no closed/duplicate Status to set and no paste-a-JD path to offer. The same holds for a main-session caller bridging the agent in scores-only mode: the caller writes what the block says, converts a label if one slipped through, and ends with the report. A run that ends with "the rest need your call first" has produced nothing the user can act on in her tracker and has cost her an interruption; the named anti-pattern in the agent file records the real run this rule comes from.
 
 ## Overwrite semantics — the reason this pipeline exists
 

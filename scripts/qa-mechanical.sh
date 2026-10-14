@@ -702,6 +702,19 @@ expect_ge "35d" "CLAUDE.md" "database_new_view_url" 1
 expect_eq0 "35d" "agents/role-prioritizer.md" "the underlying property values are what you filter on, not the view name"
 
 # ================================================================
+# Check 35e — Prioritization runs with zero human input (2026-10-14, per the user)
+# ================================================================
+expect_ge "35e" "agents/role-prioritizer.md" "Prioritization outcome table" 3
+expect_ge "35e" "agents/role-prioritizer.md" "JD Fetch Status\` is written for every skipped role" 1
+expect_ge "35e" "agents/role-prioritizer.md" "\`Fifth\`→\`6\`" 2
+expect_ge "35e" "agents/role-prioritizer.md" "This report ends the run" 1
+expect_ge "35e" "agents/role-prioritizer.md" "need your call first" 1
+expect_ge "35e" "skills/role-prioritizer/SKILL.md" "no human input" 1
+expect_ge "35e" "hooks/hooks.json" "role-prioritizer subagents" 1
+expect_ge "35e" "scripts/gate-ask-user-question.sh" "INPUT_ASK" 2
+expect_eq0 "35e" "agents/role-prioritizer.md" "paste the JD and I"
+
+# ================================================================
 # Check 38 — Mechanical word count enforced, not self-estimated
 # ================================================================
 expect_ge "38" "agents/letter-writer.md" "^tools:.*Bash" 1

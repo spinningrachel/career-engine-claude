@@ -15,8 +15,9 @@
 #       run makes: a pipeline subagent spawn, or a write into a run-scoped pipeline directory
 #       or run ledger. Text in user messages never counts, and neither does reading or
 #       editing the plugin's own files.
-#   (2) SCOPE-SHAPED QUESTION — the question text asks about scope/cost/volume/continuing,
-#       and does NOT surface a genuine blocker (an error, a missing/unreachable config key or
+#   (2) SCOPE-SHAPED QUESTION — the question text asks about scope/cost/volume/continuing
+#       (or, for a Prioritization run, asks the user to decide, reclassify, or paste a JD for a
+#       role whose write the outcome table already defines), and does NOT surface a genuine blocker (an error, a missing/unreachable config key or
 #       file, a failed access), which pipeline doctrine says to surface.
 #
 # Deny only when both hold. Any internal error allows — this hook must never wedge a session.
@@ -41,6 +42,15 @@ SCOPE = re.compile(
     r'\b(scope|queue|remaining roles|rest of the roles|how many roles|which roles|subset|batch size|'
     r'fewer roles|call volume|token|cost|expensive|budget|how long|run length|duration|'
     r'time constraint|long run|continue|proceed|keep going|pause|stop here|stop now)\b', re.I)
+
+# Prioritization-run input asks (2026-10-14): a real run ended with its writes withheld — "need your
+# call first", "if you paste the three JDs here, I can score them", "candidates for Duplicate or
+# Position Closed instead of scoring". Every one of those has a defined write in
+# agents/role-prioritizer.md's Prioritization outcome table. Narrow on purpose; run evidence is still required.
+INPUT_ASK = re.compile(
+    r'(\bpaste (the |these |those |me |a |your )?(\w+ )?(jds?|job descriptions?)\b|\byour call\b|'
+    r'\bneeds? your (call|decision|input|go-ahead|say-so)\b|\bh(e|o)ld(ing)? off( on)?( the)? writ|'
+    r'\b(position|role) closed\b|\bnot (a )?job listings?\b|\binstead of scoring\b)', re.I)
 
 BLOCKER = re.compile(
     r'\b(error|errors|failed|failure|missing|not found|unreachable|permission|access denied|'
@@ -88,7 +98,7 @@ def question_text(tool_input):
     return ' '.join(parts)
 
 text = question_text(d.get('tool_input'))
-if not SCOPE.search(text) or BLOCKER.search(text):
+if not (SCOPE.search(text) or INPUT_ASK.search(text)) or BLOCKER.search(text):
     sys.exit(0)
 if not run_evidence(d.get('transcript_path') or ''):
     sys.exit(0)
