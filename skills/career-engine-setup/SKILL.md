@@ -605,7 +605,7 @@ Create a database/table with the following columns. Do not rename them — they 
 Columns: Company, Position, Job URL, Status, Priority, Priority Reason, JD Body, JD Fetch Status, Why I Want This Role, Role emphasis, JD proof, Keywords, Strategy, Role Type, Relationship type, Gap handling, Role summary, Hiring Manager's Name, Hiring manager's role, Manager role confirmed, Person who Advertised Role (if not Hiring Manager), No incumbents in this function, Landscape, Culture, Company Stage, Location, First Advertised, Last Pipeline Run, Link to CV, Draft Directory, CV File Name, Letter File Name, Languages, Edit type, CV Type, CV Titles, CV Title Preferences, Note
 
 Select column values (must match exactly):
-- Status: New | Needs Research | Interested | CV Ready for Review | Applied | Researched | Needs Editing
+- Status: New | Needs Research | Interested | CV Ready for Review | Applied | Researched | Needs Editing | Closed
 - Priority: 1 | 2 | 3 | 4 | 5 | 6 (the pipeline writes the number, never a word label)
 - JD Fetch Status: Fetched | LinkedIn-blocked | Unfetchable | Manual-entry
 - Company Stage: Seed | Series A | Series B | Series C | Public | PE-backed | N/A
