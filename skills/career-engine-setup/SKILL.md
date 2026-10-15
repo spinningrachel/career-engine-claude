@@ -100,7 +100,7 @@ Tell the user plainly: *"Most of setup happens right here. At the end I'll hand 
 
 Before doing anything, assess what has been completed:
 
-1. Check whether `career-data` is installed and complete: locate the `career-data` skill, read `career-data-marker.json`, and confirm every file in its `expected_files` is present and non-empty. Absent → new user, run full setup. Present but incomplete → report which files are missing and offer to repair.
+1. Check whether `career-data` is installed and complete: locate the `career-data` skill, read `career-data-marker.json`, and confirm every file in its `expected_files` is present and non-empty. Absent → new user, run full setup. Present but incomplete → report which files are missing and offer to repair. **A complete career-data with no `references/capability-profile.md` (built before 2026-10-15) is complete but un-profiled, not damaged:** say so in one line and offer to generate it now through the coach's Option 6 path (`skills/career-coach/coach-capability-profile.md` — drafted in full, confirmed once, delivered as an update prompt); the Prioritization pipeline runs without it on the title-based read until then.
 
 2. Check `03-framework.md` for `[DRAFT]` or `[REVIEW]` markers — these indicate sections the interview hasn't confirmed yet.
 
@@ -382,6 +382,14 @@ Write attribution rules into Section 1 for any outcomes confirmed as company-lev
 
 ---
 
+### Phase 4 — Capability profile (2026-10-15)
+
+**Do this right after the reference files are updated and before Motivation Bank seeding.** The capability profile is the Prioritization pipeline's function-fit input: a short, title-free statement of what the user can do, in generic discipline vocabulary, derived from the files just written. Titles change across the market faster than any target-title list, so the prioritizer scores a JD's responsibilities against these lines instead of its title.
+
+Spawn (or continue) the career coach with `${CLAUDE_PLUGIN_ROOT}/skills/career-coach/coach-capability-profile.md` loaded and follow it exactly: the coach drafts the whole profile from `02`/`background/*`, `03-framework.md`, and `linkedin-profile.md` — applying the three-way test, the portability test, the pairwise de-duplication test, and the caps (≤25 lines, ≤5 groups) — shows the user the complete draft once, and waits for a yes or line edits. **No interview and no line-by-line questions: the profile is derived, and the user's edits are applied verbatim.** On confirmation, write it to the working `career-data/references/capability-profile.md` (format: the plugin's blank `${CLAUDE_PLUGIN_ROOT}/references/capability-profile.md` minus its header comment — the written file starts at the `Generated:` line and contains no `{{`) and list it in `career-data-marker.json`'s `expected_files`. It ships with the rest of career-data at Build & install.
+
+Tell the user, once: "This profile is what the prioritizer scores roles against, so a role whose title you'd never have listed still scores on the work it asks for. It's derived from your background, so regenerate it whenever your background files change — say 'generate my capability profile' to the career coach and it comes back for one confirmation before it's packaged."
+
 ### Phase 4 — Motivation Bank seeding
 
 **Do this after the framework/posture interview, while the user is still in a reflective frame — it is the single highest-leverage thing in all of setup.** The Motivation Bank (`background/background-motivation-bank.md`) holds the user's standing motivations and reactions in their **own verbatim words**, tagged for retrieval. It is the **letter-writer's primary content and voice source** — the writer loads it first, ahead of any constructed alternative. The richer it is, the better every cover letter, and the *less* per-role `Why I Want This Role` the user has to write over time. A well-seeded bank means future runs reuse standing motivation instead of demanding fresh input each time — eventually the user writes almost no per-role motivation at all.
@@ -562,7 +570,7 @@ Before giving this prompt to the user, substitute `{{USER_DEFAULT_LANGUAGE}}` an
 ```
 Set up data validation (dropdown lists) on the following columns in my Google Sheet named "career-engine-tracker":
 
-- Column "Status": allow only these exact values: New, Needs Research, Interested, CV Ready for Review, Applied, Researched, Needs Editing
+- Column "Status": allow only these exact values: New, Needs Research, Interested, CV Ready for Review, Applied, Researched, Needs Editing, Closed (Prioritization and intake set `Closed` automatically when a posting is confirmed closed — an existing tracker using `Position Closed` or `Role Closed` works too; a tracker with no such option is never broken, the pipeline reports instead of writing)
 - Column "Priority": allow only these exact values: 1, 2, 3, 4, 5, 6 (the pipeline writes the number, never a word label)
 - Column "JD Fetch Status": allow only these exact values: Fetched, LinkedIn-blocked, Unfetchable, Manual-entry
 - Column "Company Stage": allow only these exact values: Seed, Series A, Series B, Series C, Public, PE-backed, N/A
@@ -597,7 +605,7 @@ Create a database/table with the following columns. Do not rename them — they 
 Columns: Company, Position, Job URL, Status, Priority, Priority Reason, JD Body, JD Fetch Status, Why I Want This Role, Role emphasis, JD proof, Keywords, Strategy, Role Type, Relationship type, Gap handling, Role summary, Hiring Manager's Name, Hiring manager's role, Manager role confirmed, Person who Advertised Role (if not Hiring Manager), No incumbents in this function, Landscape, Culture, Company Stage, Location, First Advertised, Last Pipeline Run, Link to CV, Draft Directory, CV File Name, Letter File Name, Languages, Edit type, CV Type, CV Titles, CV Title Preferences, Note
 
 Select column values (must match exactly):
-- Status: New | Needs Research | Interested | CV Ready for Review | Applied | Researched | Needs Editing
+- Status: New | Needs Research | Interested | CV Ready for Review | Applied | Researched | Needs Editing | Closed
 - Priority: 1 | 2 | 3 | 4 | 5 | 6 (the pipeline writes the number, never a word label)
 - JD Fetch Status: Fetched | LinkedIn-blocked | Unfetchable | Manual-entry
 - Company Stage: Seed | Series A | Series B | Series C | Public | PE-backed | N/A

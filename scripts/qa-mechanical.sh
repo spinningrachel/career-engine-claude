@@ -715,6 +715,12 @@ expect_ge "35e" "scripts/gate-ask-user-question.sh" "INPUT_ASK" 2
 expect_ge "35e" "agents/role-prioritizer.md" "open application only when the user has said so" 1
 expect_ge "35e" "agents/role-prioritizer.md" "never the archived/changed row" 1
 expect_ge "35e" "agents/qa-plugin.md" "Check 35e" 1
+expect_ge "35e" "agents/role-prioritizer.md" "Confirmed closure is a write, never a question" 1
+expect_ge "35e" "agents/role-prioritizer.md" "earned by searching" 1
+expect_ge "35e" "skills/database/SKILL.md" "| \`Closed\` |" 1
+expect_ge "35e" "skills/career-engine-intake/SKILL.md" "jobs-guest/jobs/api/jobPosting" 1
+expect_ge "35e" "skills/career-engine-intake/SKILL.md" "closed-confirmed" 4
+expect_ge "35e" "skills/career-engine-setup/SKILL.md" "Needs Editing, Closed" 1
 expect_eq0 "35e" "agents/role-prioritizer.md" "paste the JD and I"
 
 # ================================================================
@@ -1024,6 +1030,34 @@ if python3 "$PREGATE_SCRIPT" --selftest >/dev/null 2>&1; then
 else
   report "66" 0 "python3 pregate-lint.py --selftest failed"
 fi
+
+# ================================================================
+# Check 71 — Capability profile: function fit is coverage, not titles (2026-10-15, per the user)
+# ================================================================
+expect_file "71" "references/capability-profile.md"
+expect_file "71" "skills/career-coach/coach-capability-profile.md"
+expect_ge "71" "references/capability-profile.md" "{{CAPABILITY_LINE" 1
+expect_ge "71" "skills/career-coach/coach-capability-profile.md" "pairwise de-duplication test" 1
+expect_ge "71" "skills/career-coach/coach-capability-profile.md" "portability test" 2
+expect_ge "71" "skills/career-coach/coach-capability-profile.md" "three-way test" 1
+expect_ge "71" "skills/career-coach/coach-capability-profile.md" "wait for confirmation" 1
+expect_ge "71" "agents/role-prioritizer.md" "Function fit is responsibility coverage against the capability profile" 1
+expect_ge "71" "agents/role-prioritizer.md" "The title list is advisory" 1
+expect_ge "71" "agents/role-prioritizer.md" "CAPABILITY_PROFILE = none" 2
+expect_ge "71" "skills/role-prioritizer/SKILL.md" "Function fit — coverage, not titles" 1
+expect_ge "71" "agents/career-coach.md" "generate my capability profile" 1
+expect_ge "71" "skills/career-coach/SKILL.md" "coach-capability-profile.md" 1
+expect_ge "71" "skills/career-engine-setup/SKILL.md" "Phase 4 — Capability profile" 1
+expect_ge "71" "skills/career-engine-setup/SKILL.md" "un-profiled" 1
+expect_ge "71" "agents/qa-plugin.md" "Check 71" 1
+expect_ge "71" "agents/role-prioritizer.md" "In both branches:" 1
+expect_ge "71" "agents/role-prioritizer.md" "never divide by zero" 1
+expect_ge "71" "agents/role-prioritizer.md" "capability profile: present|missing" 1
+expect_ge "71" "references/capability-profile.md" "DROPPED FROM THE GENERATED FILE" 1
+expect_ge "71" "skills/career-coach/coach-capability-profile.md" "two-file fix" 1
+expect_ge "71" "references/career-data-skill-handoff.md" "references/capability-profile.md contents" 1
+expect_eq0 "71" "agents/role-prioritizer.md" "Step 0 item 4 determined the secondary mode"
+expect_eq0 "71" "agents/role-prioritizer.md" "generate the capability profile yourself"
 
 # ================================================================
 # Check 70 — Role-tailoring plan (CV Titles) wired end-to-end (2026-09-17, per the user's

@@ -86,6 +86,7 @@ career-data/
     ├── 02-professional-background.md    ← router (see background/ below)
     ├── 03-framework.md                  ← positioning/voice, +methodology router (see framework/ below)
     ├── linkedin-profile.md
+    ├── capability-profile.md            ← the coach-derived, user-confirmed capability profile (setup Phase 4); the Prioritization pipeline's function-fit input
     ├── background/
     │   ├── background-cv-summaries.md
     │   ├── background-motivation-bank.md
@@ -128,6 +129,11 @@ career-engine update-refs skill, not an ad-hoc edit.]
 
 references/01-writing-rules.md contents:
 [FULL CONTENT, untruncated]
+
+references/capability-profile.md contents (only if generated this session — setup Phase 4):
+[FULL CONTENT, untruncated — the user-confirmed profile exactly as confirmed, starting at its
+`Generated:` line, no header comment, no placeholders. Omit this block entirely, and leave the
+file out of expected_files, if no profile was generated this session.]
 
 references/02-professional-background.md contents:
 [FULL router content — the routing table pointing at the background/ sub-files above, per

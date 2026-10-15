@@ -35,7 +35,7 @@ Used by the career coach to score roles. Define your scoring criteria here — a
 
 **2. Seniority match** — {{USER_FIRST_NAME}}'s target level:
 - Level: {{USER_SENIORITY_LEVEL}} *(e.g., Senior IC, Staff/Principal, Manager, Director, VP, Partner)*
-- Roles that align: {{USER_TARGET_ROLES}} *(list the actual titles you're targeting)*
+- Roles that align: {{USER_TARGET_ROLES}} *(list the actual titles you're targeting — used for sourcing searches and as an advisory signal only; since 2026-10-15 the Prioritization pipeline scores function fit as coverage of a JD's responsibilities against your `capability-profile.md`, so a title missing from this list never lowers a score)*
 - Seniority notes: {{USER_SENIORITY_NOTES}} *(e.g., "open to one level down if domain fit is strong"; "not interested in people management")*
 
 **3. Company stage fit** — {{USER_FIRST_NAME}} thrives in:
