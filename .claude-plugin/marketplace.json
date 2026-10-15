@@ -11,13 +11,13 @@
       "name": "career-engine",
       "source": "./",
       "description": "Career management and personal branding engine. Positioning framework, employment coaching, multi-agent CV and cover letter pipeline, DOCX export. Requires setup — run /career-engine:setup after installing.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Rachel Cheyfitz",
         "email": "rachel@cheyfitz.me"
       },
-      "homepage": "https://github.com/spinningrachel/career-engine",
-      "repository": "https://github.com/spinningrachel/career-engine",
+      "homepage": "https://github.com/spinningrachel/career-engine-claude",
+      "repository": "https://github.com/spinningrachel/career-engine-claude",
       "license": "MIT",
       "category": "productivity",
       "keywords": [
