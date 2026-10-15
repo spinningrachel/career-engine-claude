@@ -389,6 +389,9 @@ expect_ge "21t" "hooks/hooks.json" 'ok\\": false' 1
 expect_ge "21t" "hooks/hooks.json" '"PreToolUse"' 1
 expect_ge "21t" "hooks/hooks.json" 'AskUserQuestion' 1
 expect_ge "21t" "hooks/hooks.json" 'gate-ask-user-question.sh' 1
+# 2026-10-15: the manifest must NOT name hooks/hooks.json — Claude Code loads that file on its own,
+# and a manifest "hooks" entry pointing at it fails the whole plugin load ("Duplicate hooks file").
+expect_eq0 "21t" ".claude-plugin/plugin.json" '"hooks"'
 expect_ge "21t" "scripts/gate-ask-user-question.sh" '"permissionDecision": "deny"' 1
 
 # ================================================================
