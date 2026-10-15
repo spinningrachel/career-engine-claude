@@ -389,6 +389,9 @@ expect_ge "21t" "hooks/hooks.json" 'ok\\": false' 1
 expect_ge "21t" "hooks/hooks.json" '"PreToolUse"' 1
 expect_ge "21t" "hooks/hooks.json" 'AskUserQuestion' 1
 expect_ge "21t" "hooks/hooks.json" 'gate-ask-user-question.sh' 1
+# 2026-10-15: the manifest must NOT name hooks/hooks.json — Claude Code loads that file on its own,
+# and a manifest "hooks" entry pointing at it fails the whole plugin load ("Duplicate hooks file").
+expect_eq0 "21t" ".claude-plugin/plugin.json" '"hooks"'
 expect_ge "21t" "scripts/gate-ask-user-question.sh" '"permissionDecision": "deny"' 1
 
 # ================================================================
@@ -725,6 +728,17 @@ expect_ge "35e" "skills/career-engine-edit/SKILL.md" "Closure check before any d
 expect_ge "35e" "skills/source-open-roles/SKILL.md" "closed rows included" 1
 expect_ge "35e" "agents/source-open-roles.md" "previously closed" 1
 expect_eq0 "35e" "agents/role-prioritizer.md" "paste the JD and I"
+# 2026-10-15 second run: job ID in any LinkedIn URL shape; URL class from the URL, never a note;
+# a follow-up turn after a user correction is still the run.
+expect_ge "35e" "skills/career-engine-intake/SKILL.md" "currentJobId=<JOBID>" 1
+expect_ge "35e" "skills/career-engine-intake/SKILL.md" "IS a job listing" 1
+expect_ge "35e" "agents/role-prioritizer.md" "never from a note" 1
+expect_ge "35e" "agents/role-prioritizer.md" "A follow-up turn is still the run" 1
+expect_ge "35e" "agents/role-prioritizer.md" "IO River follow-up" 1
+expect_ge "35e" "hooks/hooks.json" "follow-up turn" 1
+expect_ge "35e" "skills/role-prioritizer/SKILL.md" "A follow-up turn is still the run" 1
+expect_ge "35e" "agents/career-coach.md" "jobs-guest/jobs/api/jobPosting" 1
+expect_ge "35e" "skills/career-engine-edit/SKILL.md" "job ID in any URL form" 1
 
 # ================================================================
 # Check 38 — Mechanical word count enforced, not self-estimated

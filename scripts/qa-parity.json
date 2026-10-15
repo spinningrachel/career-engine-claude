@@ -359,6 +359,16 @@
         "skills/career-engine-edit/SKILL.md",
         "skills/database/SKILL.md"
       ]
+    },
+    {
+      "id": "term-linkedin-job-id-forms",
+      "_comment": "2026-10-15 (IO River run): the LinkedIn job ID is carried in several URL shapes; intake Step 0.5 defines the forms, the coach's own ladder rung 0 and the prioritizer's URL-class rule must name the same query-string form so no ladder reverts to /jobs/view/ only.",
+      "term": "currentJobId",
+      "files": [
+        "skills/career-engine-intake/SKILL.md",
+        "agents/career-coach.md",
+        "agents/role-prioritizer.md"
+      ]
     }
   ],
   "context_sets": [

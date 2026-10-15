@@ -55,6 +55,7 @@ check allow "real run, blocker worded with proceed"  "$RUN"  "$(q 'output_folder
 check allow "real run, error worded with continue"   "$RUN2" "$(q 'The Notion fetch failed with an error. Continue with the rest of the queue?')"
 check deny  "prio run + paste-JDs worded as failure"  "$PRIO" "$(q 'LinkedIn fetch failed for 3 roles. Paste the JDs here and I will score them?')"
 check deny  "prio run + paste-JDs worded as missing"  "$PRIO" "$(q 'Three JDs are missing. Can you paste the job descriptions?')"
+check deny  "prio run + follow-up paste-or-title ask"  "$PRIO" "$(q 'I changed the status to LinkedIn-blocked. To score it, paste the JD text or the role title?')"
 check allow "other run, paste-JD worded as failure" "$RUN"  "$(q 'The JD fetch failed for Acme. Paste the job description so the coach can run?')"
 check allow "dev session, prioritizer wording"     "$DEV"  "$(q 'Should the outcome table treat a position closed page as Unfetchable? Your call.')"
 check allow "career-data review, your-call wording" "$DATA" "$(q 'Two conflicting titles for Coro. Your call: which one does the skill keep?')"
