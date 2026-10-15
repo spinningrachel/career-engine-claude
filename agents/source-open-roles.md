@@ -140,7 +140,7 @@ Save full results to `{{OUTPUT_FOLDER}}/sourcing/sourcing-[YYYY-MM-DD].md` using
   Open Roles — [date]
 ================================================================
   Mode: [mode]  |  Titles: [list]  |  Sources: [list]
-  [N] results after deduplication  |  [N] excluded (already in pipeline)
+  [N] results after deduplication  |  [N] excluded (already in pipeline, of which [M] previously closed)
 ================================================================
 
 Score | Source          | Title                  | Company       | Notes
