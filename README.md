@@ -85,6 +85,12 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 
 ## Changelog
 
+### 2026-10-14 — Prioritization runs with zero human input
+
+**Bug fixes**
+- **Prioritization no longer stops to ask.** Per the user: "This is supposed to be a simple automated process that needs no human input." A real run fetched six `New` roles, scored what it could, and then wrote nothing: it held a correctly-scored role because the scorer returned the tier label `Fifth` instead of the tracker's `6`; it asked whether a closed role and two saved URLs that were company pages rather than listings should be "Duplicate or Position Closed instead of scoring"; and it offered to score three LinkedIn-blocked roles "if you paste the three JDs here." `agents/role-prioritizer.md` now carries a **Prioritization outcome table** that gives every fetch outcome exactly one write and one summary line — usable JD text → score, write all five, promote; no usable text → `JD Fetch Status` alone, Status untouched, reason in the report — and a named anti-pattern recording that run. The tier label is converted to the number before any write or scores-only return (`Highest`→`1` … `Fifth`→`6`, from `skills/database/SKILL.md`); a skipped role always gets its `JD Fetch Status` written so the tracker shows why it is stuck; a closed posting or a non-listing URL is a report line with its evidence, never a question (the plugin has no closed/duplicate Status to set); the user's own note is usable role data (a role she says has no posting, or calls an open application, is scored from her facts and promoted with `JD Fetch Status = Unfetchable`, matching intake and the coach — a company-page URL with no such note is never inferred to be an open application); and the Step 4 summary ends the run. The scores-only caller contract inherits all of it.
+- **Both hooks now cover a Prioritization run.** The Stop hook's prompt names Prioritization and the three ask-shapes above; the deterministic `AskUserQuestion` gate gained a narrow input-ask pattern (paste-the-JD, your-call, held-write, closed/not-a-listing) that still requires run evidence in this session's transcript and still allows genuine blocker questions. The battery grew from 11 to 20 cases, including the three real asks (deny), the same asks reworded around a failure (deny — in a session that spawned the prioritizer, a paste-the-JD offer is never a blocker question), and the same wording in a development or career-data session (allow).
+
 ### 2026-10-03 — New job source
 
 **New features**
