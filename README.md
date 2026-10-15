@@ -26,10 +26,10 @@ Open the Claude Desktop app → **Customize → Personal Plugins → +** → **P
 
 ![Installing the career-engine plugin](assets/install-plugin.gif)
 
-Claude Code users can install via the marketplace instead, for automatic updates:
+Claude Code users can install via the marketplace instead (update with `claude plugin marketplace update cheyfitz` then `claude plugin update career-engine@cheyfitz`; if a stale version keeps loading, `rm -rf ~/.claude/plugins/cache/cheyfitz` first — see the wiki's Installation page):
 
 ```
-/plugin marketplace add spinningrachel/career-engine
+/plugin marketplace add spinningrachel/career-engine-claude
 /plugin install career-engine@cheyfitz
 ```
 
@@ -84,6 +84,11 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 ---
 
 ## Changelog
+
+### 2026-10-15 — Bug fix: plugin updates reach the CLI install
+
+**Bug fixes**
+- **Version bumped to 1.0.1 so `claude plugin update` fetches the fix.** The CLI caches a marketplace plugin by its manifest version. The duplicate-hooks fix merged, the update reported success, and the plugin still failed to load from the cached `1.0.0` copy. Both manifests now carry `1.0.1`, every shipped build raises the version from here on (the pre-commit hook refuses a commit of shipped files whose staged version is not greater than main's, QA Check 73 keeps the two manifests in step), and a stale cache is cleared with `rm -rf ~/.claude/plugins/cache/cheyfitz` before `claude plugin marketplace update cheyfitz` and `claude plugin update career-engine@cheyfitz`.
 
 ### 2026-10-15 — Bug fixes: plugin load, and the prioritizer's LinkedIn URL read
 

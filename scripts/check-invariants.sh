@@ -51,6 +51,38 @@ elif [ "$FM_RC" -ne 0 ]; then
   fail "frontmatter is not valid YAML — diagnose with: python3 scripts/check-frontmatter.py ."
 fi
 
+# Contract: version-bump on every shipped build (2026-10-15). The CLI caches a
+# marketplace plugin by its manifest version; a rebuilt artifact at an unchanged
+# version is never re-fetched by `claude plugin update` — the user kept getting
+# the already-fixed duplicate-hooks error from the stale 1.0.0 cache. Versions are
+# read from the INDEX (what the commit will carry), never the working tree — a
+# bump left unstaged must not satisfy the gate. Trigger: any staged path that
+# ships (the artifact, or agents/ skills/ references/ hooks/ scripts/
+# .claude-plugin/), since the marketplace serves the repo tree itself. Then
+# plugin.json's version must be semver-GREATER than origin/main's (skipped when
+# origin/main is absent locally — fetch before committing so it is current).
+ver_of() { python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+if 'plugins' in d:
+    d=next(p for p in d['plugins'] if p.get('name')=='career-engine')
+print(d['version'])" 2>/dev/null || echo ""; }
+semver_gt() { python3 -c "
+import sys
+a=[int(x) for x in sys.argv[1].split('.')]; b=[int(x) for x in sys.argv[2].split('.')]
+sys.exit(0 if a>b else 1)" "$1" "$2" 2>/dev/null; }
+V_PLUGIN=$(git show :.claude-plugin/plugin.json 2>/dev/null | ver_of)
+V_MARKET=$(git show :.claude-plugin/marketplace.json 2>/dev/null | ver_of)
+[ -n "$V_PLUGIN" ] && [ "$V_PLUGIN" = "$V_MARKET" ] \
+  || fail "staged manifest versions differ or are unreadable: plugin.json='$V_PLUGIN' marketplace.json='$V_MARKET' (stage both after a bump)"
+if git diff --cached --name-only | grep -qE '^(career-engine\.plugin$|(agents|skills|references|hooks|scripts|\.claude-plugin)/)' \
+   && git rev-parse --verify -q origin/main >/dev/null; then
+  V_MAIN=$(git show origin/main:.claude-plugin/plugin.json 2>/dev/null | ver_of)
+  if [ -n "$V_MAIN" ] && [ -n "$V_PLUGIN" ] && ! semver_gt "$V_PLUGIN" "$V_MAIN"; then
+    fail "shipped files are staged but .claude-plugin/plugin.json version '$V_PLUGIN' is not greater than origin/main's '$V_MAIN' — bump both manifests and stage them, or the CLI serves the stale cache"
+  fi
+fi
+
 # Relational layer: list parity, defined-term closure, spawn params, $PIPE closure
 # (scripts/qa-parity.py + qa-parity.json). Fast (<1s), so it runs on every commit —
 # this is what forces the consumer sweep when a fix touches one list but not its siblings.
