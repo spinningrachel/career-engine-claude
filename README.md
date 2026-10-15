@@ -85,11 +85,18 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 
 ## Changelog
 
+### 2026-10-15 — Bug fixes: plugin load, and the prioritizer's LinkedIn URL read
+
+**Bug fixes**
+- **The manifest no longer double-loads the hooks file.** `plugin.json` named `./hooks/hooks.json` under `hooks`, which Claude Code already loads on its own; the marketplace install failed with "Duplicate hooks file detected" and the plugin never loaded. The key is removed and QA Check 21t asserts it stays absent.
+- **A LinkedIn URL with a job ID is a listing, in every URL shape.** The fetch ladder only knew `linkedin.com/jobs/view/<id>`. A saved URL of the form `jobs/search-results/?currentJobId=<id>&...&origin=COMPANY_PAGE_...` was read as a company overview, so the guest endpoint and the LinkedIn connector never ran on it. The ladder now extracts the job ID from `jobs/view/<id>`, `currentJobId=<id>` and `originToLandingJobPostings=<id>`, and treats any URL carrying one as a listing; navigation parameters never change that.
+- **URL class comes from the URL, never from a note.** The same run took "company overview" from an `Edit notes` line. The prioritizer now classifies a saved URL from its own host, path and job ID; a note governs role facts (unadvertised, scope, open application), never whether a URL is a listing.
+- **A follow-up turn is still the run.** After the user corrected the URL, the agent ended with "To score it, paste the JD text or the role title." A correction re-runs that role through the ladder and the outcome table and ends with the summary line; it never turns into a request for input. The ask-question battery gained the exact wording as a must-deny case.
+
 ### 2026-10-15 — Bug fix: the plugin installs again
 
 **Bug fixes**
 - **Invalid frontmatter blocked the whole install.** The Desktop installer rejected the previous 2026-10-15 build: the career-coach agent's description line had inner double quotes that broke its YAML frontmatter, so no file was saved. Fixed there and in two skill descriptions with the same shape (an unquoted colon-space). The retired humanizer's banner moved below its frontmatter so the platform reads the block, and its description now leads with the retirement so no session spawns it after a gatekeeper PASS.
-- **The manifest no longer double-loads the hooks file.** `plugin.json` named `./hooks/hooks.json` under `hooks`, which Claude Code already loads on its own; the marketplace install failed with "Duplicate hooks file detected" and the plugin never loaded. The key is removed and QA Check 21t asserts it stays absent.
 - **A parse gate replaces grep for frontmatter.** New `scripts/check-frontmatter.py` parses every shipped `.md` that opens with `---` (agents and skills must also carry `name` and `description`, duplicate keys are rejected) at commit, at build, and in QA Check 72 against the unzipped artifact. PyYAML is a maintainer dependency for it, not a user prerequisite.
 
 ### 2026-10-15 — Capability profile: function fit scored on responsibilities, not titles
