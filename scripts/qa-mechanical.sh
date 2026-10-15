@@ -721,6 +721,9 @@ expect_ge "35e" "skills/database/SKILL.md" "| \`Closed\` |" 1
 expect_ge "35e" "skills/career-engine-intake/SKILL.md" "jobs-guest/jobs/api/jobPosting" 1
 expect_ge "35e" "skills/career-engine-intake/SKILL.md" "closed-confirmed" 4
 expect_ge "35e" "skills/career-engine-setup/SKILL.md" "Needs Editing, Closed" 1
+expect_ge "35e" "skills/career-engine-edit/SKILL.md" "Closure check before any drop" 1
+expect_ge "35e" "skills/source-open-roles/SKILL.md" "closed rows included" 1
+expect_ge "35e" "agents/source-open-roles.md" "previously closed" 1
 expect_eq0 "35e" "agents/role-prioritizer.md" "paste the JD and I"
 
 # ================================================================

@@ -140,7 +140,7 @@ Save full results to `{{OUTPUT_FOLDER}}/sourcing/sourcing-[YYYY-MM-DD].md` using
   Open Roles — [date]
 ================================================================
   Mode: [mode]  |  Titles: [list]  |  Sources: [list]
-  [N] results after deduplication  |  [N] excluded (already in pipeline)
+  [N] results after deduplication  |  [N] excluded (already in pipeline, of which [M] previously closed)
 ================================================================
 
 Score | Source          | Title                  | Company       | Notes
@@ -174,7 +174,7 @@ If contract mode was included, add a separate section after the ranked list:
 - Remote: [value]
 - Sources searched: [list]
 - Sources failed: [list or "none"]
-- Excluded (already in pipeline): [N]
+- Excluded (already in pipeline): [N], of which previously closed: [M]
 
 ## Results (ranked)
 
