@@ -85,6 +85,12 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 
 ## Changelog
 
+### 2026-10-15 — Bug fix: the plugin installs again
+
+**Bug fixes**
+- **Invalid frontmatter blocked the whole install.** The Desktop installer rejected the previous 2026-10-15 build: the career-coach agent's description line had inner double quotes that broke its YAML frontmatter, so no file was saved. Fixed there and in two skill descriptions with the same shape (an unquoted colon-space). The retired humanizer's banner moved below its frontmatter so the platform reads the block, and its description now leads with the retirement so no session spawns it after a gatekeeper PASS.
+- **A parse gate replaces grep for frontmatter.** New `scripts/check-frontmatter.py` parses every shipped `.md` that opens with `---` (agents and skills must also carry `name` and `description`, duplicate keys are rejected) at commit, at build, and in QA Check 72 against the unzipped artifact. PyYAML is a maintainer dependency for it, not a user prerequisite.
+
 ### 2026-10-15 — Capability profile: function fit scored on responsibilities, not titles
 
 **New features**

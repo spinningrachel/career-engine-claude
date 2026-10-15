@@ -1,6 +1,6 @@
 ---
 name: database
-description: Pipeline-level database vocabulary — Status values, Priority values, and property ownership rules. Backend-neutral: these concepts apply regardless of whether the tracker is Notion, Airtable, or anything else. Load this skill whenever you need to understand what status values mean, how priority ordering works, or which agent owns which field. For Notion-specific mechanics (query ladder, view discovery, writeback syntax), also load `database-notion`. For other backends, load the corresponding adapter.
+description: "Pipeline-level database vocabulary — Status values, Priority values, and property ownership rules. Backend-neutral: these concepts apply regardless of whether the tracker is Notion, Airtable, or anything else. Load this skill whenever you need to understand what status values mean, how priority ordering works, or which agent owns which field. For Notion-specific mechanics (query ladder, view discovery, writeback syntax), also load `database-notion`. For other backends, load the corresponding adapter."
 ---
 
 # Database — Pipeline Concepts

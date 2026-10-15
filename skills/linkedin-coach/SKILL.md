@@ -1,6 +1,6 @@
 ---
 name: linkedin-coach
-description: Optimise the user's LinkedIn presence across five modes: full profile audit, content review, content strategy, headline optimisation, and video introduction script. Use when the user asks to review their LinkedIn profile, optimise LinkedIn, write a LinkedIn headline, build a content strategy, review a LinkedIn post, or create a video introduction.
+description: "Optimise the user's LinkedIn presence across five modes: full profile audit, content review, content strategy, headline optimisation, and video introduction script. Use when the user asks to review their LinkedIn profile, optimise LinkedIn, write a LinkedIn headline, build a content strategy, review a LinkedIn post, or create a video introduction."
 allowed-tools: Read, Write, mcp__linkedin-mcp__get_my_profile, mcp__linkedin-mcp__get_person_profile
 ---
 
