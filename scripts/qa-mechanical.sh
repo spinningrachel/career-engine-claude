@@ -715,6 +715,12 @@ expect_ge "35e" "scripts/gate-ask-user-question.sh" "INPUT_ASK" 2
 expect_ge "35e" "agents/role-prioritizer.md" "open application only when the user has said so" 1
 expect_ge "35e" "agents/role-prioritizer.md" "never the archived/changed row" 1
 expect_ge "35e" "agents/qa-plugin.md" "Check 35e" 1
+expect_ge "35e" "agents/role-prioritizer.md" "Confirmed closure is a write, never a question" 1
+expect_ge "35e" "agents/role-prioritizer.md" "earned by searching" 1
+expect_ge "35e" "skills/database/SKILL.md" "| \`Closed\` |" 1
+expect_ge "35e" "skills/career-engine-intake/SKILL.md" "jobs-guest/jobs/api/jobPosting" 1
+expect_ge "35e" "skills/career-engine-intake/SKILL.md" "closed-confirmed" 4
+expect_ge "35e" "skills/career-engine-setup/SKILL.md" "Needs Editing, Closed" 1
 expect_eq0 "35e" "agents/role-prioritizer.md" "paste the JD and I"
 
 # ================================================================

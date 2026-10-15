@@ -303,6 +303,17 @@
       "_comment": "2026-09-15: JD Fetch Status's Manual-entry value must stay defined in both coach-side files (added 2026-08-13, once already missed from one of the two). Deliberately NOT required in agents/role-prioritizer.md — that agent's three-value list (Fetched/LinkedIn-blocked/Unfetchable) is correct as-is; Prioritization has no interactive path to produce Manual-entry. See career-coach.md's parity note."
     },
     {
+      "id": "term-closure-evidence",
+      "_comment": "2026-10-15, per the user (\"if the position closed then that's the update. It should be automatic.\"): one closure rule, defined once in skills/database/SKILL.md, consumed by the prioritizer's outcome table and intake Step 0.5/0.9d, described in CLAUDE.md. A consumer that re-describes the evidence bar drifts; a rename disconnects the write from its rule.",
+      "term": "closure evidence",
+      "files": [
+        "skills/database/SKILL.md",
+        "agents/role-prioritizer.md",
+        "skills/career-engine-intake/SKILL.md",
+        "CLAUDE.md"
+      ]
+    },
+    {
       "id": "term-capability-profile",
       "_comment": "2026-10-15, per the user: function fit in the Prioritization pipeline is responsibility coverage against the coach-derived capability profile, never a title match. The file name is the contract: the prioritizer resolves it, the coach generates it under coach-capability-profile.md, setup writes it at Phase 4, the handoff tree and structure contract list it, and the CLAUDE.md row and glossary describe it. A rename in one place silently disconnects consumer from producer.",
       "term": "capability-profile.md",

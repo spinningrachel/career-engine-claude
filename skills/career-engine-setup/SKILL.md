@@ -570,7 +570,7 @@ Before giving this prompt to the user, substitute `{{USER_DEFAULT_LANGUAGE}}` an
 ```
 Set up data validation (dropdown lists) on the following columns in my Google Sheet named "career-engine-tracker":
 
-- Column "Status": allow only these exact values: New, Needs Research, Interested, CV Ready for Review, Applied, Researched, Needs Editing
+- Column "Status": allow only these exact values: New, Needs Research, Interested, CV Ready for Review, Applied, Researched, Needs Editing, Closed (Prioritization and intake set `Closed` automatically when a posting is confirmed closed — an existing tracker using `Position Closed` or `Role Closed` works too; a tracker with no such option is never broken, the pipeline reports instead of writing)
 - Column "Priority": allow only these exact values: 1, 2, 3, 4, 5, 6 (the pipeline writes the number, never a word label)
 - Column "JD Fetch Status": allow only these exact values: Fetched, LinkedIn-blocked, Unfetchable, Manual-entry
 - Column "Company Stage": allow only these exact values: Seed, Series A, Series B, Series C, Public, PE-backed, N/A
