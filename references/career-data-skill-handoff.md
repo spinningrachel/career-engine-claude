@@ -130,6 +130,11 @@ career-engine update-refs skill, not an ad-hoc edit.]
 references/01-writing-rules.md contents:
 [FULL CONTENT, untruncated]
 
+references/capability-profile.md contents (only if generated this session — setup Phase 4):
+[FULL CONTENT, untruncated — the user-confirmed profile exactly as confirmed, starting at its
+`Generated:` line, no header comment, no placeholders. Omit this block entirely, and leave the
+file out of expected_files, if no profile was generated this session.]
+
 references/02-professional-background.md contents:
 [FULL router content — the routing table pointing at the background/ sub-files above, per
 the structure contract. Do not inline the sub-file content here; it lives in its own file.]

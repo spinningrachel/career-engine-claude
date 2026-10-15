@@ -1,7 +1,10 @@
 # Capability profile
 
 <!--
-BLANK TEMPLATE — the plugin ships this file with {{...}} placeholders only. The career coach
+BLANK TEMPLATE — the plugin ships this file with double-brace placeholders only. THIS WHOLE
+COMMENT BLOCK IS DROPPED FROM THE GENERATED FILE: the generated profile starts at the
+`Generated:` line. (The prioritizer treats any file still containing a double-brace
+placeholder as a template, so nothing below the comment may keep one.) The career coach
 generates the real file into `${CAREER_DATA}/references/capability-profile.md` (setup Phase 4
 for a new user; "generate my capability profile" via the coach's career-data-update mode for
 an existing user). Never fill this plugin copy in; never hand-maintain the career-data copy —
@@ -25,7 +28,7 @@ FORMAT CONTRACT (the coach's generation doctrine: skills/career-coach/coach-capa
 Generated: {{YYYY-MM-DD}} | Source: background files and framework at generation time | Regenerate with: "generate my capability profile"
 
 ## {{DISCIPLINE_GROUP_1}}
-- {{CAPABILITY_LINE — e.g. "Translate technically complex products into material non-technical buyers and partners can act on"}}
+- {{CAPABILITY_LINE — e.g. "Turn customer and market research into positioning a sales team can use"}}
 - {{CAPABILITY_LINE}}
 
 ## {{DISCIPLINE_GROUP_2}}

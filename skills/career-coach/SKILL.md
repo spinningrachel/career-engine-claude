@@ -39,7 +39,7 @@ Three rules follow:
 | Non-intake invocations (discovery, setup, preferences) | `coach-modes.md` | Deep Probe Interview Mode — setup Phase 4, career-strategy sessions, preferences updates, LinkedIn strategy |
 | Capability-profile generation (setup Phase 4 after the interview; Option 6 "generate my capability profile") | `coach-capability-profile.md` | Derive the title-free capability profile from the background files: extract, strip to capability, three-way test, portability test, pairwise de-duplication, group and cap, self-check, show once, confirm, deliver (direct write at setup; update prompt otherwise) |
 
-**On every invocation: load `coach-research.md` now, unless this is a non-intake invocation (setup, preferences update, career-strategy session, deep probe interview) — in that case load `coach-modes.md` now.**
+**On every invocation: load `coach-research.md` now, unless this is a non-intake invocation (setup, preferences update, career-strategy session, deep probe interview) — in that case load `coach-modes.md` now.** A capability-profile request (setup Phase 4 after the interview, or Option 6 "generate my capability profile") loads `coach-capability-profile.md` instead, and the Deep Probe Interview Mode in `coach-modes.md` does not apply to it — the profile is derived from files and confirmed once, never interviewed.
 
 ---
 

@@ -1044,6 +1044,13 @@ expect_ge "71" "skills/career-coach/SKILL.md" "coach-capability-profile.md" 1
 expect_ge "71" "skills/career-engine-setup/SKILL.md" "Phase 4 — Capability profile" 1
 expect_ge "71" "skills/career-engine-setup/SKILL.md" "un-profiled" 1
 expect_ge "71" "agents/qa-plugin.md" "Check 71" 1
+expect_ge "71" "agents/role-prioritizer.md" "In both branches:" 1
+expect_ge "71" "agents/role-prioritizer.md" "never divide by zero" 1
+expect_ge "71" "agents/role-prioritizer.md" "capability profile: present|missing" 1
+expect_ge "71" "references/capability-profile.md" "DROPPED FROM THE GENERATED FILE" 1
+expect_ge "71" "skills/career-coach/coach-capability-profile.md" "two-file fix" 1
+expect_ge "71" "references/career-data-skill-handoff.md" "references/capability-profile.md contents" 1
+expect_eq0 "71" "agents/role-prioritizer.md" "Step 0 item 4 determined the secondary mode"
 expect_eq0 "71" "agents/role-prioritizer.md" "generate the capability profile yourself"
 
 # ================================================================

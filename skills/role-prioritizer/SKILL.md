@@ -18,7 +18,7 @@ This is a deliberate, load-bearing design choice, not an oversight:
 
 | Judgment | Source of truth | Prioritization's obligation |
 |---|---|---|
-| How to score `Priority` | `01-writing-rules.md` §1 — Priority Framework | Apply the base criteria exactly, JD-only (no company/culture/landscape research — that's what full intake adds later). §1's requirements-coverage subsection is intake-only (2026-07-29) — it needs the full background read this pipeline deliberately skips; the coach re-scores with it and always overwrites |
+| How to score `Priority` | `01-writing-rules.md` §1 — Priority Framework | Apply the base criteria exactly, JD-only (no company/culture/landscape research — that's what full intake adds later), with function fit scored as coverage against the capability profile (row below) in place of the title signal. §1's requirements-coverage subsection is intake-only (2026-07-29) — it needs the full background read this pipeline deliberately skips; the coach re-scores with it and always overwrites |
 | How to fetch a JD | `career-engine-intake/SKILL.md` Step 0.5 fetch ladder | Reuse exactly — same fallback order, same fetch markers |
 | What a `Role Summary` looks like | `career-coach/coach-output.md` → Output Format, the `Role summary` line | Same ≤400-char, JD-vocabulary-only content rule |
 | What counts as coach-complete | `career-engine-intake/SKILL.md` Step 0.8 | Prioritization never writes enough fields to satisfy this list (it writes 5 of 13–14 required fields) — a role that only went through Prioritization must always still reach the coach |
