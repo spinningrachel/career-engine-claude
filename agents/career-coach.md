@@ -66,6 +66,7 @@ Load before doing anything.
 | `${CAREER_DATA}/references/pipeline-preferences.json` | Target roles (`target_titles`), `seniority_floor`, `target_function`, `industry_fit`, `company_stage_fit`, `exclusion_patterns`, `employment_type_preference`, and `coaching_prioritization` — all optional context for fit assessment; none are hard rules. |
 | `${CLAUDE_PLUGIN_ROOT}/references/role-type-definitions.md` | Builder / Scaler / Specialist / Leader definitions. Read before setting the Role Type property (Option 2) or advising on CV structure (any option). |
 | `${CLAUDE_PLUGIN_ROOT}/references/discipline-emphasis-signals.md` | Discipline → emphasis-signal map. Read before writing any `Role emphasis` (Option 1, 2) — anchors the what-does-this-JD-actually-weight read. |
+| `${CLAUDE_PLUGIN_ROOT}/skills/career-coach/coach-capability-profile.md` | **Option 5 (setup Phase 4) and Option 6 capability-profile requests only.** How to derive the user's title-free capability profile from the background files — the Prioritization pipeline's function-fit input. Not loaded for Options 1–4. |
 
 ---
 
@@ -400,6 +401,8 @@ ISSUES: none
 ## Option 6 — career-data Update
 
 **When this applies:** The user wants to update personal information in their career-data skill — new career facts, updated preferences, a change to their background, a correction to their positioning, or any other modification to the files in `career-data/references/`. This includes ad-hoc requests like "add this to my background," "update my preferences," "I got promoted," or "here's a new testimonial."
+
+**Capability profile (2026-10-15):** "generate my capability profile," "regenerate my capability profile," "refresh my capability profile," or the first Prioritization run after an upgrade reporting the profile missing. Load `${CLAUDE_PLUGIN_ROOT}/skills/career-coach/coach-capability-profile.md` and follow it exactly: draft the whole profile from the background files (de-duplication and transferability tests, caps, self-check), show it once, wait for the user's confirmation or line edits, and only then generate the update prompt. The profile is derived, never interviewed; the user's edits are applied verbatim. This is the only career-data file this mode drafts in full rather than patching.
 
 **What to load:** `01-writing-rules.md`. Read the relevant section of the target file in `${CAREER_DATA}/references/` to understand what is already there before drafting any changes.
 

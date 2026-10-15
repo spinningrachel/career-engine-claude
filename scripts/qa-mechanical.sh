@@ -1026,6 +1026,27 @@ else
 fi
 
 # ================================================================
+# Check 71 — Capability profile: function fit is coverage, not titles (2026-10-15, per the user)
+# ================================================================
+expect_file "71" "references/capability-profile.md"
+expect_file "71" "skills/career-coach/coach-capability-profile.md"
+expect_ge "71" "references/capability-profile.md" "{{CAPABILITY_LINE" 1
+expect_ge "71" "skills/career-coach/coach-capability-profile.md" "pairwise de-duplication test" 1
+expect_ge "71" "skills/career-coach/coach-capability-profile.md" "portability test" 2
+expect_ge "71" "skills/career-coach/coach-capability-profile.md" "three-way test" 1
+expect_ge "71" "skills/career-coach/coach-capability-profile.md" "wait for confirmation" 1
+expect_ge "71" "agents/role-prioritizer.md" "Function fit is responsibility coverage against the capability profile" 1
+expect_ge "71" "agents/role-prioritizer.md" "The title list is advisory" 1
+expect_ge "71" "agents/role-prioritizer.md" "CAPABILITY_PROFILE = none" 2
+expect_ge "71" "skills/role-prioritizer/SKILL.md" "Function fit — coverage, not titles" 1
+expect_ge "71" "agents/career-coach.md" "generate my capability profile" 1
+expect_ge "71" "skills/career-coach/SKILL.md" "coach-capability-profile.md" 1
+expect_ge "71" "skills/career-engine-setup/SKILL.md" "Phase 4 — Capability profile" 1
+expect_ge "71" "skills/career-engine-setup/SKILL.md" "un-profiled" 1
+expect_ge "71" "agents/qa-plugin.md" "Check 71" 1
+expect_eq0 "71" "agents/role-prioritizer.md" "generate the capability profile yourself"
+
+# ================================================================
 # Check 70 — Role-tailoring plan (CV Titles) wired end-to-end (2026-09-17, per the user's
 # direct instruction: titles aligned to the target role, unrelated roles folded, level matched —
 # inside fixed honesty limits; coach proposes at intake, user-owned preferences field)

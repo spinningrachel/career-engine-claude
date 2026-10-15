@@ -1068,6 +1068,14 @@ For each finding, report: the step reference, the failure type (from the list be
 
 **F8 note:** this was the failure mode on 2026-06-17 when the orchestrator asked "How should I scope this New Applications run?" instead of declaring the queue and proceeding. The instruction said "report the queue and proceed immediately" but did not say the report was a one-way declaration — so the agent asked. Any step with similar structure is F8.
 
+### Check 71 — Capability profile: function fit is coverage, not titles (2026-10-15, per the user)
+
+Per the user, job titles are changing across the market for every user, so the Prioritization pipeline must not pin function fit to a title list. Verify: the blank template `references/capability-profile.md` exists with `{{...}}` placeholders only; `skills/career-coach/coach-capability-profile.md` carries the full procedure (extract, strip to capability, three-way test, portability test, pairwise de-duplication, group and cap, self-check, show once, wait for confirmation, deliver by invocation); `agents/role-prioritizer.md` resolves the profile at Step 0, scores function fit as coverage at Step 2.3 with the title list advisory and the department not a criterion, falls back to the title-based read with a Step 4 notice when the profile is absent, and never generates or edits the profile itself; the coach's Option 6 and setup Phase 4 are the only generators, and both confirm before packaging. Judgment half: no file may let the prioritizer draft the profile, package it unconfirmed, or treat a missing profile as a stop; the profile must appear in the handoff tree, the structure contract, and REFERENCES.md; and `target_titles` must remain the sourcing input.
+
+Mechanized: covered by scripts/qa-mechanical.sh (CHECK 71) and the `term-capability-profile` parity set — run via the Mechanical battery step; do not re-run these greps by hand.
+
+**FAIL condition:** any "must be >= N" count below its stated requirement, the parity set failing, or (judgment) a generator path without the confirmation step or a consumer path that treats the absent profile as a blocker.
+
 ### Check 70 — Role-tailoring plan wired end-to-end (2026-09-17; entry added 2026-10-14 — the mechanization shipped without one)
 
 Verify the role-tailoring plan (`CV Titles` written by the coach at intake, `CV Title Preferences` never written by any agent, Step 0.titles / E0.titles resolving both into `$PIPE/cv-titles.md`, `CV_TITLES_PATH` on every cv-writer / gatekeeper CV Check / recruiter-reviewer spawn, Gate 6 and coach-gates item 15 enforcing) is present in every file the CLAUDE.md contract row names.

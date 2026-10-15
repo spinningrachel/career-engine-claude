@@ -303,6 +303,22 @@
       "_comment": "2026-09-15: JD Fetch Status's Manual-entry value must stay defined in both coach-side files (added 2026-08-13, once already missed from one of the two). Deliberately NOT required in agents/role-prioritizer.md — that agent's three-value list (Fetched/LinkedIn-blocked/Unfetchable) is correct as-is; Prioritization has no interactive path to produce Manual-entry. See career-coach.md's parity note."
     },
     {
+      "id": "term-capability-profile",
+      "_comment": "2026-10-15, per the user: function fit in the Prioritization pipeline is responsibility coverage against the coach-derived capability profile, never a title match. The file name is the contract: the prioritizer resolves it, the coach generates it under coach-capability-profile.md, setup writes it at Phase 4, the handoff tree and structure contract list it, and the CLAUDE.md row and glossary describe it. A rename in one place silently disconnects consumer from producer.",
+      "term": "capability-profile.md",
+      "files": [
+        "agents/role-prioritizer.md",
+        "skills/role-prioritizer/SKILL.md",
+        "skills/career-coach/coach-capability-profile.md",
+        "agents/career-coach.md",
+        "skills/career-engine-setup/SKILL.md",
+        "references/career-data-skill-handoff.md",
+        "references/career-data-structure.md",
+        "references/REFERENCES.md",
+        "CLAUDE.md"
+      ]
+    },
+    {
       "id": "term-prioritization-outcome-table",
       "_comment": "2026-10-14, per the user (\"This is supposed to be a simple automated process that needs no human input.\"): a real Prioritization run wrote nothing and ended with three questions (a Fifth label held instead of written as 6; closed/non-listing roles offered for reclassification; LinkedIn-blocked roles offered a paste-the-JD path). The agent's Prioritization outcome table gives every fetch outcome one write and one summary line; the skill, the Stop hook prompt, and the CLAUDE.md contract row cite it by that name. A rename in one place silently disconnects the hook's reason text from the doctrine it enforces.",
       "term": "Prioritization outcome table",

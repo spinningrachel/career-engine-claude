@@ -85,6 +85,14 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 
 ## Changelog
 
+### 2026-10-15 — Capability profile: function fit scored on responsibilities, not titles
+
+**New features**
+- **A capability profile replaces the title list as the prioritizer's function-fit signal.** Per the user: "currently on the market, job titles are changing, so it's becoming challenging to pin down exact title names. this is true not just for me but for any user." A real run scored a Revenue Enablement Manager role at the weaker-fit tier on its Sales department and title alone, while two-thirds of its responsibilities were work the user had done for years. The Prioritization pipeline now scores a JD's responsibilities and requirements as coverage against a new career-data file, `references/capability-profile.md` — at most 25 title-free lines naming what the user does, in generic discipline vocabulary, in at most 5 discipline groups. Coverage maps to the same tier bands the coach uses; the other framework criteria adjust by one step; hard floors stay absolute; the title list becomes advisory (a match can nudge a score up, a mismatch never lowers it), and the department a role sits in is no longer a criterion. Sourcing keeps using `target_titles`, which still needs words to search with. The coach's full requirements-coverage scoring at intake is unchanged and still overwrites the prioritizer's provisional score.
+- **The coach derives the profile; the user confirms it once.** Per the user: the agent must be "discerning enough to ensure the list of responsibilities is not repetitive, AND is also transferrable across roles," and it "drafts the profile fully from background and then asks for final confirmation before packaging." New doctrine `skills/career-coach/coach-capability-profile.md`: extract every documented activity, strip each to a capability with no employer, product, industry, or title in it, keep only capabilities the user does (never knowledge about a domain, never a title), require each line to hold true across at least two functions or industries, collapse every near-duplicate pair, group and cap, self-check, then show the whole draft once and wait for a yes or line edits. No interview. Setup Phase 4 generates it for new users; existing users say "generate my capability profile" to the coach and get an update prompt through the normal paste, repackage, reinstall path.
+
+**Migration note for existing users:** nothing breaks. Until you generate the profile, Prioritization runs exactly as before and prints one line saying the profile is missing. To add it: ask the career coach to "generate my capability profile," review the draft it shows you, confirm, then apply the update prompt it writes to `_career-data-updates/` in your output folder (Chat and Code both, if you use both). Regenerate it whenever your background files change.
+
 ### 2026-10-14 — Prioritization runs with zero human input
 
 **Bug fixes**

@@ -86,6 +86,7 @@ career-data/
     ├── 02-professional-background.md    ← router (see background/ below)
     ├── 03-framework.md                  ← positioning/voice, +methodology router (see framework/ below)
     ├── linkedin-profile.md
+    ├── capability-profile.md            ← the coach-derived, user-confirmed capability profile (setup Phase 4); the Prioritization pipeline's function-fit input
     ├── background/
     │   ├── background-cv-summaries.md
     │   ├── background-motivation-bank.md

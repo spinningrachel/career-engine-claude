@@ -37,6 +37,7 @@ Three rules follow:
 | After research is complete (analysis phase) | `coach-analysis.md` | Notion invocation context, settings pre-flight, Part 0 priority scoring, Part 1 writing guidance, Part 1b JD decoding, Part 2 strategic property definitions (incl. the fixed `Role emphasis` structure and the Variant-mode `CV Type` property), Part 3 patterns |
 | After analysis is complete (output phase) | `coach-output.md` | Output format template, output rules |
 | Non-intake invocations (discovery, setup, preferences) | `coach-modes.md` | Deep Probe Interview Mode — setup Phase 4, career-strategy sessions, preferences updates, LinkedIn strategy |
+| Capability-profile generation (setup Phase 4 after the interview; Option 6 "generate my capability profile") | `coach-capability-profile.md` | Derive the title-free capability profile from the background files: extract, strip to capability, three-way test, portability test, pairwise de-duplication, group and cap, self-check, show once, confirm, deliver (direct write at setup; update prompt otherwise) |
 
 **On every invocation: load `coach-research.md` now, unless this is a non-intake invocation (setup, preferences update, career-strategy session, deep probe interview) — in that case load `coach-modes.md` now.**
 
