@@ -101,7 +101,7 @@ After QA passes, rebuild the plugin:
 bash scripts/build-plugin.sh
 ```
 
-That is the whole build (2026-08-12 — it replaced a hand-copied `python3 -c` snippet, which had already drifted out of sync with `CLAUDE.md`'s copy: this file's version was missing the `update-prompt-*.md` and `session.jsonl` exclusions entirely, so a build run from these instructions would have zipped personal files straight into the shipped artifact). The script scans the tree, builds, then re-opens the finished zip and scans **what actually ships** — and refuses to leave you a shippable artifact if any of the three steps trips. See CLAUDE.md → Packaging and → Personal data never enters this repo.
+That is the whole build (2026-08-12 — it replaced a hand-copied `python3 -c` snippet, which had already drifted out of sync with `CLAUDE.md`'s copy: this file's version was missing the `update-prompt-*.md` and `session.jsonl` exclusions entirely, so a build run from these instructions would have zipped personal files straight into the shipped artifact). The script scans the tree for personal data, parses every frontmatter block as YAML (`scripts/check-frontmatter.py` — the Desktop installer rejects the whole plugin on one unparseable description line, 2026-10-15), builds, then re-opens the finished zip and scans **what actually ships** — and refuses to leave you a shippable artifact if any of the three steps trips. See CLAUDE.md → Packaging and → Personal data never enters this repo.
 
 Confirm `career-engine.plugin` was produced and its timestamp is current. Do not report the session complete until the rebuilt `.plugin` exists.
 

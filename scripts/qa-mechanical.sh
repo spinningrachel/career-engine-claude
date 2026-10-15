@@ -1088,6 +1088,24 @@ expect_ge "70" "skills/career-engine-setup/SKILL.md" "CV Title Preferences" 3
 expect_ge "70" "references/job-applications-template.csv" "CV Titles,CV Title Preferences" 1
 expect_ge "70" "references/cv-self-check.md" "Role tailoring" 1
 
+# ================================================================
+# Check 72 — Frontmatter parses as YAML in every shipped .md that carries one (2026-10-15)
+# The Desktop installer rejected a shipped build: career-coach.md's description carried
+# unescaped inner double quotes. Every prior check here was a grep; this one parses.
+# Runs against $TARGET, so it validates the unzipped artifact as well as the repo.
+# ================================================================
+# Always the repo's own script (this file is invoked from the repo), never one inside
+# $TARGET — a stale or lenient copy in an old artifact must not override the verdict.
+FM_RC=0; python3 "$(dirname "$0")/check-frontmatter.py" "$TARGET" >/dev/null 2>&1 || FM_RC=$?
+if [ "$FM_RC" -eq 0 ]; then report "72" 1 "";
+elif [ "$FM_RC" -eq 2 ]; then report "72" 0 "check-frontmatter.py could not run (PyYAML missing or no files) — run: python3 scripts/check-frontmatter.py $TARGET";
+else report "72" 0 "frontmatter invalid — run: python3 scripts/check-frontmatter.py $TARGET"; fi
+expect_file "72" "scripts/check-frontmatter.py"
+expect_ge "72" "scripts/build-plugin.sh" "check-frontmatter.py" 1
+expect_ge "72" "scripts/check-invariants.sh" "check-frontmatter.py" 1
+expect_ge "72" "scripts/qa-mechanical.sh" "check-frontmatter.py" 1
+expect_ge "72" "agents/qa-plugin.md" "Check 72" 1
+
 echo "qa-mechanical: $PASS passed, $FAIL failed"
 
 # Relational layer (list parity, defined-term closure, spawn params, $PIPE closure)

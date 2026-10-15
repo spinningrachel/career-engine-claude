@@ -22,6 +22,19 @@ if ! bash "$REPO/scripts/scan-personal-data.sh"; then
   echo "   Fix it before building; a build made now would ship it."
   exit 1
 fi
+# Frontmatter must parse as YAML — the Desktop installer refuses the whole plugin
+# otherwise (2026-10-15: career-coach.md shipped with unescaped inner quotes).
+FM_RC=0; python3 "$REPO/scripts/check-frontmatter.py" "$REPO" || FM_RC=$?
+if [ "$FM_RC" -eq 2 ]; then
+  echo ""
+  echo "❌ Build aborted — the frontmatter gate could not run (PyYAML is a maintainer dependency: pip install pyyaml)."
+  exit 1
+elif [ "$FM_RC" -ne 0 ]; then
+  echo ""
+  echo "❌ Build aborted — a shipped .md has frontmatter that is not valid YAML."
+  echo "   The installer rejects the whole plugin on one bad file."
+  exit 1
+fi
 
 # ── 2. Build ─────────────────────────────────────────────────────────────────
 python3 - <<'PY'

@@ -42,6 +42,15 @@ for fname in 'gatekeeper-cv' 'gatekeeper-cl' 'recruiter-cv.md' 'coach-outline.md
     || fail "Pipeline file '$fname' missing from new-application SKILL.md"
 done
 
+# Frontmatter validity: every shipped .md that opens with --- parses as YAML (agents and
+# skills must also open with the block and carry name/description) — what the installer parses (2026-10-15 — a bad description line blocked the whole install).
+FM_RC=0; python3 "$REPO/scripts/check-frontmatter.py" "$REPO" >/dev/null 2>&1 || FM_RC=$?
+if [ "$FM_RC" -eq 2 ]; then
+  fail "check-frontmatter.py could not run — PyYAML is a maintainer dependency (pip install pyyaml)"
+elif [ "$FM_RC" -ne 0 ]; then
+  fail "frontmatter is not valid YAML — diagnose with: python3 scripts/check-frontmatter.py ."
+fi
+
 # Relational layer: list parity, defined-term closure, spawn params, $PIPE closure
 # (scripts/qa-parity.py + qa-parity.json). Fast (<1s), so it runs on every commit —
 # this is what forces the consumer sweep when a fix touches one list but not its siblings.
