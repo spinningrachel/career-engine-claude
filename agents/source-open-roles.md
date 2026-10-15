@@ -174,7 +174,7 @@ If contract mode was included, add a separate section after the ranked list:
 - Remote: [value]
 - Sources searched: [list]
 - Sources failed: [list or "none"]
-- Excluded (already in pipeline): [N]
+- Excluded (already in pipeline): [N], of which previously closed: [M]
 
 ## Results (ranked)
 
