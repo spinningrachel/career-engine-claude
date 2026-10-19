@@ -85,6 +85,11 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 
 ## Changelog
 
+### 2026-10-19 — Capability profile cap raised to 30
+
+**Improvements**
+- **The capability profile holds up to 30 lines; early-career users keep 25.** Per the user: "let's go to 30 max with a note that more junior professionals should have the 25 cap." The coach applies 25 when the seniority level in `01-writing-rules.md` §1 is below Senior IC or the documented record holds fewer than about eight years of work, and says which cap it applied when it shows the draft. The blank template, the setup skill, and QA Check 71 carry the same numbers. Existing profiles are unaffected until regenerated.
+
 ### 2026-10-19 — Capability matching by default
 
 **New features**

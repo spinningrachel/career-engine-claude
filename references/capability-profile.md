@@ -17,7 +17,8 @@ coverage, never as a title match). The coach still scores full requirements-cove
 the complete background at intake and always overwrites the provisional score.
 
 FORMAT CONTRACT (the coach's generation doctrine: skills/career-coach/coach-capability-profile.md).
-- At most 25 capability lines, in at most 5 discipline groups. One capability per line.
+- At most 30 capability lines (25 for an early-career user — the coach's doctrine step 6 decides), in
+  at most 5 discipline groups. One capability per line.
 - A line names a capability the user DOES (never knowledge ABOUT a domain, never a title).
 - No employer, product, customer, industry, or title anywhere in a line.
 - Each line holds true on a job description in at least two different functions or industries.

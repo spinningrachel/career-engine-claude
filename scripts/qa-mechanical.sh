@@ -1072,6 +1072,12 @@ expect_ge "71" "agents/role-prioritizer.md" "never divide by zero" 1
 expect_ge "71" "agents/role-prioritizer.md" "capability profile: present|missing" 1
 expect_ge "71" "references/capability-profile.md" "DROPPED FROM THE GENERATED FILE" 1
 expect_ge "71" "skills/career-coach/coach-capability-profile.md" "two-file fix" 1
+# 2026-10-19, per the user: cap 30, early-career cap 25 — the doctrine, the template and the setup skill must agree.
+expect_ge "71" "skills/career-coach/coach-capability-profile.md" "Cap the file at 30 lines" 1
+expect_ge "71" "skills/career-coach/coach-capability-profile.md" "Early-career cap" 1
+expect_eq0 "71" "skills/career-coach/coach-capability-profile.md" "Cap the file at 25 lines"
+expect_ge "71" "references/capability-profile.md" "At most 30 capability lines" 1
+expect_ge "71" "skills/career-engine-setup/SKILL.md" "≤30 lines" 1
 expect_ge "71" "references/career-data-skill-handoff.md" "references/capability-profile.md contents" 1
 expect_eq0 "71" "agents/role-prioritizer.md" "Step 0 item 4 determined the secondary mode"
 expect_eq0 "71" "agents/role-prioritizer.md" "generate the capability profile yourself"

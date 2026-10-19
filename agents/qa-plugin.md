@@ -1100,7 +1100,9 @@ Per the user, job titles are changing across the market for every user, so the P
 
 Mechanized: covered by scripts/qa-mechanical.sh (CHECK 71) and the `term-capability-profile` parity set — run via the Mechanical battery step; do not re-run these greps by hand.
 
-**FAIL condition:** any "must be >= N" count below its stated requirement, the parity set failing, or (judgment) a generator path without the confirmation step or a consumer path that treats the absent profile as a blocker.
+**Line cap (2026-10-19, per the user: "let's go to 30 max with a note that more junior professionals should have the 25 cap"):** the doctrine's step 6 caps the file at 30 lines, 25 for an early-career user (`{{USER_SENIORITY_LEVEL}}` below Senior IC, or fewer than about eight years of documented work), and the coach names the cap it applied when showing the draft. The template's format contract and the setup skill's Phase 4 state the same numbers; the mechanical anchors assert all three agree and that no flat 25-line cap survives in the doctrine.
+
+**FAIL condition:** any "must be >= N" count below its stated requirement, the parity set failing, the three cap statements disagreeing, or (judgment) a generator path without the confirmation step or a consumer path that treats the absent profile as a blocker.
 
 ### Check 70 — Role-tailoring plan wired end-to-end (2026-09-17; entry added 2026-10-14 — the mechanization shipped without one)
 

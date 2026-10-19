@@ -11,7 +11,7 @@
       "name": "career-engine",
       "source": "./",
       "description": "Career management and personal branding engine. Positioning framework, employment coaching, multi-agent CV and cover letter pipeline, DOCX export. Requires setup — run /career-engine:setup after installing.",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": {
         "name": "Rachel Cheyfitz",
         "email": "rachel@cheyfitz.me"
