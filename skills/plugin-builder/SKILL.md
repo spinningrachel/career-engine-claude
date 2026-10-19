@@ -95,7 +95,7 @@ Do not write "regression checks: N/A." Every edit touches at least one file; eve
 
 ## Packaging
 
-After QA passes, rebuild the plugin:
+After QA passes, bump the version, then rebuild the plugin. Raise `version` in BOTH `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` (patch for fixes, minor for features) before every build that will ship — the CLI caches a marketplace plugin by that version and never re-fetches an unchanged one (2026-10-15: two fixes shipped at `1.0.0` and the user's `claude plugin update` kept loading the stale cache). Stage both manifests with the build: the pre-commit hook reads the staged copies and refuses a commit that stages any shipped path (the artifact, `agents/`, `skills/`, `references/`, `hooks/`, `scripts/`, `.claude-plugin/`) unless the version is greater than `origin/main`'s.
 
 ```bash
 bash scripts/build-plugin.sh
@@ -118,6 +118,7 @@ Any user may open a PR. Before committing:
 
 - [ ] `git status` is clean except for the files you changed
 - [ ] The `.plugin` is rebuilt and included in the commit
+- [ ] The manifest `version` is bumped in both `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`, and both are staged (the CLI cache is keyed by it)
 - [ ] No personal data is in the diff (`grep -r "@" --include="*.md"` and scan for emails, real company names from the user's history, real file paths)
 - [ ] The commit message follows the pattern: `<verb> <what>: <one-line why>` — e.g., `Add plugin-builder agent and skill: self-service plugin editing workflow`
 - [ ] QA passed

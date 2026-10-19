@@ -1121,22 +1121,40 @@ expect_ge "72" "scripts/qa-mechanical.sh" "check-frontmatter.py" 1
 expect_ge "72" "agents/qa-plugin.md" "Check 72" 1
 
 # ================================================================
-# Check 73 — Capability matching by default: role_matching / scope_preferences / cv_title_rules
+# Check 74 — Capability matching by default: role_matching / scope_preferences / cv_title_rules
 # wired end-to-end (2026-10-19, per the user)
 # ================================================================
-expect_ge "73" "references/pipeline-preferences.json" "role_matching" 1
-expect_ge "73" "references/pipeline-preferences.json" "scope_preferences" 1
-expect_ge "73" "references/pipeline-preferences.json" "cv_title_rules" 1
+expect_ge "74" "references/pipeline-preferences.json" "role_matching" 1
+expect_ge "74" "references/pipeline-preferences.json" "scope_preferences" 1
+expect_ge "74" "references/pipeline-preferences.json" "cv_title_rules" 1
 for f in agents/source-open-roles.md skills/source-open-roles/SKILL.md agents/role-prioritizer.md skills/career-engine-intake/SKILL.md skills/career-engine-new-application/SKILL.md skills/career-engine-edit/SKILL.md; do
-  expect_ge "73" "$f" "role_matching" 1
+  expect_ge "74" "$f" "role_matching" 1
 done
-expect_ge "73" "skills/career-engine-new-application/SKILL.md" "MODE:" 1
-expect_ge "73" "skills/career-engine-edit/SKILL.md" "MODE:" 1
-expect_ge "73" "skills/source-open-roles/SKILL.md" "scope_preferences" 1
-expect_ge "73" "agents/role-prioritizer.md" "scope_preferences" 1
-expect_ge "73" "skills/career-coach/coach-analysis.md" "USER SCOPE PREFERENCES" 1
-expect_ge "73" "skills/source-open-roles/SKILL.md" "Capabilities mode" 1
+expect_ge "74" "skills/career-engine-new-application/SKILL.md" "MODE:" 1
+expect_ge "74" "skills/career-engine-edit/SKILL.md" "MODE:" 1
+expect_ge "74" "skills/source-open-roles/SKILL.md" "scope_preferences" 1
+expect_ge "74" "agents/role-prioritizer.md" "scope_preferences" 1
+expect_ge "74" "skills/career-coach/coach-analysis.md" "USER SCOPE PREFERENCES" 1
+expect_ge "74" "skills/source-open-roles/SKILL.md" "Capabilities mode" 1
+expect_ge "74" "agents/qa-plugin.md" "Check 74" 1
+
+# Check 73 — Manifest version is bumped on every shipped build (2026-10-15)
+# The CLI caches a marketplace plugin under <cache>/<marketplace>/<plugin>/<version>/.
+# Two fixes shipped at version 1.0.0; `claude plugin update` kept serving the 1.0.0
+# cache, so the user saw the duplicate-hooks error again after the fix had merged.
+# Mechanical part: both manifests carry one identical version string. The bump itself
+# (staged version semver-greater than origin/main's whenever shipped files are
+# staged, read from the index) is asserted by the pre-commit hook,
+# scripts/check-invariants.sh, which has the git context this artifact-side
+# script does not.
+# ================================================================
+V_PLUGIN=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['version'])" "$TARGET/.claude-plugin/plugin.json" 2>/dev/null || echo "")
+V_MARKET=$(python3 -c "import json,sys; print(next(p for p in json.load(open(sys.argv[1]))['plugins'] if p.get('name')=='career-engine')['version'])" "$TARGET/.claude-plugin/marketplace.json" 2>/dev/null || echo "")
+if [ -n "$V_PLUGIN" ] && [ "$V_PLUGIN" = "$V_MARKET" ]; then report "73" 1 "";
+else report "73" 0 "plugin.json version '$V_PLUGIN' != marketplace.json version '$V_MARKET' (or unreadable)"; fi
+expect_ge "73" "scripts/check-invariants.sh" "version-bump" 1
 expect_ge "73" "agents/qa-plugin.md" "Check 73" 1
+expect_ge "73" "skills/plugin-builder/SKILL.md" "bump" 1
 
 echo "qa-mechanical: $PASS passed, $FAIL failed"
 

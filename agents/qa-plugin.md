@@ -1070,9 +1070,19 @@ For each finding, report: the step reference, the failure type (from the list be
 
 **F8 note:** this was the failure mode on 2026-06-17 when the orchestrator asked "How should I scope this New Applications run?" instead of declaring the queue and proceeding. The instruction said "report the queue and proceed immediately" but did not say the report was a one-way declaration — so the agent asked. Any step with similar structure is F8.
 
-### Check 73 — Capability matching by default (2026-10-19, per the user)
+### Check 74 — Capability matching by default (2026-10-19, per the user)
 
-Verify `role_matching` (`capabilities` default | `titles`), `scope_preferences` and `cv_title_rules` are optional, never-blocking keys read by: sourcing (two-pass scoring, Capabilities-mode table, title-hidden rule scoped to `titles`), the prioritizer (`titles` → profile not read; want/avoid ±1 tier), intake (Step −1.6, `MATCHING MODE` and `USER SCOPE PREFERENCES` in `queue.md`), the coach (Keep default under `titles`; avoid caps the tier), and both Step 0.titles/E0.titles (`MODE:` header). Setup and the CSV no longer create `CV Title Preferences`; it stays a legacy read. Removals must carry the quoted user instruction in commit and changelog. Mechanized: scripts/qa-mechanical.sh (CHECK 73). Phase 0-D: any diff touching these keys sweeps all consumers above.
+Verify `role_matching` (`capabilities` default | `titles`), `scope_preferences` and `cv_title_rules` are optional, never-blocking keys read by: sourcing (two-pass scoring, Capabilities-mode table, title-hidden rule scoped to `titles`), the prioritizer (`titles` → profile not read; want/avoid ±1 tier), intake (Step −1.6, `MATCHING MODE` and `USER SCOPE PREFERENCES` in `queue.md`), the coach (Keep default under `titles`; avoid caps the tier), and both Step 0.titles/E0.titles (`MODE:` header). Setup and the CSV no longer create `CV Title Preferences`; it stays a legacy read. Removals must carry the quoted user instruction in commit and changelog. Mechanized: scripts/qa-mechanical.sh (CHECK 74). Phase 0-D: any diff touching these keys sweeps all consumers above.
+
+### Check 73 — Manifest version is bumped on every shipped build (2026-10-15)
+
+The Claude Code CLI caches a marketplace plugin under `~/.claude/plugins/cache/<marketplace>/<plugin>/<version>/`, keyed by the manifest `version`. The duplicate-hooks fix (Check 21t) merged, the user ran `claude plugin update`, and `claude plugin list` still failed to load from the `1.0.0` cache directory — the pre-fix manifest, because the version had not changed and the CLI had no reason to re-fetch. Rule: every build that ships raises `version` in both `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` (the `career-engine` entry's `version`), and the two always agree.
+
+Mechanized: covered by scripts/qa-mechanical.sh (CHECK 73 — the two manifests carry one identical version, plus anchors in the pre-commit hook, this file and the plugin-builder skill) — run via the Mechanical battery step; do not re-run by hand. The bump itself is asserted by `scripts/check-invariants.sh` at commit time — it reads the STAGED manifests (an unstaged bump was a reproduced bypass on the first QA pass of this check), fires when any shipped path is staged (the artifact, `agents/`, `skills/`, `references/`, `hooks/`, `scripts/`, `.claude-plugin/`, since the marketplace serves the repo tree), and requires the version to be semver-greater than the local `origin/main`'s — since the artifact-side script has no git context.
+
+**Manual part:** when the diff rebuilds `career-engine.plugin`, confirm `git diff origin/main -- .claude-plugin/plugin.json` shows the version line changed. A rebuilt artifact at an unchanged version is a FAIL — it will install as the old one.
+
+**FAIL condition:** the two versions differ, either manifest is unreadable, any of the three anchors is missing, or any shipped path is staged on this branch with a version not semver-greater than `origin/main`'s.
 
 ### Check 72 — Frontmatter parses as YAML in every shipped .md that carries one (2026-10-15)
 
