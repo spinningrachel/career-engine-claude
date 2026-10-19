@@ -45,6 +45,7 @@ Target titles are searched as a **variant set**, not verbatim. The same role sur
 **The variant set:**
 - **Source of truth:** the user's stored set in `${CAREER_DATA}/references/pipeline-preferences.json` → `title_variants`. Seeded once (Gate 1, on first run or the first run after upgrade), human-editable, auto-used every run, shown in the run header.
 - **If no stored set exists:** derive on the fly from `target_titles` plus `USER_PROFESSION` and `USER_FUNCTION_SENIORITY_HIERARCHY` (`01-writing-rules.md` §8) — seniority variants (Lead / Manager / Director / Head / VP), phrasing variants (Product Marketing ↔ PMM, Go-to-Market ↔ GTM), and any adjacent-function variants the user flagged — then trigger Gate 1's seed so the set is stored for next time.
+- **Capabilities mode (2026-10-19, `role_matching` absent or `capabilities`):** search terms also come from the capability profile's group lines (`${CAREER_DATA}/references/capability-profile.md`) (the discipline words, not titles) and `scope_preferences.want` — a role titled something new still surfaces when it asks for work the user does. Titles remain a search seed, never a gate. Under `titles` this widening does not apply.
 - **Cap: ~6–8 variants per target title.** Stop there; search volume and noise stay manageable, and dedup + scoring absorb the overlap.
 
 **Global search rule:** wherever a Site Catalog pattern below shows `[title]`, run it **once per variant** in the set (the LinkedIn `search_jobs` keywords and every `site:... "[title]"` WebSearch). Deduplication collapses the repeats; scoring ranks them.
@@ -321,7 +322,22 @@ Score every result (0–100) after deduplication.
 | Apply URL present (non-LinkedIn sources) | 6 |
 | Screening conflict — a populated `screening_answers` field contradicts a stated JD requirement | −15 (down-rank, never exclude; attach a visible label) |
 
-Cap at 100. Sort descending. Roles without a title match should not appear unless no matches exist.
+Cap at 100. Sort descending. Under `titles` mode, roles without a title match should not appear unless no matches exist.
+
+### Capabilities mode (default; `role_matching` absent or `capabilities`) — 2026-10-19
+
+Per the user: "the coach needs to be savvy enough to identify what the user knows how to do, what they're aiming for in terms of scope of responsiblities and/or what they want and don't want to do, and then find relevant roles accordingly ... including but not limited to role titles." The title signal shrinks to a nudge and the "no title match → hidden" rule does not apply. Coverage is scored only for the opened shortlist (agent Step 4, pass 2): items = the posting's responsibilities and requirements; coverage = items a profile line covers (capability underneath the label, any vocabulary) ÷ all items.
+
+| Signal | Points |
+|---|---|
+| Responsibility coverage ≥ 80% | +30 |
+| Responsibility coverage 60–79% | +20 |
+| Responsibility coverage 40–59% | +10 |
+| `scope_preferences.want` hit on a responsibility | +5 (cap +10 total) |
+| `scope_preferences.avoid` hit on a core responsibility | −15 + visible label `⚠ scope: avoid — [item]` (down-rank, never exclude) |
+| Title exact / partial match (replaces the 20 / 10 rows above) | +8 / +4 |
+
+The other rows (recency, remote, salary, applicants, hiring manager, Easy Apply, apply URL, screening conflict) apply unchanged. `exclusion_patterns` stays a title-substring exclusion in both modes. Profile missing under `capabilities` → the title rubric above plus the header notice; never a stop.
 
 **Standing screening answers (`screening_answers` from `${CAREER_DATA}/references/pipeline-preferences.json`).** If present, compare each *populated* field (travel / relocation / security_clearance / compensation_floor / availability) against the JD. A hard conflict (e.g. role explicitly requires relocation while `relocation` = "no") applies the −15 down-rank above **and** attaches a visible reason label to the row (`⚠ screening: relocation required vs your "no"`) so the user sees exactly why it ranked lower. **Never silently exclude on a screening conflict** — down-rank + label only, and log it in the run output. If `screening_answers` is absent or empty, skip this entirely (no labels, no down-ranks).
 

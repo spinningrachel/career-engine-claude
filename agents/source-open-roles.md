@@ -48,7 +48,8 @@ Load before any search begins:
 | `skills/source-open-roles/SKILL.md` | Search mode definitions, full site catalog with fetch methods, scoring rubric, deduplication rules, exclusion rules |
 | `${CLAUDE_PLUGIN_ROOT}/references/locale-job-boards.md` | Per-country starter catalog of local boards (ATS, VC portfolio boards, aggregators) for **Tier 5 — Locale boards**. Match the user's country row; fall back to the generic row |
 | `${CLAUDE_PLUGIN_ROOT}/references/job-sourcing-mcp-registry.md` | Known job-sourcing MCP servers — which site each covers, connect command, wired-in vs. candidate. Drives the Site Catalog's per-server gates and the run header's unconnected-server suggestion |
-| `${CAREER_DATA}/references/pipeline-preferences.json` | The single source of truth for every sourcing preference: `target_titles`, `title_variants` (the variant set Keyword Expansion searches), `remote_preference`, `exclusion_patterns`, `default_search_time_range`, `seniority_floor`, `target_function`, `industry_fit`, `company_stage_fit`, `employment_type_preference`, `coaching_prioritization`, `location_compatibility.my_location`, `preferred_job_sites`, `local_job_sites`, `database_id`, and `screening_answers` (a populated field that conflicts with a JD down-ranks + labels the role, never excludes it; `compensation_floor` doubles as the salary floor — there is no separate min-salary field). Skip `screening_answers` entirely if absent or empty |
+| `${CAREER_DATA}/references/capability-profile.md` (optional, 2026-10-19) | The user's title-free capability lines. Under `role_matching = capabilities` it widens search terms (Keyword Expansion) and drives the Step 4 coverage pass. Absent or still templated (`{{`) → titles rubric plus a header notice. Never create or edit it here |
+| `${CAREER_DATA}/references/pipeline-preferences.json` | The single source of truth for every sourcing preference: `target_titles`, `title_variants` (the variant set Keyword Expansion searches), `remote_preference`, `exclusion_patterns`, `default_search_time_range`, `seniority_floor`, `target_function`, `industry_fit`, `company_stage_fit`, `employment_type_preference`, `coaching_prioritization`, `location_compatibility.my_location`, `preferred_job_sites`, `local_job_sites`, `database_id`, `role_matching` (`capabilities` default | `titles`), `scope_preferences` (`want`/`avoid`), and `screening_answers` (a populated field that conflicts with a JD down-ranks + labels the role, never excludes it; `compensation_floor` doubles as the salary floor — there is no separate min-salary field). Skip `screening_answers` entirely if absent or empty |
 
 ---
 
@@ -56,7 +57,7 @@ Load before any search begins:
 
 **Gate 1 — Preferences (single source of truth: `pipeline-preferences.json`)**
 
-Read `${CAREER_DATA}/references/pipeline-preferences.json`. Every sourcing preference lives here — there is no separate local preferences file. Check `target_titles`, `title_variants`, `remote_preference`, `exclusion_patterns`, `default_search_time_range`, and `location_compatibility.my_location`.
+Read `${CAREER_DATA}/references/pipeline-preferences.json`. Every sourcing preference lives here — there is no separate local preferences file. Check `target_titles`, `title_variants`, `remote_preference`, `exclusion_patterns`, `default_search_time_range`, and `location_compatibility.my_location`. Also read the optional matching keys (2026-10-19; never a stop when absent): `role_matching` (absent or anything but `titles` = `capabilities`), `scope_preferences.want`/`.avoid`, and — when mode is `capabilities` — `capability-profile.md`. Profile missing or templated under `capabilities` → `MATCHING = titles rubric (profile missing)` and the header says so.
 
 **If all of the above are already populated:** proceed directly to Gate 2 with these values.
 
@@ -68,7 +69,7 @@ Read `${CAREER_DATA}/references/pipeline-preferences.json`. Every sourcing prefe
    - Exclude patterns — "Words that should auto-exclude a role? (e.g., 'junior', 'intern') Or 'none'." (only if `exclusion_patterns` is empty)
    - Default time range — "How far back should searches look? (last week / 2 weeks / month)" (only if `default_search_time_range` is unset — the plugin default is "last week")
    - Location — "What location for LinkedIn searches? (city and country)" (only if `location_compatibility.my_location` is empty; this is the same field the coach uses for location-compatibility checks — one place to configure it)
-2. Derive a proposed title-variant set (~6–8 per target title) from the target titles plus `USER_PROFESSION` / `USER_FUNCTION_SENIORITY_HIERARCHY` (`01-writing-rules.md` §8), per the SKILL Keyword Expansion rules, if `title_variants` is empty.
+2. Derive a proposed title-variant set (~6–8 per target title) from the target titles plus `USER_PROFESSION` / `USER_FUNCTION_SENIORITY_HIERARCHY` (`01-writing-rules.md` §8), per the SKILL Keyword Expansion rules, if `title_variants` is empty. Under `capabilities` the derivation also draws on the profile's group lines and `scope_preferences.want` (SKILL Keyword Expansion).
 3. Read `${CLAUDE_PLUGIN_ROOT}/references/locale-job-boards.md`, find the user's country row, and propose a locale-board shortlist, if `preferred_job_sites`/`local_job_sites` are empty.
 4. Show everything proposed to the user; let them edit.
 5. Database ID — first check `pipeline-preferences.json` → `database_id` (legacy `notion_database_id`); if set, use it and do not ask. Only if the main config has no database id, ask: "Your job-tracking database ID? (in Notion, the UUID in the database URL after the last `/`). Or 'skip' to disable deduplication."
@@ -84,6 +85,7 @@ Resolve the search mode per the rules in `SKILL.md`. Before displaying the run h
 Display before searching:
 
 > **Sourcing with:**
+> Matching: [capabilities (profile: N lines) | capabilities (profile missing — titles rubric; say "generate my capability profile" to the career coach) | titles]
 > Titles: [list] | Variants: [expanded variant set used this run] | Mode: [mode] | Time range: [value] | Remote: [value]
 > Sources: [list of sites being searched this run, including any Tier 5 locale boards]
 > Also available: [server] — connect with '[command]' for structured [site] results. *(only if the connection check above found a relevant, unconnected Wired-in server this run; omit the line entirely otherwise — never suggest a Candidate row — it isn't granted in this agent's `tools:` frontmatter, so it has no canary to check)*
@@ -110,7 +112,7 @@ Apply exclusion rules from `SKILL.md`: exclude patterns, previous search session
 
 **Step 4 — Score**
 
-Apply the scoring rubric from `SKILL.md` to every remaining result. Sort descending.
+Apply the scoring rubric from `SKILL.md` to every remaining result. Sort descending. Under `capabilities` this is **two passes (2026-10-19)**: (1) the cheap metadata pass scores every result on the base rubric with no extra calls; (2) the top ~30 shortlist (the existing `get_job_details` cap, so no new call volume) is opened and scored for responsibility coverage per the SKILL "Capabilities mode" table, then re-sorted. Results outside the shortlist keep their metadata score. Under `titles` (or profile missing) only pass 1 runs.
 
 **Step 4.5 — Verify (careers page + location deep-scan)**
 

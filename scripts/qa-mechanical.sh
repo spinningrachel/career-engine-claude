@@ -1098,8 +1098,8 @@ expect_ge "70" "skills/career-engine-new-application/SKILL.md" "Step 0.titles" 1
 expect_ge "70" "skills/career-engine-edit/SKILL.md" "Step E0.titles" 1
 expect_ge "70" "skills/career-engine-intake/SKILL.md" "Never write \`CV Title Preferences\`" 1
 expect_ge "70" "skills/database/SKILL.md" "No agent ever writes it" 1
-expect_ge "70" "skills/career-engine-setup/SKILL.md" "CV Title Preferences" 3
-expect_ge "70" "references/job-applications-template.csv" "CV Titles,CV Title Preferences" 1
+expect_ge "70" "skills/career-engine-setup/SKILL.md" "CV Title Preferences" 1
+expect_ge "70" "references/job-applications-template.csv" "CV Titles," 1
 expect_ge "70" "references/cv-self-check.md" "Role tailoring" 1
 
 # ================================================================
@@ -1119,6 +1119,24 @@ expect_ge "72" "scripts/build-plugin.sh" "check-frontmatter.py" 1
 expect_ge "72" "scripts/check-invariants.sh" "check-frontmatter.py" 1
 expect_ge "72" "scripts/qa-mechanical.sh" "check-frontmatter.py" 1
 expect_ge "72" "agents/qa-plugin.md" "Check 72" 1
+
+# ================================================================
+# Check 73 — Capability matching by default: role_matching / scope_preferences / cv_title_rules
+# wired end-to-end (2026-10-19, per the user)
+# ================================================================
+expect_ge "73" "references/pipeline-preferences.json" "role_matching" 1
+expect_ge "73" "references/pipeline-preferences.json" "scope_preferences" 1
+expect_ge "73" "references/pipeline-preferences.json" "cv_title_rules" 1
+for f in agents/source-open-roles.md skills/source-open-roles/SKILL.md agents/role-prioritizer.md skills/career-engine-intake/SKILL.md skills/career-engine-new-application/SKILL.md skills/career-engine-edit/SKILL.md; do
+  expect_ge "73" "$f" "role_matching" 1
+done
+expect_ge "73" "skills/career-engine-new-application/SKILL.md" "MODE:" 1
+expect_ge "73" "skills/career-engine-edit/SKILL.md" "MODE:" 1
+expect_ge "73" "skills/source-open-roles/SKILL.md" "scope_preferences" 1
+expect_ge "73" "agents/role-prioritizer.md" "scope_preferences" 1
+expect_ge "73" "skills/career-coach/coach-analysis.md" "USER SCOPE PREFERENCES" 1
+expect_ge "73" "skills/source-open-roles/SKILL.md" "Capabilities mode" 1
+expect_ge "73" "agents/qa-plugin.md" "Check 73" 1
 
 echo "qa-mechanical: $PASS passed, $FAIL failed"
 

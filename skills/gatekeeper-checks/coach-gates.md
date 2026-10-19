@@ -51,7 +51,7 @@ The fabrication check above verifies *traceability*. It does NOT catch content t
     - **Never above her recorded level.** FAIL a Retitle whose seniority sits above that employer's recorded title — quote both. Skip this for a line marked `basis: user-stated`: her own statement about her own title is hers, and a violation against it is itself the error.
     - **Basis is a documented fact.** FAIL a `basis:` that does not trace to that employer's role facts (the fabrication check's standard). Fix direction is a lower disposition (Descriptor, then Fold) — never a generic "be more careful."
     - **User preferences applied.** FAIL if the queue carries a preference for an employer and the plan's line for that employer differs from it.
-    - **Over-caution is a defect too.** FAIL a `Keep` with no reason. FAIL a plan where an employer is `Keep` or `Fold` while its role facts plainly document standing work in the target function — name the fact, and direct the coach to `Retitle`. The user's instruction: "I don't want the coach to be overly careful either."
+    - **Over-caution is a defect too (suspended when `queue.md`'s `MATCHING MODE` section says `role_matching: titles` — Keep is then the default and needs no reason, 2026-10-19).** FAIL a `Keep` with no reason. FAIL a plan where an employer is `Keep` or `Fold` while its role facts plainly document standing work in the target function — name the fact, and direct the coach to `Retitle`. The user's instruction: "I don't want the coach to be overly careful either."
     - **No employer names or dates altered.** The block names employers as the record does and carries no dates at all.
 
 Each FAIL names the property, quotes the offending text (or states "missing entirely" for check 7), and states the fix.

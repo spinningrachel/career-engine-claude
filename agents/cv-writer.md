@@ -133,7 +133,7 @@ Doctrine: `skills/writer-craft/cv.md` §5c — read it before writing any role e
 
 1. Read `CV_TITLES_PATH`. The user's `CV Title Preferences` block, when present, outranks the coach's plan line for the same employer.
 2. **Plan present:** apply every line verbatim — `Retitle` and `Descriptor` titles exactly as written, `Keep` unchanged, `Fold` employers named only in the aggregation line. Write the whole CV at the plan's `Level:`.
-3. **Plan absent (`PLAN: none`, or no file):** derive one disposition per employer in her record using §5c's test and four fixed limits, then write from it. Record the derived plan in your summary line (draft) or at the top of `cv-changes.md` (revision).
+3. **Plan absent (`PLAN: none`, or no file):** read the `MODE:` header line of `cv-titles.md` (the config's `role_matching`) (absent = `capabilities`). Under `capabilities`, derive one disposition per employer in her record using §5c's test and four fixed limits, then write from it. Under `titles`, default every employer to Keep (recorded title; Fold still allowed for space) and use Retitle/Descriptor only for an employer with a rule in the preferences block. Record the derived plan in your summary line (draft) or at the top of `cv-changes.md` (revision).
 4. Every employer in `02-professional-background.md`'s role record ends up either as an entry or named in the aggregation line. Count them before returning.
 5. A revision round never changes the plan. A reviewer flag that asks for a different title, or for a folded role to return, is left unaddressed (Option 2, Decision 3) — the plan is the user's to edit, in her tracker.
 
