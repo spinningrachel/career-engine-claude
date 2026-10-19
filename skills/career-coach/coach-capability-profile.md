@@ -10,11 +10,11 @@ The user's own requirement for it: discerning enough that the list is not repeti
 
 ## Inputs
 
-Read, in this order, from `${CAREER_DATA}/references/`: `02-professional-background.md` and every `background/background-*.md` sub-file it routes to (role facts first — they carry the documented work), `03-framework.md` (value pillars, proof points, methodology sub-files), and `linkedin-profile.md` when present. `01-writing-rules.md` governs fabrication: a capability line must trace to documented work in those files, never to an inference about what someone with this history "would" be able to do.
+Read, in this order, from `${CAREER_DATA}/references/`: `02-professional-background.md` and every `background/background-*.md` sub-file it routes to (role facts first — they carry the documented work), `03-framework.md` (value pillars, proof points, methodology sub-files), and `linkedin-profile.md` when present. `01-writing-rules.md` governs fabrication: a capability line must trace to documented work in those files, never to an inference about what someone with this history "would" be able to do. The same file's §1 `Level` (`{{USER_SENIORITY_LEVEL}}`) is read for the step-6 line cap (30, or 25 for an early-career user).
 
 ## Output
 
-`${CAREER_DATA}/references/capability-profile.md`, in the format of the plugin's blank template `${CLAUDE_PLUGIN_ROOT}/references/capability-profile.md` **minus its header comment**: the generated file starts at the `Generated:` line, then at most 5 discipline groups (`## <group>`), each holding capability lines (`- <line>`), at most 25 lines in total, at most 20 words per line. **The generated file must contain no `{{` anywhere** — the prioritizer treats a file with a double-brace placeholder as still a template and ignores it, so the template's comment block and every placeholder are dropped, never copied.
+`${CAREER_DATA}/references/capability-profile.md`, in the format of the plugin's blank template `${CLAUDE_PLUGIN_ROOT}/references/capability-profile.md` **minus its header comment**: the generated file starts at the `Generated:` line, then at most 5 discipline groups (`## <group>`), each holding capability lines (`- <line>`), at most 30 lines in total (25 for an early-career user — see step 6), at most 20 words per line. **The generated file must contain no `{{` anywhere** — the prioritizer treats a file with a double-brace placeholder as still a template and ignores it, so the template's comment block and every placeholder are dropped, never copied.
 
 ## Procedure
 
@@ -28,7 +28,7 @@ Read, in this order, from `${CAREER_DATA}/references/`: `02-professional-backgro
 
 **5. The pairwise de-duplication test.** Compare every surviving line against every other. Two lines that describe the same capability at different altitudes ("built launch messaging" / "owned positioning for releases") or in different words collapse into one, at the altitude that still passes the portability test. A capability that recurs across several employers is one line, not one per employer. Run this pass after grouping as well as before — near-duplicates hide in different groups.
 
-**6. Group and cap.** Sort the survivors into at most 5 discipline groups named in generic vocabulary (e.g. "Positioning and messaging," "Enablement and documentation," "Launch and lifecycle," "Research and insight," "Leadership and operating"). Cap the file at 25 lines. If more survive, cut the ones with the thinnest documentation first, never the ones that merely look less impressive.
+**6. Group and cap.** Sort the survivors into at most 5 discipline groups named in generic vocabulary (e.g. "Positioning and messaging," "Enablement and documentation," "Launch and lifecycle," "Research and insight," "Leadership and operating"). Cap the file at 30 lines. **Early-career cap (2026-10-19, per the user: "let's go to 30 max with a note that more junior professionals should have the 25 cap"):** the cap is 25 when the user is early-career — `{{USER_SENIORITY_LEVEL}}` in `01-writing-rules.md` §1 names a level below Senior IC (junior, associate, coordinator, mid-level IC, or an equivalent), or the documented record holds fewer than about eight years of professional work. A shorter record produces fewer distinct capabilities; a longer list at that stage is padding or near-duplicates the pairwise test missed. State which cap applied and why in one line when showing the draft (step 8). If more lines survive than the cap allows, cut the ones with the thinnest documentation first, never the ones that merely look less impressive.
 
 **7. Self-check before showing the draft** (fail any item → fix, re-run):
 - No line contains an employer, product, customer, industry, or title.
@@ -36,9 +36,9 @@ Read, in this order, from `${CAREER_DATA}/references/`: `02-professional-backgro
 - No pair of lines is a near-duplicate (altitude, wording, or per-employer repetition).
 - Every line passes the two-functions portability test.
 - Every line traces to documented work in the inputs (fabrication rule).
-- ≤25 lines, ≤5 groups, ≤20 words per line.
+- ≤30 lines (≤25 early-career, per step 6), ≤5 groups, ≤20 words per line.
 
-**8. Show the whole draft once, then wait for confirmation (per the user: "drafts the profile fully from background and then asks for final confirmation before packaging").** Present the complete file as one block. Ask for a yes, or line edits. Do not ask line-by-line questions, do not interview, and do not package, write, or generate an update prompt before the user confirms. Apply her edits verbatim (a line she rewrites is hers; do not re-run the tests against her wording). If her edits changed more than three lines, show the final file once more and wait for a second yes; otherwise her edit message is the confirmation. Nothing is written or packaged until that last yes.
+**8. Show the whole draft once, then wait for confirmation (per the user: "drafts the profile fully from background and then asks for final confirmation before packaging").** Present the complete file as one block, with the one-line statement of which cap applied and why (step 6) above it. Ask for a yes, or line edits. Do not ask line-by-line questions, do not interview, and do not package, write, or generate an update prompt before the user confirms. Apply her edits verbatim (a line she rewrites is hers; do not re-run the tests against her wording). If her edits changed more than three lines, show the final file once more and wait for a second yes; otherwise her edit message is the confirmation. Nothing is written or packaged until that last yes.
 
 **9. Deliver by invocation:**
 - **Setup Phase 4 (new user):** write the confirmed file to the working `career-data/references/capability-profile.md`; it ships with the rest of career-data in the Build & install step (the Cowork `/skill-creator` prompt carries it as its own contents block), and `career-data-marker.json`'s `expected_files` lists it.
