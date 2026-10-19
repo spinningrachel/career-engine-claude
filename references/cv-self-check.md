@@ -49,7 +49,7 @@ Run every item in order before returning output. The gatekeeper runs the same ch
 
 ## Role tailoring (`writer-craft/cv.md` §5c)
 
-- [ ] `CV_TITLES_PATH` was read. Plan present: every title matches its plan line exactly (the user's `CV Title Preferences` line wins for the same employer); every `Fold` employer has no entry. Plan absent: one disposition derived per employer and stated in the summary line / `cv-changes.md`
+- [ ] `CV_TITLES_PATH` was read. Plan present: every title matches its plan line exactly (the user's standing `cv_title_rules` / legacy `CV Title Preferences` line wins for the same employer); every `Fold` employer has no entry. Plan absent: one disposition derived per employer (default Keep when `MODE: titles`) and stated in the summary line / `cv-changes.md`
 - [ ] No title sits above the recorded title's seniority; no employer name or date differs from the role record
 - [ ] Every employer in the role record appears as an entry or by name in the aggregation line — count them
 - [ ] Every retitled or descriptor entry has at least one bullet showing the titled function

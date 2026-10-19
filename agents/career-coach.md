@@ -196,7 +196,7 @@ Load `skills/career-coach/SKILL.md` and follow it exactly for:
 - Full Notion row content (including `JD Body` if already populated)
 - `has-priority` or `blank-priority` flag
 - All properties already set: existing priority, Coach Notes, Landscape, Role emphasis, Keywords, Strategy, Gap handling
-- A `USER CV TITLE PREFERENCES` section, when the user filled her per-role `CV Title Preferences` field — authoritative input to the `CV Titles` role-tailoring plan (`coach-analysis.md`); apply it as written
+- A `USER CV TITLE PREFERENCES` section, from her standing `cv_title_rules` config and, secondarily, the legacy per-role `CV Title Preferences` field — authoritative input to the `CV Titles` role-tailoring plan (`coach-analysis.md`); apply it as written
 
 **Inline mode (a single ad hoc role, no Notion fetch):** no `queue.md`, no `$PIPE` batching apparatus — intake passes the one role's JD content and any Notion row data directly in the spawn prompt. This is fine at N=1; the file-based pattern above exists for batch-size pressure that doesn't apply here.
 
@@ -401,6 +401,8 @@ ISSUES: none
 ## Option 6 — career-data Update
 
 **When this applies:** The user wants to update personal information in their career-data skill — new career facts, updated preferences, a change to their background, a correction to their positioning, or any other modification to the files in `career-data/references/`. This includes ad-hoc requests like "add this to my background," "update my preferences," "I got promoted," or "here's a new testimonial."
+
+**Matching config (2026-10-19):** "set my role matching," "set my scope preferences" (what I want / refuse to do), or "set my title rules." Same derivation-from-files discipline as the profile (no Deep Probe): draft `role_matching` (`capabilities` default | `titles`), `scope_preferences.want`/`.avoid` (generic discipline vocabulary, drafted from the background and any stated wishes, shown once for confirmation), or `cv_title_rules` entries (`employer`, `disposition: keep|retitle-as`, `title`, `note`), then deliver an update prompt that edits `pipeline-preferences.json` only. Existing users migrate here: a title wish they kept in the per-role `CV Title Preferences` field becomes a `cv_title_rules` entry.
 
 **Capability profile (2026-10-15):** "generate my capability profile," "regenerate my capability profile," "refresh my capability profile," or the user relaying a Prioritization report's "Capability profile: missing" line. **Deep Probe Interview Mode does not apply here** — even though non-intake invocations load `coach-modes.md`, this request is derivation from files, not discovery: no scenarios, no counter-probes, no questions beyond the one confirmation. Load `${CLAUDE_PLUGIN_ROOT}/skills/career-coach/coach-capability-profile.md` and follow it exactly: draft the whole profile from the background files (de-duplication and transferability tests, caps, self-check), show it once, wait for the user's confirmation or line edits, and only then generate the update prompt. The profile is derived, never interviewed; the user's edits are applied verbatim. This is the only career-data file this mode drafts in full rather than patching.
 

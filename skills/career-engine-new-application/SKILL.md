@@ -101,13 +101,15 @@ Immediately after Step 0.data, resolve which CV format this role gets. This is t
 
 ### Step 0.titles — Write the role-tailoring plan to `$PIPE/cv-titles.md` (single resolution point)
 
-Same design as Step 0.type: this is the **only** place this pipeline reads the role's `CV Titles` and `CV Title Preferences` properties. Read both from this role's section of `$QUEUE_PIPE/role-properties.md` (never a fresh database fetch) and write:
+Same design as Step 0.type: this is the **only** place this pipeline reads the role's `CV Titles` and legacy `CV Title Preferences` properties and the config's `role_matching` / `cv_title_rules`. Read the properties from this role's section of `$QUEUE_PIPE/role-properties.md` (never a fresh database fetch), the config keys from `pipeline-preferences.json` (absent = `capabilities` / none), and write:
 
 ````markdown
 # Role-tailoring plan — <Company> — <Role Title>
 
+MODE: <role_matching — `capabilities` or `titles`>
+
 ## CV Title Preferences (the user's own — outranks the plan line for the same employer)
-<verbatim, or "none">
+<`cv_title_rules` lines first, one per entry: `<employer> — <keep | retitle-as "<title>"> [— <note>]`; then the legacy per-role property verbatim under a line `(legacy tracker field)`; or "none">
 
 ## CV Titles (the coach's plan, as the tracker holds it now — including any edits the user made)
 <verbatim, or "PLAN: none">

@@ -29,6 +29,15 @@
   "favorite_brands": [],
   "preferred_job_sites": [],
   "local_job_sites": [],
+  "role_matching": "capabilities",
+  "role_matching_description": "OPTIONAL. How roles are matched to you. 'capabilities' (default when absent) = responsibility coverage against your capability profile and background, titles only a nudge — sourcing, Prioritization and the coach all score what a role asks you to do. 'titles' = rigid, official-titles-only: Prioritization uses the title-based read, sourcing keeps the title rubric, and the CV plan defaults to Keep (your recorded titles).",
+  "scope_preferences": {
+    "want": [],
+    "avoid": [],
+    "description": "OPTIONAL. Responsibilities you want more of (want) and refuse to do (avoid), in generic discipline vocabulary (e.g. 'category creation', 'sales-quota ownership'). Feeds matching only: sourcing, Prioritization and the coach's Priority. Never a hard filter and never a run blocker."
+  },
+  "cv_title_rules": [],
+  "cv_title_rules_description": "OPTIONAL. Standing CV-title rules, replacing the per-role 'CV Title Preferences' tracker field (still read when present). Each entry: {\"employer\": \"\", \"disposition\": \"keep|retitle-as\", \"title\": \"\", \"note\": \"\"}. Feeds presentation only: the coach's CV Titles plan and the cv-writer.",
   "target_titles": [],
   "title_variants": {
     "description": "Search variant sets per target title, ~6-8 each (seniority variants like Lead/Manager/Director/Head/VP, phrasing variants like PMM/Product Marketing Manager, adjacent-function variants). Keys are your target titles; values are arrays of variant strings searched at sourcing time. Example: {\"Head of Marketing\": [\"VP Marketing\", \"Marketing Director\", \"Head of Growth\", \"GTM Lead\"]}. Seeded on first sourcing run if empty; human-editable any time."

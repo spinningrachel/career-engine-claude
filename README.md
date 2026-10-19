@@ -26,10 +26,10 @@ Open the Claude Desktop app → **Customize → Personal Plugins → +** → **P
 
 ![Installing the career-engine plugin](assets/install-plugin.gif)
 
-Claude Code users can install via the marketplace instead, for automatic updates:
+Claude Code users can install via the marketplace instead (update with `claude plugin marketplace update cheyfitz` then `claude plugin update career-engine@cheyfitz`; if a stale version keeps loading, `rm -rf ~/.claude/plugins/cache/cheyfitz` first — see the wiki's Installation page):
 
 ```
-/plugin marketplace add spinningrachel/career-engine
+/plugin marketplace add spinningrachel/career-engine-claude
 /plugin install career-engine@cheyfitz
 ```
 
@@ -84,6 +84,24 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 ---
 
 ## Changelog
+
+### 2026-10-19 — Capability matching by default
+
+**New features**
+- **One switch for how roles are matched.** `role_matching` in `pipeline-preferences.json` is `capabilities` by default (fit = responsibility coverage; titles only a nudge) or `titles` for a rigid, official-titles-only user. Sourcing now widens its search terms from your capability profile and scores the top ~30 results for coverage in a second pass; Prioritization and the coach honour the same switch.
+- **`scope_preferences`** (`want` / `avoid`) — responsibilities you want more of or refuse to do; they adjust a score by one tier, never exclude a role. Setup drafts them for your confirmation.
+- **`cv_title_rules`** — standing per-employer title rules in the config. Under `titles` the CV plan defaults to Keep.
+
+**Removals (each on the user's instruction)**
+- Setup and the CSV template no longer create `CV Title Preferences` — "even for the 'more rigid' it's better to store this in the json. and not as a one-off per entry in the db." The column is still read when a tracker has one.
+- Sourcing's "no title match → hidden" filter retires under `capabilities` (kept under `titles`) — "the coach needs to be savvy enough to identify what the user knows how to do, what they're aiming for in terms of scope of responsiblities and/or what they want and don't want to do, and then find relevant roles accordingly ... including but not limited to role titles."
+
+**Migration** — existing users: ask the career coach to "set my role matching / scope preferences / title rules"; it returns an update prompt that edits `pipeline-preferences.json`. Nothing breaks if you do nothing: absent keys mean `capabilities`.
+
+### 2026-10-15 — Bug fix: plugin updates reach the CLI install
+
+**Bug fixes**
+- **Version bumped to 1.0.1 so `claude plugin update` fetches the fix.** The CLI caches a marketplace plugin by its manifest version. The duplicate-hooks fix merged, the update reported success, and the plugin still failed to load from the cached `1.0.0` copy. Both manifests now carry `1.0.1`, every shipped build raises the version from here on (the pre-commit hook refuses a commit of shipped files whose staged version is not greater than main's, QA Check 73 keeps the two manifests in step), and a stale cache is cleared with `rm -rf ~/.claude/plugins/cache/cheyfitz` before `claude plugin marketplace update cheyfitz` and `claude plugin update career-engine@cheyfitz`.
 
 ### 2026-10-15 — Bug fixes: plugin load, and the prioritizer's LinkedIn URL read
 
