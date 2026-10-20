@@ -85,6 +85,13 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 
 ## Changelog
 
+### 2026-10-20 — Role emphasis as bullets, Detailed CV length ceilings, senior-role success paragraph
+
+**Improvements**
+- **`Role emphasis` is two bulleted lists aligned to jobs-to-be-done.** Per the user: the single run-on Emphasis sentence was not clear enough. Emphasis is now 3–4 bullets, each one job to be done, most important first; Likely KPIs is 3–5 bullets. Still ≤100 words, still role-only. The coach-output gate FAILs a run-on sentence or a bullet stacking several jobs.
+- **Detailed CVs have hard length ceilings.** Per the user: RoleOverview ≤ 120 characters, RoleTitle line ≤ 95 characters, whole CV ≤ 890 words not counting Education/Languages/Additional (the user's own content). Enforced mechanically by the CV gatekeeper (Gate 2) and the writer's pre-gate lint (`CV-ROLE-OVERVIEW-LENGTH`, `CV-ROLE-TITLE-LENGTH`, `CV-TOTAL-WORDCOUNT`). Brief is unchanged. This replaces the old 800-word self-check line, which no gate ever enforced, so a Detailed CV could run to three pages unchecked.
+- **Senior-role letters carry a success-measure paragraph.** Per the user: for senior roles, one paragraph showing the writer knows what success looks like and how the role is measured; no metrics required. Senior = title with Manager/Lead/Head/Director/VP/Chief/GM/Principal or higher, or `Strategy = Strategic`. The coach adds it to the Letter Outline, `letter-core` §3b tells the writer how, and Gate 9 checks it (Tier 1, senior roles only).
+
 ### 2026-10-19 — Capability profile cap raised to 30
 
 **Improvements**

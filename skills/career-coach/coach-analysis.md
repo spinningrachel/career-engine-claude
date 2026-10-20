@@ -178,7 +178,7 @@ Surface this reading in `Role emphasis`, and let it guide the `Strategy` letter-
 |---|---|
 | `Priority` | Numeric urgency/fit rank (1 = highest). The sort handle; the *why* lives in `Priority Reason`. |
 | `Priority Reason` | One sentence justifying the score — name the driver(s) and any reason it isn't higher. |
-| `Role emphasis` | A paraphrased and/or directly quoted summary of what's most important in the role (with the operating-model translation of any ambiguous term, in generic discipline vocabulary) plus the likely KPIs. Exactly two labeled lines, ≤100 words. Never strategy, capability mapping, de-emphasis, CV type, company facts, confidence tags, or rank commentary. |
+| `Role emphasis` | 3–4 ranked jobs-to-be-done bullets (operating-model translation of any ambiguous term folded in, in generic discipline vocabulary) plus 3–5 Likely KPIs bullets. Two parts, ≤100 words. Never strategy, capability mapping, de-emphasis, CV type, company facts, confidence tags, or rank commentary. |
 | `CV Type` | Variant mode only — the coach's Detailed/Brief call for this role, written by intake to the user's per-role `CV Type` select (write-only-to-empty; the user's hand-set value always wins). |
 | `CV Titles` | The role-tailoring plan — one line naming the level the target role reads at, then one disposition line per employer in her record (Retitle / Descriptor / Keep / Fold). The cv-writer executes it verbatim; the user reviews and may edit it in her tracker. |
 | `Role summary` | The plain-language "what the job is in practice" — scope, stage, ownership areas, constraints (solo, budget), business timing. The version you'd tell a friend. ≤400 chars. |
@@ -220,11 +220,11 @@ If `GAP_HANDLING = disabled` (set in the Settings pre-flight), leave `Gap handli
 **⛔ KEYSTONE — returned values are scannable briefs, not essays.** Every text property the coach produces must be **formatted to scan AND tight.** This is mandatory, not cosmetic.
 - **Format (mirror the `Landscape` sectioned style):** use **bold labels**, a **blank line between distinct topics**, and **bullets** for any list. Never a single dense paragraph.
 - **Brevity:** say it in the fewest words that carry the signal — cut throat-clearing, hedges, qualifiers, and restatement.
-- **Hard caps:** `Role emphasis` → exactly the two labeled lines (**Emphasis**, **Likely KPIs** one comma-list line), blank line between them, ≤100 words total; `Culture` → 2–3 one-line bullets, blank-line-separated; `Keywords` → ≤9 total (Critical ≤4 / Important ≤3 / Nice-to-have ≤2); `Priority Reason` → one sentence; `Role summary` → ≤400 chars; each `Landscape` bullet → one line. When in doubt, cut.
+- **Hard caps:** `Role emphasis` → exactly the two labeled parts (**Emphasis**: 3–4 JTBD bullets; **Likely KPIs**: 3–5 bullets), blank line between them, ≤100 words total; `Culture` → 2–3 one-line bullets, blank-line-separated; `Keywords` → ≤9 total (Critical ≤4 / Important ≤3 / Nice-to-have ≤2); `Priority Reason` → one sentence; `Role summary` → ≤400 chars; each `Landscape` bullet → one line. When in doubt, cut.
 
 ---
 
-**Likely KPIs (always produced — a required part of the `Role emphasis` property).** State, as one line, the metric set this role is actually measured on — for **every** role, **including when the JD names no targets at all.** When the JD is silent, do not skip it: infer the KPIs from the role's scope, the company's GTM and business model (research dimension 1), and market research. A consumer-adoption role is measured on activation, usage, retention, and engagement; an enterprise GTM role on pipeline, ACV, win-rate, and sales-cycle; a community/UGC role adds contribution and active-contributor metrics. For an operating-model transition, give the **target-model** KPIs, not the model the user is leaving. Never leave it blank — and never tag it: confidence tags do not appear anywhere in `Role emphasis` (2026-07-23); an inferred KPI set is simply stated (research is hypothesis by nature).
+**Likely KPIs (always produced — a required part of the `Role emphasis` property).** State, as bullets (3–5, one per metric or tight group), the metric set this role is actually measured on — for **every** role, **including when the JD names no targets at all.** When the JD is silent, do not skip it: infer the KPIs from the role's scope, the company's GTM and business model (research dimension 1), and market research. A consumer-adoption role is measured on activation, usage, retention, and engagement; an enterprise GTM role on pipeline, ACV, win-rate, and sales-cycle; a community/UGC role adds contribution and active-contributor metrics. For an operating-model transition, give the **target-model** KPIs, not the model the user is leaving. Never leave it blank — and never tag it: confidence tags do not appear anywhere in `Role emphasis` (2026-07-23); an inferred KPI set is simply stated (research is hypothesis by nature).
 
 ---
 
@@ -232,12 +232,22 @@ If `GAP_HANDLING = disabled` (set in the Settings pre-flight), leave `Gap handli
 
 **Load `${CLAUDE_PLUGIN_ROOT}/references/discipline-emphasis-signals.md` before writing this property** — it maps common disciplines to the signals that reveal what a JD actually weights, so the emphasis read is anchored instead of improvised.
 
-**Fixed structure — identical every run, exactly these TWO labeled lines, blank line between them, ≤100 words total (count before returning):**
+**Fixed structure — identical every run, exactly these TWO labeled parts, each a bullet list, blank line between them, ≤100 words total (count before returning). Bullets added 2026-10-20, per the user: the prior single run-on Emphasis sentence ("Make a widening monetization platform understandable and useful to developers and multiple business personas; own product-area positioning and launches, then convert awareness into sustained self-serve adoption...") was not clear enough — the fix is to align it specifically with the role's JTBD (jobs to be done) and format it as bullets:**
 ```
-**Emphasis:** a paraphrased and/or directly quoted summary of what's most important in the role — the JD's most-weighted themes, translated through the company's real operating model where a term is ambiguous.
+**Emphasis:**
+- <JTBD 1 — the single most important job this role exists to get done>
+- <JTBD 2>
+- <JTBD 3>
 
-**Likely KPIs:** one line — comma list, target-model set for a transition.
+**Likely KPIs:**
+- <KPI or KPI group 1>
+- <KPI or KPI group 2>
+- <KPI or KPI group 3>
 ```
+
+**Emphasis = the role's jobs to be done, ranked.** 3–4 bullets (never more), each ONE job phrased as outcome-led work — a verb plus the result the business hires this role to produce ("Turn a widening monetization platform into something developers and business personas each understand and adopt", "Own product-area positioning and launches through to self-serve adoption"). Order by importance: bullet 1 is the job the JD weights most heavily (title, first-listed responsibilities, repeated themes, the hiring manager's function — see `discipline-emphasis-signals.md`); a job the JD merely lists does not outrank one it stresses. Paraphrase or quote the JD's own vocabulary; one bullet = one job, never a stacked sentence of three. No bold, no sub-bullets, no tags.
+
+**Likely KPIs = bullets, one per metric or tight metric group** (3–5), most decision-relevant first. Each bullet names what is measured, not a task ("Self-serve activation and retention", "Pipeline sourced from launches"). Where a bullet's KPI belongs to a specific Emphasis job, keep them in matching order so a reader can pair them by position.
 
 **The operating-model translation lives INSIDE the Emphasis line, in generic discipline terms — it is role description, not candidate mapping.** The user's own kept example of what belongs: *"Xata is a product-led, developer-bought Postgres/AI-infrastructure tool → 'demand gen' here means organic developer growth (content, SEO/AI-search, community, launches)."* Name the motion in standard discipline vocabulary — PLG, B2D, ABM, enterprise sales-led, community-led — so any user's writers (which read that user's career-data) can map it to their own background. That naming is the ENTIRE bridge to the candidate: this property never mentions the user, her capabilities, or what "maps to" her — the writers do that mapping themselves.
 

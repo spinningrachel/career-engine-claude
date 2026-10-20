@@ -342,10 +342,10 @@ expect_ge "21s" "skills/letter-core/SKILL.md" "exhaustive search of all availabl
 expect_ge "21s" "skills/gatekeeper-checks/letter-gates.md" "Opener source check" 1
 # 2026-07-24 (third pass): Role emphasis reduced to two lines (Emphasis + Likely KPIs), <=100 words, per the user;
 # capability-mapping and de-emphasis retired; hyper-focus standing rule added.
-expect_ge "21s" "skills/career-coach/coach-analysis.md" "exactly these TWO labeled lines" 1
+expect_ge "21s" "skills/career-coach/coach-analysis.md" "exactly these TWO labeled parts" 1
 expect_ge "21s" "skills/career-coach/coach-analysis.md" "max 100 words\|≤100 words" 1
 expect_eq0 "21s" "skills/career-coach/coach-analysis.md" "^\*\*Capability match:\*\*\|^\*\*De-emphasized:\*\*"
-expect_ge "21s" "skills/gatekeeper-checks/coach-gates.md" "fixed two-line structure" 1
+expect_ge "21s" "skills/gatekeeper-checks/coach-gates.md" "fixed two-part bulleted structure" 1
 expect_ge "21s" "skills/career-coach/SKILL.md" "Hyper Focus — Governs Every Output" 1
 expect_ge "21s" "agents/career-coach.md" "Hyper focus" 1
 # 2026-07-24 (fourth pass): no Para 1 line in the Letter Outline — the Opener line IS paragraph 1's spec
@@ -358,6 +358,15 @@ expect_ge "21s" "agents/letter-writer.md" "Paste it as your opening VERBATIM" 1
 expect_ge "21s" "skills/letter-core/SKILL.md" "paste it verbatim as the opening" 1
 expect_ge "21s" "skills/career-engine-new-application/SKILL.md" "Opener verbatim check" 1
 expect_ge "21s" "skills/career-engine-edit/SKILL.md" "Opener verbatim check" 1
+# 2026-10-20: Role emphasis bullets + JTBD alignment; Detailed CV length ceilings; senior-role success-measure paragraph
+expect_ge "21s" "skills/career-coach/coach-analysis.md" "Emphasis = the role's jobs to be done, ranked" 1
+expect_ge "21s" "skills/career-coach/coach-output.md" "3–4 bullets, most important first" 1
+expect_ge "21s" "skills/gatekeeper-checks/cv-gates.md" "CV-TOTAL-WORDCOUNT" 1
+expect_ge "21s" "skills/gatekeeper-checks/cv-gates.md" "890" 1
+expect_ge "21s" "skills/writer-craft/cv.md" "Whole CV ≤ 890 words" 1
+expect_ge "21s" "skills/letter-core/SKILL.md" "Senior roles — one paragraph on what success looks like" 1
+expect_ge "21s" "skills/gatekeeper-checks/letter-gates.md" "Success measure (senior roles only" 1
+expect_ge "21s" "skills/gatekeeper-checks/coach-gates.md" "senior role with no success-measure line" 1
 # 2026-07-24: the coach's Opener line is a verbatim bank-variant copy/paste (per the user's direct instruction)
 expect_ge "21s" "agents/career-coach.md" "COPY/PASTE selection, never composition" 1
 expect_ge "21s" "skills/gatekeeper-checks/coach-gates.md" "not a verbatim bank copy" 1

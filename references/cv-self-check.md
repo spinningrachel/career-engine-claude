@@ -73,4 +73,5 @@ Run every item in order before returning output. The gatekeeper runs the same ch
 
 ## Body word count
 
-- [ ] Body word count (summary + experience bullets only, excluding banners/titles/dates/skills blocks) is 800 words or fewer — if over, cut the least-relevant bullets from lowest-priority roles before returning
+- [ ] **Detailed only (2026-10-20, replaces the old 800-word body check, which no gate ever enforced):** whole CV is 890 words or fewer, not counting Education/Languages/Additional (the user's own content, never in a draft) — `pregate-lint.py` reports `CV-TOTAL-WORDCOUNT`; if over, apply the `writer-craft/cv.md` §6 trim order and the §5c levers (fewer bullets on less-relevant roles, Fold) before returning
+- [ ] **Detailed only:** every RoleOverview is 120 characters or fewer, and every RoleTitle line is 95 characters or fewer (rendered text) — `CV-ROLE-OVERVIEW-LENGTH` / `CV-ROLE-TITLE-LENGTH`

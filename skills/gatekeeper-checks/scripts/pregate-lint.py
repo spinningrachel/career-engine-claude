@@ -199,6 +199,16 @@ CV_SOFT_SKILL_FILLER = [
 CV_SUMMARY_MAX_WORDS = 120
 CV_SUMMARY_MAX_SENTENCES = 4
 
+# --- cv-gates.md, Gate 2 -- Detailed length limits (2026-10-20, per the user) -
+# Detailed only (Brief is held to one page by its own backstop).
+#   * RoleOverview line  <= 120 characters
+#   * RoleTitle line     <= 95 characters (rendered text: markup stripped)
+#   * Total CV body      <= 890 words, NOT counting Education / Languages / Additional
+#     (the user's own footer content, appended at export and never in a draft)
+CV_ROLE_OVERVIEW_MAX_CHARS = 120
+CV_ROLE_TITLE_MAX_CHARS = 95
+CV_TOTAL_MAX_WORDS = 890
+
 # --- cv-gates.md, Gate 5 -- Skills Section Content (Hard fail) -------------
 # Stopwords for the heading-word-repetition check (small closed list, not
 # from the skill -- used only to filter function words out of headings
@@ -278,6 +288,82 @@ def _structural_skip_idx(lines):
     from the em-dash/colon body-copy scan so the fence syntax (':::') and any
     heading markup don't false-positive as banned punctuation."""
     return {i for i, line in enumerate(lines) if FENCE_OR_HEADING_RE.match(line)}
+
+
+# ==========================================================================
+# Detailed length limits (cv-gates.md Gate 2, 2026-10-20) -- Detailed only.
+# ==========================================================================
+
+_SPAN_RE = re.compile(r"\[([^\]]*)\]\{[^}]*\}")
+_COMMENT_RE = re.compile(r"<!--.*?-->")
+_STYLE_DIV_RE = re.compile(r'^\s*:{3,4}\s*\{custom-style="([^"]+)"\}\s*$')
+_FENCE_CLOSE_RE = re.compile(r"^\s*:{3,4}\s*$")
+_EXCLUDED_SECTION_RE = re.compile(r"^##\s+(EDUCATION|LANGUAGES|ADDITIONAL)\b", re.IGNORECASE)
+
+
+def _rendered(text):
+    """Rendered text of one line: [x]{custom-style=..} spans reduced to x,
+    HTML comments dropped, list markers and surrounding whitespace removed."""
+    text = _COMMENT_RE.sub("", text)
+    text = _SPAN_RE.sub(r"\1", text)
+    text = re.sub(r"^\s*(?:[-*+]|\d+\.)\s+", "", text)
+    return text.strip()
+
+
+def _style_blocks(lines, style):
+    """Yield (line_no, rendered_text) for each custom-style div of `style`."""
+    i = 0
+    while i < len(lines):
+        m = _STYLE_DIV_RE.match(lines[i])
+        if m and m.group(1) == style:
+            body = []
+            j = i + 1
+            while j < len(lines) and not _FENCE_CLOSE_RE.match(lines[j]):
+                body.append(lines[j])
+                j += 1
+            yield i + 1, _rendered(" ".join(b.strip() for b in body if b.strip()))
+            i = j
+        i += 1
+
+
+def count_cv_words(lines):
+    """Countable CV words: whitespace tokens with at least one letter or digit
+    (so '|' separators and bullet dashes never count), div fences and HTML
+    comments excluded, '## EDUCATION/LANGUAGES/ADDITIONAL' sections excluded."""
+    total, skipping = 0, False
+    for line in lines:
+        if re.match(r"^##\s", line):
+            skipping = bool(_EXCLUDED_SECTION_RE.match(line))
+        if skipping or FENCE_OR_HEADING_RE.match(line) and not line.lstrip().startswith("#"):
+            continue
+        total += sum(1 for tok in _rendered(line).split() if re.search(r"[A-Za-z0-9]", tok))
+    return total
+
+
+def check_cv_length_limits(lines):
+    if any(re.match(r"^##\s+PROFILE SUMMARY\b", l, re.IGNORECASE) for l in lines):
+        return []  # Brief -- one-page backstop governs, not these Detailed limits
+    hits = []
+    for ln, text in _style_blocks(lines, "RoleOverview"):
+        if len(text) > CV_ROLE_OVERVIEW_MAX_CHARS:
+            hits.append(Violation(
+                ln, "CV-ROLE-OVERVIEW-LENGTH", f"{len(text)} chars",
+                f"RoleOverview is {len(text)} characters, over the {CV_ROLE_OVERVIEW_MAX_CHARS}-character "
+                f"Detailed ceiling (cv-gates.md Gate 2; Hard fail).", "violation"))
+    for ln, text in _style_blocks(lines, "RoleTitle"):
+        if len(text) > CV_ROLE_TITLE_MAX_CHARS:
+            hits.append(Violation(
+                ln, "CV-ROLE-TITLE-LENGTH", f"{len(text)} chars",
+                f"RoleTitle line is {len(text)} characters, over the {CV_ROLE_TITLE_MAX_CHARS}-character "
+                f"Detailed ceiling (cv-gates.md Gate 2; Hard fail).", "violation"))
+    words = count_cv_words(lines)
+    if words > CV_TOTAL_MAX_WORDS:
+        hits.append(Violation(
+            1, "CV-TOTAL-WORDCOUNT", f"{words} words",
+            f"CV body is {words} words, over the {CV_TOTAL_MAX_WORDS}-word Detailed ceiling, not counting "
+            f"Education/Additional (cv-gates.md Gate 2; Hard fail). Cut by the 'Cut priority order' in "
+            f"writer-craft/cv.md section 6; fold a role before trimming proof the role most needs.", "violation"))
+    return hits
 
 
 # ==========================================================================
@@ -526,6 +612,7 @@ def scan_cv(lines):
     )
     hits += check_cv_summary_wordcount(lines)
     hits += check_skills_sections(lines)
+    hits += check_cv_length_limits(lines)
     return hits
 
 
@@ -638,6 +725,30 @@ def selftest():
     dirty_summary = "## SUMMARY\n" + " ".join(["word"] * 150) + ".\n## EXPERIENCE\n"
     expect_clean("CV-SUMMARY-WORDCOUNT", cv_scan, clean_summary, "CV-SUMMARY-WORDCOUNT")
     expect_dirty("CV-SUMMARY-WORDCOUNT", cv_scan, dirty_summary, "CV-SUMMARY-WORDCOUNT")
+
+    # CV-ROLE-OVERVIEW-LENGTH / CV-ROLE-TITLE-LENGTH / CV-TOTAL-WORDCOUNT (Detailed only)
+    ok_role = (
+        '::: {custom-style="RoleTitle"}\n'
+        'Director, Marketing | [Acme]{custom-style="ColorEmphasis"} | Tel Aviv | Jan 2020 -- Dec 2023\n'
+        ':::\n\n'
+        '::: {custom-style="RoleOverview"}\n'
+        'Series C security platform; led GTM and partner marketing.\n'
+        ':::\n'
+    )
+    long_overview = ok_role.replace("Series C security platform; led GTM and partner marketing.", "x" * 121)
+    long_title = ok_role.replace("Director, Marketing", "Director, Marketing and Go-To-Market Strategy and Partner Programs and Field Operations")
+    expect_clean("CV-ROLE-OVERVIEW-LENGTH", cv_scan, ok_role, "CV-ROLE-OVERVIEW-LENGTH")
+    expect_dirty("CV-ROLE-OVERVIEW-LENGTH", cv_scan, long_overview, "CV-ROLE-OVERVIEW-LENGTH")
+    expect_clean("CV-ROLE-TITLE-LENGTH", cv_scan, ok_role, "CV-ROLE-TITLE-LENGTH")
+    expect_dirty("CV-ROLE-TITLE-LENGTH", cv_scan, long_title, "CV-ROLE-TITLE-LENGTH")
+    body_ok = "## SUMMARY\n" + " ".join(["word"] * 800) + ".\n"
+    body_long = "## SUMMARY\n" + " ".join(["word"] * 900) + ".\n"
+    body_footer_only = body_ok + "## EDUCATION\n" + " ".join(["word"] * 300) + "\n"
+    brief_long = "## PROFILE SUMMARY\n" + " ".join(["word"] * 900) + ".\n"
+    expect_clean("CV-TOTAL-WORDCOUNT", cv_scan, body_ok, "CV-TOTAL-WORDCOUNT")
+    expect_dirty("CV-TOTAL-WORDCOUNT", cv_scan, body_long, "CV-TOTAL-WORDCOUNT")
+    expect_clean("CV-TOTAL-WORDCOUNT(education excluded)", cv_scan, body_footer_only, "CV-TOTAL-WORDCOUNT")
+    expect_clean("CV-TOTAL-WORDCOUNT(brief exempt)", cv_scan, brief_long, "CV-TOTAL-WORDCOUNT")
 
     # CV-SKILL-HEAD-REPEAT
     clean_skills = (

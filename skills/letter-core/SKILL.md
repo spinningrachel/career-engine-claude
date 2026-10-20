@@ -65,9 +65,21 @@ The letter is built FROM the user's existing words, aimed at this role. Her mate
 
 What they share: a person up front, the verb early, detail trailing behind. Fragments are rare and each has a job — a fragment with no job is noise, not rhythm.
 
-## 4. The letter's shape — five blocks, each present and doing its job
+## 3b. Senior roles — one paragraph on what success looks like and how it's measured
 
-Greeting → **Opening** → **Philosophy** (a belief/POV about the discipline in her voice — may be one sentence; never another proof point) → **Proof** (1-3 paragraphs, one job each, at least one named outcome) → **Objection-Preemption** (the reader's likely hesitation answered by demonstration — proof that speaks to it, with NO acknowledgment that a question exists; often lives inside a proof paragraph) → **Close** → Sign-off. The gatekeeper checks all five blocks independently; a block that occupies the position without doing its job fails.
+*(2026-10-20, per the user: "for senior roles, letters should emphasize what success looks like - this doesn't have to be metrics/KPIs - but there should be a para that indicates to hiring managers that the user knows how they should be measured.")*
+
+**Applies when the role is senior:** the role title carries Manager, Lead, Head, Director, VP / Vice President, Chief, GM, or Principal (or anything higher), **or** `Strategy = Strategic`. For these roles the letter carries one dedicated paragraph, between the proof and the close, showing the reader she knows what this seat is judged on.
+
+- **Source: `Role emphasis` only** — its **Likely KPIs** bullets (and the Emphasis jobs they pair with) tell you what the role is measured on; her own results from the final CV / Motivation Bank / delivered letters supply the matching experience. No other role-analysis input exists for you — never reach for the JD, `Landscape`, or research.
+- **Shape: 2-3 plain sentences.** Say what success in this seat looks like in terms a hiring manager would use (a motion that runs without her, adoption that sustains, a pipeline the sales team trusts, a launch cadence that holds) and tie it to how she has been measured before. It does **not** need numbers. When a number is hers and documented, use it exactly as documented; never invent a target, never promise a result.
+- **Judged-on, not promised.** The paragraph shows she knows the measure ("I'd expect to be judged on…", "the real test of this seat is…") — it is not a 30-60-90 plan, not a pledge of outcomes, not a recital of the JD's responsibilities.
+- **Counts inside the word ceiling.** Make room by trimming the weaker of two proof lines, never by dropping this paragraph or the close.
+- **Not senior:** write no such paragraph; do not pad an IC letter with a KPI paragraph.
+
+## 4. The letter's shape — five blocks (plus the senior-roles-only Success measure), each present and doing its job
+
+Greeting → **Opening** → **Philosophy** (a belief/POV about the discipline in her voice — may be one sentence; never another proof point) → **Proof** (1-3 paragraphs, one job each, at least one named outcome) → **Objection-Preemption** (the reader's likely hesitation answered by demonstration — proof that speaks to it, with NO acknowledgment that a question exists; often lives inside a proof paragraph) → **Success measure** (senior roles only, §3b) → **Close** → Sign-off. The gatekeeper checks all five blocks (and the Success measure on senior roles) independently; a block that occupies the position without doing its job fails.
 
 - **Greeting:** exactly "Hi to the [Company] team!" or "Hi to [Name]!" (stealth roles: "Hi to the team!" or "Hi to the [JD descriptor] team!"). Company name appears in paragraph 1 (stealth: the JD descriptor).
 - **Body ceiling:** 320 words (`wc -w`, excluding greeting/sign-off); **250 when `Strategy = Strategic`**. No minimum — short and hers beats padded.
