@@ -69,7 +69,7 @@ What they share: a person up front, the verb early, detail trailing behind. Frag
 
 *(2026-10-20, per the user: "for senior roles, letters should emphasize what success looks like - this doesn't have to be metrics/KPIs - but there should be a para that indicates to hiring managers that the user knows how they should be measured.")*
 
-**Applies when the role is senior:** the role title carries Lead, Head, Director, VP / Vice President, Chief, GM, or Principal (or anything higher), **or** `Strategy = Strategic`. For these roles the letter carries one dedicated paragraph, between the proof and the close, showing the reader she knows what this seat is judged on.
+**Applies when the role is senior:** the role title carries Manager, Lead, Head, Director, VP / Vice President, Chief, GM, or Principal (or anything higher), **or** `Strategy = Strategic`. For these roles the letter carries one dedicated paragraph, between the proof and the close, showing the reader she knows what this seat is judged on.
 
 - **Source: `Role emphasis` only** — its **Likely KPIs** bullets (and the Emphasis jobs they pair with) tell you what the role is measured on; her own results from the final CV / Motivation Bank / delivered letters supply the matching experience. No other role-analysis input exists for you — never reach for the JD, `Landscape`, or research.
 - **Shape: 2-3 plain sentences.** Say what success in this seat looks like in terms a hiring manager would use (a motion that runs without her, adoption that sustains, a pipeline the sales team trusts, a launch cadence that holds) and tie it to how she has been measured before. It does **not** need numbers. When a number is hers and documented, use it exactly as documented; never invent a target, never promise a result.
