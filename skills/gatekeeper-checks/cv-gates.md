@@ -79,6 +79,10 @@ FAIL if EXPERIENCE or PROFILE SUMMARY headings are absent or substantially renam
 - Any consulting entry flagged mandatory in `02-professional-background.md` must appear (standalone entry in `## CONSULTING` or a bullet within it) — FAIL if absent entirely.
 - "Earlier:" line is the final entry inside `## EXPERIENCE`, before `## CONSULTING` — FAIL if Earlier appears after CONSULTING.
 - Every named role has a RoleOverview immediately below its RoleTitle — count must match (Earlier: exempt).
+- **Length limits — mechanical, Detailed only (2026-10-20, per the user). Hard fail each.** Run `python3 skills/gatekeeper-checks/scripts/pregate-lint.py --type cv <staged CV>` (it counts exactly as defined here) and report every `CV-ROLE-OVERVIEW-LENGTH`, `CV-ROLE-TITLE-LENGTH`, `CV-TOTAL-WORDCOUNT` hit; if Bash is unavailable, say so and count by hand with the definitions below, never estimate.
+  - **RoleOverview > 120 characters** — FAIL: "RoleOverview for [Employer] is [n] characters, over the 120 ceiling — cut to one short clause."
+  - **RoleTitle line > 95 characters** (rendered text, annotation markup not counted) — FAIL: "RoleTitle for [Employer] is [n] characters, over the 95 ceiling — shorten the title."
+  - **Whole CV > 890 words** — words are whitespace tokens containing at least one letter or digit across the entire draft (headings count; `|`, bullet markers, annotation fences and comments do not); `## EDUCATION`, `## LANGUAGES`, `## ADDITIONAL` are not counted (the user's own content, appended at export). FAIL: "CV is [n] words, over the 890 ceiling (Education/Additional excluded) — cut [n−890] words per writer-craft/cv.md §6 trim order and the §5c levers."
 
 **Brief only:**
 - `## EXPERIENCE` is a single flat, reverse-chronological list (no full-time/consulting split — `writer-craft/SKILL.md` §5b). FAIL if a `## CONSULTING` section appears at all.

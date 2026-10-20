@@ -258,7 +258,7 @@ Spawn `letter-writer` with `option=cover-letter`, passing exactly the input cont
 - `CAREER_DATA=${CAREER_DATA}`, `gap_handling_mode=$GAP_HANDLING_MODE`
 - `LETTER_PATH=$PIPE/letter-draft.md` — the writer writes the draft there and returns the path (R-41)
 - The **final revised CV** path `$PIPE/cv-final.md` to read (content input 1 — for CV/letter coherence and the no-repetition rule)
-- **`Role emphasis`** from the coach's Step 0.8 output (content input 2 — the role's Mandate / Likely KPIs; the writer's only role-analysis input)
+- **`Role emphasis`** from the coach's Step 0.8 output (content input 2 — the role's ranked jobs-to-be-done bullets and Likely KPIs bullets; the writer's only role-analysis input)
 - **Why I Want This Role** from Notion (read above; content input 3) — include verbatim if populated (the letter-writer loads its primary source, the Motivation Bank, from career-data itself). If empty, pass it empty — the letter-writer's Sufficiency Gate decides write-or-skip.
 - Company name and role title
 - **Strategy** (routing token — letter type + word ceiling only)

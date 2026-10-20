@@ -147,7 +147,7 @@ See **Brief-Specific Rules** below for Brief's flat, non-Consulting-split Experi
 
 **CONSULTING section:** Consulting/fractional entries go in a separate `## CONSULTING` section. **Placement: `## CONSULTING` always comes AFTER the "Earlier:" line, never before it.** The correct order within the document is: named full-time experience roles → "Earlier:" aggregation line → `## CONSULTING`. Use the same RoleTitle / RoleOverview / RoleActivitiesList structure as Experience. Include date range and relevant bullets from `02-professional-background.md` (Role Facts).
 
-**RoleOverview — mandatory for every named role:** Every role entry requires a one-sentence RoleOverview immediately under the RoleTitle — company context and the user's scope in italic. Count RoleTitles and RoleOverviews before returning any draft; the numbers must match. SOLE Exception: the "Earlier:" aggregation line does not require a RoleOverview.
+**RoleOverview — mandatory for every named role:** Every role entry requires a one-sentence RoleOverview immediately under the RoleTitle — company context and the user's scope in italic. Count RoleTitles and RoleOverviews before returning any draft; the numbers must match. SOLE Exception: the "Earlier:" aggregation line does not require a RoleOverview. **Detailed length ceilings (`writer-craft/cv.md` §5, 2026-10-20): RoleOverview ≤ 120 characters, RoleTitle line ≤ 95 characters, whole CV ≤ 890 words not counting Education/Additional — the lint below enforces all three; fix them before returning, and meet the word ceiling by the §6 trim order and §5c levers, never by thinning the proof the role most needs.**
 
 **Bullet writing — JD-first, not approved-bullets-first:**
 
@@ -209,7 +209,7 @@ Everything outside the markers (`## PROFILE SUMMARY`, `## EXPERIENCE`) is main-c
 - `Relationship type` — Full time / Part time / Temporary / Fractional/Consulting/Freelance. Use this for framing tone only — it does not change CV structure.
 - `Role Type` — drives CV structure and skills section format. See `references/role-type-definitions.md` for structure rules per Role Type.
 
-**Shift framing — derive it yourself from the role vs. her record (2026-07-24: `Role emphasis` is a role-only brief — two lines, Emphasis + Likely KPIs — and carries no shift/step-down markers and no capability mapping; you read her career-data and make this comparison directly):** If the role's function or track (from the role title and `Role emphasis`'s Emphasis line) sits outside her documented record (`02-professional-background.md` role facts, `03-framework.md`), this role requires a transfer-credibility argument. Apply shift framing:
+**Shift framing — derive it yourself from the role vs. her record (2026-07-24: `Role emphasis` is a role-only brief — two bulleted parts, Emphasis (ranked jobs-to-be-done) + Likely KPIs — and carries no shift/step-down markers and no capability mapping; you read her career-data and make this comparison directly):** If the role's function or track (from the role title and `Role emphasis`'s Emphasis line) sits outside her documented record (`02-professional-background.md` role facts, `03-framework.md`), this role requires a transfer-credibility argument. Apply shift framing:
 - Lead with transferable achievements and outcomes — what she demonstrably accomplished that maps to the target function. Concrete results first; label the relevance explicitly if the connection is not obvious.
 - Surface relevant skills and passions from `02-professional-background.md` and `03-framework.md` that apply to the new function. Mine them actively — do not leave the transfer case implicit.
 - Position the CV as "brings [capability] to [function]" — not as a career-transition story, not as an apology for what she lacks. Frame for fit, not narrative.
@@ -294,7 +294,7 @@ Run the CV self-check before returning.
 
 Load `references/cv-self-check.md` and run every item in order before returning any output. This step cannot be skipped, abbreviated, or deferred. Do not return output until the full checklist is complete.
 
-**Then run the mechanical pre-gate lint (2026-07-22): `python3 ${CLAUDE_PLUGIN_ROOT}/skills/gatekeeper-checks/scripts/pregate-lint.py --type cv $CV_PATH` — it reports ALL string-matchable violations at once (em dashes/colons, banned vocabulary, skills items repeating their heading's words, parenthetical enumerations, summary word count). Fix every violation and re-run until it exits 0; warnings (noun doublets, AI-vocabulary flags) are judgment calls per `writer-craft/cv.md` §6b — resolve or consciously keep them.**
+**Then run the mechanical pre-gate lint (2026-07-22): `python3 ${CLAUDE_PLUGIN_ROOT}/skills/gatekeeper-checks/scripts/pregate-lint.py --type cv $CV_PATH` — it reports ALL string-matchable violations at once (em dashes/colons, banned vocabulary, skills items repeating their heading's words, parenthetical enumerations, summary word count, and — Detailed only — RoleOverview ≤ 120 chars, RoleTitle line ≤ 95 chars, whole-CV ≤ 890 words). Fix every violation and re-run until it exits 0; warnings (noun doublets, AI-vocabulary flags) are judgment calls per `writer-craft/cv.md` §6b — resolve or consciously keep them.**
 
 ---
 

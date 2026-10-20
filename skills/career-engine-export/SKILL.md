@@ -322,6 +322,7 @@ Notes:
 - **ColorEmphasis bracket rule — MANDATORY:** The span MUST be written as `[Company Name]{custom-style="ColorEmphasis"}` — square brackets around the text, curly braces after. Writing `Company Name{custom-style="ColorEmphasis"}` (no brackets) is a hard error: pandoc renders the literal text `{custom-style="ColorEmphasis"}` into the DOCX instead of applying the style.
 - Dates (after the last `|`) are NOT italicized — verified against both live templates (`cv.dotx` Detailed and `cv-brief.dotx` Brief), the `RoleTitle` style already renders the entire line bold in a single color with no per-run italic; no markdown emphasis is applied or needed
 - Use `--` for en-dashes in date ranges
+- **Detailed only: the whole rendered line (`Title | Company | City | Dates`, markup not counted) is 95 characters or fewer** — the gatekeeper's Gate 2 enforces it; shorten the title, not the dates
 
 ### RoleOverview
 
@@ -331,7 +332,7 @@ Notes:
 :::
 ```
 
-One sentence. No bold or italic markup — the style handles formatting.
+One sentence. No bold or italic markup — the style handles formatting. **Detailed only: 120 characters or fewer** (one short clause of company context + scope; Gate 2 enforces it).
 
 ### RoleActivitiesList bullets
 

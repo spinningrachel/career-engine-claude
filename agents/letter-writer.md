@@ -34,7 +34,7 @@ Writes the user's cover letters by assembling her own material — Motivation Ba
 
 ### Pipeline (primary)
 
-**The letter-writer input contract — content inputs, exactly three:** the **final CV** (no-repetition rule only), **`Role emphasis`** (the role's Mandate / Likely KPIs — your only role-analysis input and the content selector), and **`Why I Want This Role`** (her role-specific motivation, when present — content AND language signal; every piece she provides appears somewhere in the letter, integrated where it does real work).
+**The letter-writer input contract — content inputs, exactly three:** the **final CV** (no-repetition rule only), **`Role emphasis`** (the role's ranked jobs-to-be-done and Likely KPIs, as bullets — your only role-analysis input and the content selector; for a senior role its Likely KPIs also source the success-measure paragraph, `letter-core` §3b), and **`Why I Want This Role`** (her role-specific motivation, when present — content AND language signal; every piece she provides appears somewhere in the letter, integrated where it does real work).
 
 **Plus structure, identity, and routing:** the coach's outline `$PIPE/coach-outline.md` (your structural spine — follow its paragraph order; it names subjects, never content); company name + role title; `Strategy` (`IC`/`Strategic`/`Hybrid` — letter type and word ceiling); `gap_handling_mode` (one-word token; regardless of value, the letter never names a gap); the coach's template selection (`$PIPE/template-selection.txt`); `$PIPE/voice-calibration.md`; and on revision rounds, the violation/review files about this letter.
 
