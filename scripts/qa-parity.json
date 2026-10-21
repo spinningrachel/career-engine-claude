@@ -425,6 +425,21 @@
         "agents/career-coach.md",
         "agents/role-prioritizer.md"
       ]
+    },
+    {
+      "id": "term-agent-status-claim",
+      "_comment": "2026-10-21: concurrent-session claim. Each queue pipeline must name the claim and fetches must drop In Progress rows.",
+      "term": "Agent Status",
+      "files": [
+        "skills/database/SKILL.md",
+        "skills/career-engine-orchestrator/orchestrator-queue.md",
+        "skills/career-engine-intake/SKILL.md",
+        "skills/career-engine-edit/SKILL.md",
+        "agents/role-prioritizer.md",
+        "skills/career-engine-setup/SKILL.md",
+        "skills/career-engine-new-application/SKILL.md",
+        "skills/career-engine-orchestrator/orchestrator-post-run.md"
+      ]
     }
   ],
   "context_sets": [

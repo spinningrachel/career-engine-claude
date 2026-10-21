@@ -560,7 +560,7 @@ Ask: "How do you want to track your job applications? Options: **Notion** (recom
 2. Write a CSV file to `/tmp/career-engine-tracker.csv` containing only the header row with all required columns in order:
 
 ```
-Company,Position,Job URL,Status,Priority,Priority Reason,JD Body,JD Fetch Status,Why I Want This Role,Role emphasis,JD proof,Keywords,Strategy,Role Type,Relationship type,Gap handling,Role summary,Hiring Manager's Name,Hiring manager's role,Manager role confirmed,Person who Advertised Role (if not Hiring Manager),No incumbents in this function,Landscape,Culture,Company Stage,Location,First Advertised,Last Pipeline Run,Link to CV,Draft Directory,CV File Name,Letter File Name,Languages,Edit type,CV Type,CV Titles,CV Title Preferences,Note
+Company,Position,Job URL,Status,Priority,Priority Reason,JD Body,JD Fetch Status,Why I Want This Role,Role emphasis,JD proof,Keywords,Strategy,Role Type,Relationship type,Gap handling,Role summary,Hiring Manager's Name,Hiring manager's role,Manager role confirmed,Person who Advertised Role (if not Hiring Manager),No incumbents in this function,Landscape,Culture,Company Stage,Location,First Advertised,Last Pipeline Run,Link to CV,Draft Directory,CV File Name,Letter File Name,Languages,Edit type,CV Type,CV Titles,CV Title Preferences,Note,Agent Status
 ```
 
 `CV Type` is included regardless of which `cv_type.mode` the user chooses — it's a normal, cheap column to have even when unused (same as `Languages` for a single-language user). It only matters when `cv_type.mode` is `Variant`; the user sets it herself per role, and since 2026-07-23 the coach fills it when empty at intake (write-only-to-empty — her own value always wins).
@@ -576,6 +576,7 @@ Set up data validation (dropdown lists) on the following columns in my Google Sh
 
 - Column "Status": allow only these exact values: New, Needs Research, Interested, CV Ready for Review, Applied, Researched, Needs Editing, Closed (Prioritization and intake set `Closed` automatically when a posting is confirmed closed — an existing tracker using `Position Closed` or `Role Closed` works too; a tracker with no such option is never broken, the pipeline reports instead of writing)
 - Column "Priority": allow only these exact values: 1, 2, 3, 4, 5, 6 (the pipeline writes the number, never a word label)
+- Column "Agent Status": allow only these exact values: No Status, In Progress
 - Column "JD Fetch Status": allow only these exact values: Fetched, LinkedIn-blocked, Unfetchable, Manual-entry
 - Column "Company Stage": allow only these exact values: Seed, Series A, Series B, Series C, Public, PE-backed, N/A
 - Column "Role Type": allow multiple selections from: Builder, Scaler, Specialist, Leader
@@ -606,10 +607,11 @@ These values must match exactly — they are hard-coded in the pipeline that rea
 ```
 Create a database/table with the following columns. Do not rename them — they are referenced by exact name by an external pipeline.
 
-Columns: Company, Position, Job URL, Status, Priority, Priority Reason, JD Body, JD Fetch Status, Why I Want This Role, Role emphasis, JD proof, Keywords, Strategy, Role Type, Relationship type, Gap handling, Role summary, Hiring Manager's Name, Hiring manager's role, Manager role confirmed, Person who Advertised Role (if not Hiring Manager), No incumbents in this function, Landscape, Culture, Company Stage, Location, First Advertised, Last Pipeline Run, Link to CV, Draft Directory, CV File Name, Letter File Name, Languages, Edit type, CV Type, CV Titles, Note
+Columns: Company, Position, Job URL, Status, Priority, Priority Reason, JD Body, JD Fetch Status, Why I Want This Role, Role emphasis, JD proof, Keywords, Strategy, Role Type, Relationship type, Gap handling, Role summary, Hiring Manager's Name, Hiring manager's role, Manager role confirmed, Person who Advertised Role (if not Hiring Manager), No incumbents in this function, Landscape, Culture, Company Stage, Location, First Advertised, Last Pipeline Run, Link to CV, Draft Directory, CV File Name, Letter File Name, Languages, Edit type, CV Type, CV Titles, Note, Agent Status
 
 Select column values (must match exactly):
 - Status: New | Needs Research | Interested | CV Ready for Review | Applied | Researched | Needs Editing | Closed
+- Agent Status: No Status | In Progress (optional; lets two sessions run the same pipeline at once without picking the same roles — pipelines write it, never the user)
 - Priority: 1 | 2 | 3 | 4 | 5 | 6 (the pipeline writes the number, never a word label)
 - JD Fetch Status: Fetched | LinkedIn-blocked | Unfetchable | Manual-entry
 - Company Stage: Seed | Series A | Series B | Series C | Public | PE-backed | N/A

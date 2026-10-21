@@ -59,9 +59,21 @@ Roles with `Priority` already set are always selected into the queue before unsc
 
 ---
 
+## Agent Status — the concurrency claim (2026-10-21, per the user)
+
+Lets more than one session run the same pipeline at nearly the same time without picking the same roles. `Agent Status` is a select with two options, `No Status` (or empty) and `In Progress`. Optional: a tracker without the property runs exactly as before, with a one-line config-health notice ("`Agent Status` missing — concurrent runs may pick the same roles").
+
+**Claim.** Each pipeline, immediately after it has selected its roles and BEFORE any slow work (research, drafting), writes `Agent Status = In Progress` on every role it selected — one write per page, batched with nothing else — then states one visible line: **"Queue claimed (N roles) — safe to start another session."** That line is the user's cue; a second session started before it can still read the same rows (the window is seconds, deliberately accepted — no token protocol).
+
+**Skip.** Every queue fetch drops rows already `In Progress` BEFORE the cap and priority selection, so a second session's five come from unclaimed rows. Report the count: "Skipped N roles already In Progress in another session." A claim whose page was last edited more than 3 hours ago is stale (a crashed run) and is reclaimed — use the fetch's last-edited timestamp when it exposes one; when it does not, leave the row skipped and tell the user to clear `Agent Status` by hand if no session is actually running.
+
+**Release.** The pipeline that wrote the claim clears it (`No Status`) in the SAME write that advances the role's Status at its per-role writeback (clean and flagged deliveries alike); a selected role that ends up not processed (skipped, removed from the queue, run interrupted at post-run) is cleared in the run's wrap-up. Never clear a claim another session wrote.
+
 ## Property Ownership
 
 Each property in the job applications database has a single designated owner. Agents write each piece of information once, to the correct field, and must not duplicate content across properties.
+
+**Every queue-running pipeline owns `Agent Status`** for the roles it selected (claim and release only; see Agent Status above). No agent writes it for a role it did not claim.
 
 **Role prioritizer owns provisionally, for `New`-status roles only:**
 `Role Summary`, `Location`, `Priority`, `JD Fetch Status`, `JD Body`. These are cheap, JD-only values meant to inform which roles reach full intake next — not a substitute for the career coach's research-informed versions. **The career coach always overwrites `Role Summary`, `Location`, `Priority`, and `JD Fetch Status` when a role reaches full intake** — the coach redoes them from scratch using full research and never treats Prioritization's values as a starting point to confirm or correct. This is intake's general default (see the cross-file-contract row in `CLAUDE.md` and `career-engine-intake/SKILL.md` Step 0.9a): every coach-owned property is always-overwrite except three named exceptions (`JD Body`, `Gap handling`, and `CV Type` — the `wiwtr_questions` append was retired 2026-07-23 with the coaching-prompts feature). `JD Body` stays write-only-to-empty for the coach too, same as any other role's — Prioritization's fetched JD is reused, not re-fetched, when already present.
