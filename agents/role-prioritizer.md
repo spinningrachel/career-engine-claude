@@ -166,6 +166,8 @@ Write through the database adapter (`skills/database-notion/SKILL.md` → §4 Wr
 
 ## Step 4 — Summary
 
+**First, release unfinished claims (2026-10-21):** set `Agent Status = No Status` on every role claimed in Step 1 that did not get its Step 3 write (skipped, failed, archived mid-run). Never touch a role this run did not claim.
+
 Report to the user:
 
 ```

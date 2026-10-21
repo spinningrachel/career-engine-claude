@@ -522,9 +522,10 @@ Write the following properties using `notion-update-page`. All values are alread
 | `Hiring Manager's Name` | Hiring manager name and title from the coach's research. Write "Not identified" if none found. |
 | `Last Pipeline Run` | Today's date in ISO format (YYYY-MM-DD). |
 | `Status` | `CV Ready for Review` — set once DOCX export and writeback are confirmed complete. |
+| `Agent Status` | `No Status` — written in the SAME call as `Status`, releasing this run's Step O3 claim (2026-10-21; skip silently if the tracker has no such property). Flagged deliveries release too. |
 | `Draft Directory` | `$DRAFT_DIR_URL` (constructed in Step 7a). **Omit this property from the `notion-update-page` call entirely if `$DRAFT_DIR_URL` is empty** — do not write an empty string to the property. If `$DRAFT_DIR_URL` is empty, include a named note in the final chat delivery: "Draft Directory not written for [Company] — `draft_dir_url_base` not configured or empty. Run `/career-engine:setup --phase 5` to configure it." |
 
-**Property discipline** — write only the properties listed above. Nothing else.
+**Property discipline** — write only the properties listed above (including the `Agent Status` release). Nothing else.
 
 - Do NOT write CV text, cover letter text, revision logs, or reviewer feedback to Notion. Reviewer feedback goes to the feedback markdown file (Step 7d), not to Notion.
 - Do NOT write to the `Note` field. It is the user's space.

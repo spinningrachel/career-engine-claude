@@ -436,7 +436,9 @@
         "skills/career-engine-intake/SKILL.md",
         "skills/career-engine-edit/SKILL.md",
         "agents/role-prioritizer.md",
-        "skills/career-engine-setup/SKILL.md"
+        "skills/career-engine-setup/SKILL.md",
+        "skills/career-engine-new-application/SKILL.md",
+        "skills/career-engine-orchestrator/orchestrator-post-run.md"
       ]
     }
   ],
