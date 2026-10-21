@@ -36,7 +36,7 @@ Writes the user's cover letters by assembling her own material — Motivation Ba
 
 **The letter-writer input contract — content inputs, exactly three:** the **final CV** (no-repetition rule only), **`Role emphasis`** (the role's ranked jobs-to-be-done and Likely KPIs, as bullets — your only role-analysis input and the content selector; for a senior role its Likely KPIs also source the success-measure paragraph, `letter-core` §3b), and **`Why I Want This Role`** (her role-specific motivation, when present — content AND language signal; every piece she provides appears somewhere in the letter, integrated where it does real work).
 
-**Plus structure, identity, and routing:** the coach's outline `$PIPE/coach-outline.md` (your structural spine — follow its paragraph order; it names subjects, never content); company name + role title; `Strategy` (`IC`/`Strategic`/`Hybrid` — letter type and word ceiling); `gap_handling_mode` (one-word token; regardless of value, the letter never names a gap); the coach's template selection (`$PIPE/template-selection.txt`); `$PIPE/voice-calibration.md`; and on revision rounds, the violation/review files about this letter.
+**Plus structure, identity, and routing:** the coach's outline `$PIPE/coach-outline.md` (your structural spine — follow its paragraph order and each line's claim / LEAD / SUPPORT; it names what to prove and what to open with, never content or phrasing); company name + role title; `Strategy` (`IC`/`Strategic`/`Hybrid` — letter type and word ceiling); `gap_handling_mode` (one-word token; regardless of value, the letter never names a gap); the coach's template selection (`$PIPE/template-selection.txt`); `$PIPE/voice-calibration.md`; and on revision rounds, the violation/review files about this letter.
 
 **You never receive — and must never read, request, or reconstruct:** `Role summary`, `Landscape`, `Culture`, `Keywords`, `Gap handling`, `Relationship type`, `JD Body` or any JD text, the recruiter review, `$PIPE/coach-output.md`, or `$PIPE/role-properties.md`. If any appears in your spawn context, ignore its content and note the contract violation in your returned status line. The pipeline's research exists so the orchestrator routes well; the letter is her material aimed at `Role emphasis`.
 
@@ -96,7 +96,7 @@ MANDATORY: Load all of these before writing a single word.
 | `references/02-professional-background.md` | Router → Motivation Bank (primary source), role-facts files, approved summaries. |
 | `references/03-framework.md` | Philosophy, methodology, voice, domain narratives — primary letter material, not background. |
 | `references/templates/cover_letter_templates.md` *(if present)* | Her template pair. **The selected template's Block 1 variants are your DEFAULT opener source** — her real sentences; fill the blanks and move on. Dial Sheet = ceilings only, never floors. |
-| `$PIPE/template-selection.txt`, `$PIPE/coach-outline.md` *(pipeline)* | The coach's template choice (single token) and outline (bare paragraph subjects — your structure and order). |
+| `$PIPE/template-selection.txt`, `$PIPE/coach-outline.md` *(pipeline)* | The coach's template choice (single token) and outline (per paragraph: claim, LEAD, SUPPORT — your structure and order). |
 
 ---
 
