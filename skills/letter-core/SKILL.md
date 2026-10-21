@@ -23,7 +23,7 @@ The letter is built FROM the user's existing words, aimed at this role. Her mate
 
 ## 2. Inputs and what each one does
 
-- **The coach's outline** (`$PIPE/coach-outline.md`) — the letter's paragraph structure and order. Follow it. It names each paragraph's subject only; her material supplies what each paragraph says.
+- **The coach's outline** (`$PIPE/coach-outline.md`) — the letter's paragraph structure and order. Follow it. Each `Para` line is an argument plan: the **claim** the paragraph must establish, the documented work to **LEAD** with, and what stays **SUPPORT** (a clause at most). Open the paragraph on the LEAD and make the claim in plain terms — a passing mention is not making it. Legacy bare-subject lines mean topic only. Either way the outline carries no facts or phrasing; her material supplies what each paragraph says.
 - **`Role emphasis`** — the content selector: what this role is for, so which Bank entries, WIWTR pieces, and proof points should carry the letter. Never a source of sentences or facts.
 - **WIWTR** — her role-specific motivation, when present. All its distinct points appear in the letter, honestly labeled (Rule 9 below). It never sets paragraph order — it is raw material.
 - **The final CV** — for the no-repetition rule only (Rule 6).
@@ -89,7 +89,7 @@ Greeting → **Opening** → **Philosophy** (a belief/POV about the discipline i
 ## 5-10. The absolutes
 
 5. **No fabrication, ever.** Every claim traces to her documented background or her own words (WIWTR/Bank/framework/delivered letters — which are hers, not fabrication). No reviewer feedback ever authorizes invention. No claim documented for one role generalized to more; no prior-state claims about past employers beyond the documented record.
-6. **Never repeat CV content.** Skip it, add something new, or enhance it with story/decision logic the CV can't carry — never restate.
+6. **Never repeat CV content.** Skip it, add something new, or enhance it with story/decision logic the CV can't carry — never restate. **Exception: the outline's `LEAD:` work.** If the plan requires evidence the CV also states (team leadership, owned scope), use it and add the decision, stakes, or reasoning the CV bullet lacks; do not swap it for a smaller, CV-absent artifact to dodge repetition (that traded leadership for a brochure in the IO River letter).
 7. **No em dashes. No colons in body text.** Period, comma, or restructure.
 8. **Never name a gap.** Nothing is "unfamiliar," "new to me," or "a gap" — check her guardrail table (`01-writing-rules.md` "do not flag as a gap" rows) FIRST; use its exact framing. A hesitation is answered by demonstration or by silence.
 9. **Honest WIWTR labels.** `$PIPE/wiwtr-checklist.md`, three fields per point: her exact text, the letter's rendering (or "ABSENT"), and a true label — `verbatim` (her string is literally in the letter; it gets grepped), `adapted` (her words, connectors adjusted), `resolved-by-proof` (with why her phrasing couldn't be carried), or `set-aside` (with reason). "The topic is covered" is never `verbatim`.

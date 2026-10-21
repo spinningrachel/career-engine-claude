@@ -85,6 +85,15 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 
 ## Changelog
 
+### 2026-10-21 — Letter outline becomes an argument plan
+
+**Improvements**
+- **Argument-plan outline** — each `Para N:` line now carries a claim, the work to LEAD with, and SUPPORT kept secondary, replacing bare topic labels (per the user, after the IO River letter passed with a one-clause mention of leadership).
+- **Gate 9 outline conformance** checks the claim is established, the paragraph opens on the LEAD, and SUPPORT stays a clause.
+
+**Bug fixes**
+- **Gate 3 vs outline deadlock** — CV-stated evidence the outline requires (team leadership, owned scope) may now appear when the letter adds decision logic; round-1 findings can no longer be answered with a rule that makes them unsatisfiable.
+
 ### 2026-10-20 — Role emphasis as bullets, Detailed CV length ceilings, senior-role success paragraph
 
 **Improvements**
