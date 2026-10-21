@@ -6,6 +6,12 @@
 
 ---
 
+## Wrap-up — release unfinished claims (2026-10-21)
+
+Before anything else here, set `Agent Status = No Status` on every role claimed at Step O3 that did not reach Step 7c (interrupted run, skipped role). Never touch a role this run did not claim.
+
+---
+
 ## Post-Run Validation
 
 Validate at least 2 CV + cover letter pairs from this run — the first role produced and one other chosen at random. If fewer than 2 roles were produced, validate all of them. This step is not optional. A self-reporting cv-writer or letter-writer is not validation.

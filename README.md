@@ -85,6 +85,10 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 
 ## Changelog
 
+### 2026-10-21 — Concurrent sessions (Agent Status)
+**New features**
+- **Concurrent sessions** — optional `Agent Status` select (`No Status` / `In Progress`). Each pipeline claims its selected roles right after selection and says "Queue claimed — safe to start another session"; other sessions skip claimed rows; the claim clears at the per-role Status write.
+
 ### 2026-10-21 — Letter outline becomes an argument plan
 
 **Improvements**
