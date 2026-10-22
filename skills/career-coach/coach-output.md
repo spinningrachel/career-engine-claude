@@ -74,8 +74,6 @@ Return findings in this exact structure for every role received.
 
   **These five are five separate lines, not one merged field.** A real production run collapsed `Hiring Manager's Name`, `Hiring manager's role`, and `Manager role confirmed` into a single free-text "Hiring Manager" line — this silently drops two mandatory properties even though the output reads as if the question was answered. Return each on its own labeled line above, every time, even when the answer is short (`Not identifiable`, `N/A`, `No`).
 - **Corrected Job URL:** <the working URL, whenever the JD you worked from was fetched at a URL different from the saved Job URL (broadened 2026-07-23 — see `coach-research.md` → Job URL verification); omit when the original URL worked — never guess>
-- **Recent news:** <one sentence, or "None found in last 6 months">
-- **Funding context:** <round, amount, date, investors>
 - **Landscape:** (write only if currently empty in Notion; if already populated, prepend new sections above existing content separated by `---`)
 
   **Calibrate length to company familiarity.** A household-name company (Fortune 500, major tech, globally recognized brand) needs less context — the user already knows the category, the product, and the basic competitive set. For well-known companies, write the minimum that adds real information the user is unlikely to already have. For startups and unknown companies, more context is warranted. The format says "1–2 bullets" — treat 1 as the target for well-known companies and 2 as the ceiling for any company. Never pad a section to fill the maximum.
@@ -99,9 +97,6 @@ Return findings in this exact structure for every role received.
 
   ## Company & Org
   - [1 bullet target, 2 max: org structure, leadership, team composition, reporting lines, known reorgs — each sourced. No culture content here.]
-
-  ## Recruitment Signals
-  - [1 bullet target, 2 max: what they actually screen for beyond the JD — Glassdoor interview reviews, HM content, open-role patterns.]
 
   ## Location Hypotheses
   [OPTIONAL — include ONLY when `Location` is Unknown after the deep-scan + dimension-9 fallback. 1-2 bullets: where the company demonstrably operates (offices, team distribution, hiring pattern) and the best-supported hypothesis for this role's location. This is the ONE sanctioned non-business Landscape section (2026-07-23).]
@@ -166,7 +161,7 @@ Rules:
 
 **`Why I Want This Role` — RETIRED as a coach-context surface (2026-07-23, per the user's direct instruction: the coach context block was "repeating the same info it put in almost every other property, unnecessarily... this is useless and will risk context explosion").** The coach returns NO `**Coach context**` / Screen-points block, and intake prepends nothing above the user's WIWTR content. The ONLY coach-produced content that reaches the WIWTR field is the `letter_plan` (`[LETTER OUTLINE]`) block, written below the user's content per intake Step 0.9a Write C. Everything the old context block carried already lives in its own property (`Role emphasis`, `Culture`, `Gap handling`, `Strategy`) — writers read those directly.
 
-**`Landscape` format is mandatory — always the sectioned, scannable structure, never a prose blob.** Every Landscape write uses the `## Competitors` / `## Market Signals` / `## User Voice` / `## Company & Org` / `## Recruitment Signals` headings (plus `## Location Hypotheses` only when `Location` is `Unknown`) with one tight sourced bullet per point. A wall of paragraphs is a format failure even if the content is right. Landscape is business only — no career-path content (retired 2026-07-23).
+**`Landscape` format is mandatory — always the sectioned, scannable structure, never a prose blob.** Every Landscape write uses the `## Competitors` / `## Market Signals` / `## User Voice` / `## Company & Org` headings (plus `## Location Hypotheses` only when `Location` is `Unknown`) with one tight sourced bullet per point. A wall of paragraphs is a format failure even if the content is right. Landscape is business only — no career-path content (retired 2026-07-23), and no `## Recruitment Signals` section (retired 2026-10-22, per the user: nobody reads it). **Company news and funding belong in `## Market Signals`** (dated, sourced) — there is no `Recent news` or `Funding context` property and none is returned. **Outreach and hiring-manager information belongs in the outreach map in the page body** (Step 0.9e), never in a property the tracker may not have; a coach field with no matching text-type tracker property (missing, or present as a relation the user maintains herself) is simply not written, silently — so the outreach map must always carry the hiring-manager and contact details.
 
 **`Landscape` is always overwritten**, same as nearly every other property here: intake replaces whatever is already in Notion with your fresh section-format content — it does not prepend or preserve the prior version.
 
