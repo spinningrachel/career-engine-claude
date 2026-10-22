@@ -45,7 +45,7 @@ Is this role an open application, unsolicited application, or speculative applic
 
    **Requirements-coverage scoring — title/function mismatch never floors a score (intake-only, 2026-07-29, per the user's direct instruction).** The user's `01-writing-rules.md` §1 carries a requirements-coverage subsection; apply it whenever a role's function or title sits outside the user's usual target scope. The generic principle, for any user of this plugin:
    - **The role being in the tracker is the intent signal.** A user deliberately adds roles outside her usual function because a career shift is an option. The framework's job is fit *measurement*, never scope *policing* — "this isn't a [target-function] role" is not, by itself, a demotion.
-   - **Split the JD's requirements into hard MUSTs vs. everything else.** Hard MUSTs are explicit: "must have," mandatory years-in-X, named certifications, languages, clearance, work authorization.
+   - **Split the JD's requirements into hard MUSTs vs. everything else — and a requirement is a hard MUST only when the posting literally says so (2026-10-22, per the user: "if the position doesn't literally say mandatory (or must have) then it shouldn't dramatically impact priority. most candidates will usually NOT have 100% of requirements").** Hard MUSTs carry the words "must have," "mandatory," "required" against that specific item (or are named certifications, languages, clearance, work authorization stated as required). A bullet that merely sits under a *Requirements*/*Qualifications* heading, a tool or methodology name (a sales methodology, a platform), a years-of-experience range, or anything marked *nice to have*/*preferred*/*a plus*/*bonus* is NOT a hard MUST: nice-to-have items are left out of the coverage count entirely, and an ordinary unmarked requirement the user doesn't document moves the coverage percentage a little and nothing else — it never caps the tier, never alone changes a tier, and is at most one `Gap handling` line when it is plausibly screened on. Judge fit on the core responsibilities first; a candidate missing a fifth of the unmarked requirements is the normal case, not a weak fit.
    - **A hard MUST genuinely absent from the user's documented background caps the tier:** one missing peripheral MUST → cap at Fourth; a missing MUST central to the role, or multiple missing → Fifth. `Priority Reason` names the missing MUST explicitly. Missing MUSTs are never silently averaged into the coverage percentage.
    - **Score the remaining requirements as coverage** of the user's documented background (`02` and its background files — documented evidence only, the fabrication rules apply to scoring as much as to writing): roughly ≥80% covered → Second or better, 60–79% → Third, 40–59% → Fourth, <40% → Fifth.
    - **Scope preferences (2026-10-19).** When `queue.md` carries a `USER SCOPE PREFERENCES` section (the config's `scope_preferences`) and `role_matching` is not `titles`: a core responsibility of the role that hits `avoid` is named in `Priority Reason` and caps the tier like a missing peripheral MUST (cap Fourth); a `want` hit is noted in `Priority Reason` and may lift the tier one step within the coverage band's ceiling. Both are the user's own standing words, applied as written.
@@ -99,6 +99,8 @@ Why does this role exist? What breaks if it goes unfilled? What does the hire ne
 
 **Layer 4 — Seniority signals (what level this role actually is)**
 Titles are unreliable. Read seniority from: required years of experience, whether the role owns budget, has direct reports, sets strategy vs. executes it, reports to C-suite vs. middle management. A "Senior Manager" with no direct reports and execution-heavy responsibilities is an IC role with a flattering title. A "Specialist" who owns P&L and presents to board is a leadership role. Identify the real level — it governs how the CV and letter are framed.
+
+**Scope outranks every label — and Priority scores scope, never a label (2026-10-22, per the user: "making it appear junior is intentional usually by the employer seeking to pay too little. but the scope is senior, and that's what priority should be based on").** A platform's seniority tag (LinkedIn "Entry level"/"Associate"), a modest title, or a leaderless-team posting is never scored. Read the scope of ownership: does the role own a whole function or budget, build rather than join, set strategy, report to the founder/C-suite? A "Founding" / "first hire" / "head of" role owns the function whatever the tag says. The label may be reported in `Patterns` as a fact ("tagged Entry level; scope is founder-level function ownership") but never lowers `Priority`, and never triggers a Step-down note by itself — the user submits and lets the employer's response decide.
 
 **Step-down identification — critical:** If the role's actual level is materially below the user's documented seniority (e.g., an IC execution role when she has been a VP, or a manager role when she has led functions), name it in `Patterns` as `Step-down: [reason — e.g., execution IC role vs. her VP-level background]` and let it shape the Letter Outline's paragraph subjects. **It is never written as a line inside `Role emphasis`** (2026-07-23 — rank/step commentary is banned there; `Role Type` carries the shape; the writers read career-data themselves and derive the framing from the role-vs-record comparison). Do not obscure or soften the detection itself — naming it in Patterns is how the documents get framed correctly.
 
@@ -195,8 +197,6 @@ Surface this reading in `Role emphasis`, and let it guide the `Strategy` letter-
 | `Person who Advertised Role (if not Hiring Manager)` | The poster/recruiter when different from the HM. |
 | `Manager role confirmed` | `Yes` or `No; this is only a hypothesis`. |
 | `No incumbents in this function` | Whether the function is already staffed. |
-| `Recent news` | One sentence, or "None found in last 6 months". |
-| `Funding context` | Most recent round, amount, date, investors. |
 | `First Advertised` | Earliest corroborated posting date (YYYY-MM-DD). |
 | `JD proof` | A short verbatim JD sentence that proves the `Role emphasis` read. No writing agent reads it. |
 | `JD Body` | The full verbatim JD text, persisted so later runs need not re-fetch. |
@@ -418,10 +418,6 @@ If the specific AI category (e.g., conversational AI, NLP, voice agents) is not 
 **`Manager role confirmed`** — `Yes` or `No; this is only a hypothesis`.
 
 **`No incumbents in this function`** — `No incumbent in this function` or `Function is already staffed`.
-
-**`Recent news`** — One sentence, or "None found in last 6 months."
-
-**`Funding context`** — Most recent round, amount, date, investors — or "No recent funding news found."
 
 **`Role summary`** — A compressed summary of the JD itself. Not about the user. This property serves as the JD proxy for all downstream agents — they read this instead of the full JD body.
 

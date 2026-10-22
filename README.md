@@ -85,6 +85,15 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 
 ## Changelog
 
+### 2026-10-22 — Intake and prioritization corrections
+**Bug fixes**
+- **Needs Research roles are always researched** — the coach-complete skip is retired; a filled-in role is overwritten, never skipped (user: a Needs Research role "should be researched and have the relevant properties overwritten").
+- **Scope over labels** — a platform seniority tag ("Entry level") or modest title never lowers Priority; scope of ownership decides (user: "the scope is senior, and that's what priority should be based on").
+- **Must-haves only when literally stated** — a requirement is a hard MUST only if the posting says must/mandatory/required; nice-to-haves leave the coverage count and unmarked gaps never cap a tier (user: "most candidates will usually NOT have 100% of requirements").
+- **Landscape and outreach routing** — `Recent news`/`Funding context` retired (news and funding live in `## Market Signals`); `## Recruitment Signals` removed; hiring-manager info lives in the outreach map; coach fields with no matching tracker property are skipped silently.
+- **Optional config is silent** — `role_matching`, `cv_title_rules`, `scope_preferences` and other optional keys are never reported as missing.
+- **Closed roles** — an ATS-platform 404/410 (Comeet, Greenhouse, Lever…) is closure evidence on its own; ATS pages are retried, never "unretrievable"; an official Job URL is never swapped for a mirror; every closure is listed in a `Closed this run` block with prior Status, URL and evidence.
+
 ### 2026-10-21 — Concurrent sessions (Agent Status)
 **New features**
 - **Concurrent sessions** — optional `Agent Status` select (`No Status` / `In Progress`). Each pipeline claims its selected roles right after selection and says "Queue claimed — safe to start another session"; other sessions skip claimed rows; the claim clears at the per-role Status write.
