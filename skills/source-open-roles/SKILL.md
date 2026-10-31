@@ -1,6 +1,6 @@
 ---
 name: source-open-roles
-description: Logic for sourcing open roles across LinkedIn, remote-focused boards, startup boards, general job boards, and freelance platforms. Defines search modes, site-by-site fetch methods, scoring rubric, and deduplication rules. Load before running any source-open-roles search.
+description: Logic for sourcing open roles across remote-focused boards, startup boards, general job boards, and freelance platforms. Defines search modes, site-by-site fetch methods, scoring rubric, and deduplication rules. Load before running any source-open-roles search.
 ---
 
 # Source Open Roles — Search Logic
@@ -48,7 +48,7 @@ Target titles are searched as a **variant set**, not verbatim. The same role sur
 - **Capabilities mode (2026-10-19, `role_matching` absent or `capabilities`):** search terms also come from the capability profile's group lines (`${CAREER_DATA}/references/capability-profile.md`) (the discipline words, not titles) and `scope_preferences.want` — a role titled something new still surfaces when it asks for work the user does. Titles remain a search seed, never a gate. Under `titles` this widening does not apply.
 - **Cap: ~6–8 variants per target title.** Stop there; search volume and noise stay manageable, and dedup + scoring absorb the overlap.
 
-**Global search rule:** wherever a Site Catalog pattern below shows `[title]`, run it **once per variant** in the set (the LinkedIn `search_jobs` keywords and every `site:... "[title]"` WebSearch). Deduplication collapses the repeats; scoring ranks them.
+**Global search rule:** wherever a Site Catalog pattern below shows `[title]`, run it **once per variant** in the set (every `site:... "[title]"` WebSearch). Deduplication collapses the repeats; scoring ranks them.
 
 ---
 
@@ -62,7 +62,6 @@ Source selection is layered, not mode-based. Every run starts with the full Tier
 
 | Site | Category |
 |---|---|
-| LinkedIn Jobs | Core board (MCP) |
 | Indeed | Core board |
 | Glassdoor | Core board |
 | BuiltIn | Core board |
@@ -113,7 +112,7 @@ If the user specifies a mode keyword, apply it as an override on top of the tier
 
 | Mode | Effect |
 |---|---|
-| `quick` | LinkedIn MCP only — skip all other sites including the rest of Tier 1 |
+| `quick` | Indeed only — skip all other sites including the rest of Tier 1 |
 | `full` | All tiers + all career-specific sites + all accelerators |
 | `contract` | Upwork + Fiverr (contract signals, not ranked roles) |
 
@@ -131,23 +130,11 @@ For a **Wired-in** row relevant to this run's sources that the Gate 2 check foun
 
 ## Site Catalog
 
-### LinkedIn (MCP)
+### LinkedIn — not scraped (removed 2026-10-31)
 
-**Gate:** Requires `mcp__linkedin-mcp__search_jobs` to be connected. If unavailable, skip and report.
+LinkedIn Jobs is not a source. LinkedIn's User Agreement (§8.2.2, §8.2.13) bars scrapers, bots and automated access, so no tool (`linkedin-mcp`, `WebFetch`, an extractor) is pointed at a linkedin.com page. Per the user: "Yes, plan the removal."
 
-For each target title:
-```
-search_jobs(
-  keywords = "[title]",
-  location = location_compatibility.my_location,
-  date_posted = [map: "last week"→"past_week", "2 weeks"→"past_month", "month"→"past_month"],
-  work_type = [map: "remote only"→"remote", "hybrid"→"hybrid", "open to all"→null],
-  sort_by = "date"
-)
-```
-Collect all `job_ids`. Deduplicate across title searches. Fetch up to 30 job details via `get_job_details(job_id)`. A result is usable only if it contains role requirements or responsibilities — metadata-only responses (applicant stats only) are not usable.
-
-**LinkedIn hiring posts (when the MCP is connected).** Recruiters and founders announce roles in the feed, not only the jobs board. Surface them: scan `get_feed` and `get_company_posts` for target companies, and run a `site:linkedin.com/posts "[title]" hiring` WebSearch per variant. Treat a hiring post as a lead — capture the company, the role, and the poster (a likely hiring-manager/recruiter contact) — and verify it against the company careers page before offering it for a database add. Skip this sub-source if the LinkedIn MCP is not connected and the WebSearch returns nothing usable.
+**LinkedIn hiring posts via search only.** Recruiters and founders announce roles in posts. Run a `site:linkedin.com/posts "[title]" hiring` WebSearch per variant and read **only the search-result snippet** — never open the LinkedIn page. Treat a snippet as a lead (company, role, poster name if shown) and verify it against the company careers page before offering it for a database add. Skip this sub-source if the search returns nothing usable.
 
 ---
 
@@ -316,10 +303,7 @@ Score every result (0–100) after deduplication.
 | Remote match (matches `remote_preference` exactly) | 10 |
 | Salary meets or exceeds `screening_answers.compensation_floor` (only when listed) | 10 |
 | Salary listed (any amount) | 5 |
-| Applicant count < 50 (LinkedIn only) | 8 |
-| Hiring manager identified (LinkedIn only) | 15 |
-| Easy Apply available (LinkedIn only) | 4 |
-| Apply URL present (non-LinkedIn sources) | 6 |
+| Apply URL present | 6 |
 | Screening conflict — a populated `screening_answers` field contradicts a stated JD requirement | −15 (down-rank, never exclude; attach a visible label) |
 
 Cap at 100. Sort descending. Under `titles` mode, roles without a title match should not appear unless no matches exist.

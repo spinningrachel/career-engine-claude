@@ -20,9 +20,8 @@ Do not hardcode the full absolute path (e.g., `/Users/.../local-agent-mode-sessi
 | Job tracking | Notion | Yes | CSV/Google Sheets (setup agent configures either) |
 | File storage | iCloud (local path via Desktop Commander) | n/a — filesystem access, not MCP | Any local folder; setup agent sets the output path |
 | File system | Desktop Commander | Yes | MacOS-MCP |
-| Job search | Indeed, Dice, ZipRecruiter | Yes | LinkedIn |
+| Job search | Indeed, Dice, ZipRecruiter | Yes | — |
 | Document conversion | pandoc (CLI tool) | n/a — not an MCP server | — |
-| LinkedIn research | stickerdaniel/linkedin-mcp-server | No (user-installed) | — |
 | Startup-board job search | startup.jobs MCP | No (user-installed) | WebFetch scraping (default fallback) |
 
 ### startup.jobs MCP — Optional
@@ -41,22 +40,11 @@ claude mcp add --transport http startup-jobs https://api.startup.jobs/mcp
 
 Free tier: last 14 days of listings, 20 requests/minute, no API key required. `source-open-roles` falls back to `WebFetch` scraping if this MCP is not connected.
 
-### LinkedIn MCP (stickerdaniel/linkedin-mcp-server) — Optional
+### LinkedIn — not accessed
 
-When configured, the career-coach agent uses this MCP for company and hiring manager research. Install it separately — it is not bundled with the plugin.
+LinkedIn is not accessed by this plugin: no MCP, no fetching of linkedin.com pages, no guest endpoint. LinkedIn's [User Agreement](https://www.linkedin.com/legal/user-agreement) (§8.2.2, §8.2.13) bars scrapers, bots and automated access, and its [prohibited-software page](https://www.linkedin.com/help/linkedin/answer/a1341387) warns that accounts using such tools can be restricted or shut down. A LinkedIn job link in your tracker is read as text only; the role is found through the company's careers page, job-board mirrors and search. If no public copy exists, `JD Fetch Status` is `LinkedIn-blocked`. Research contacts are built from web sources and marked `[LOW]`; connect with them on LinkedIn yourself.
 
-**Install:**
-```bash
-uvx linkedin-scraper-mcp@latest --login
-```
-
-**Configure in Claude Code settings** with server name `linkedin-mcp`. The career coach will then have access to:
-- `mcp__linkedin-mcp__get_company_profile` — company about page, posts, jobs
-- `mcp__linkedin-mcp__get_company_employees` — employee demographics and profiles
-- `mcp__linkedin-mcp__get_person_profile` — individual profile with experience, education
-- `mcp__linkedin-mcp__search_people` — search by keywords, company, connection degree
-
-The coach falls back to WebSearch if this MCP is not connected.
+**If you installed `linkedin-mcp` earlier:** the plugin no longer calls it. You can uninstall it and delete its saved login/profile folder.
 
 ## Notion setup
 

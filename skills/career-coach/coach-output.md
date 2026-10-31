@@ -113,7 +113,7 @@ Return findings in this exact structure for every role received.
 
 ### Outreach map format
 
-Included for every role that completes full research (Priority 1–4), whether or not the LinkedIn MCP is connected. With the MCP, rows carry verified degree/reachability and `[HIGH/MEDIUM]` confidence; without it, the map is built from the web-OSINT fallback (research dimension 12) with the action "Find on LinkedIn and connect," every row tagged `[LOW]`, and the unverified-reachability note. Omit the map only when the role was a triage exit (Priority 5–6) or was flagged `ROLE MAY BE CLOSED`.
+Included for every role that completes full research (Priority 1–4). LinkedIn is never scraped, so the map is built from the web-OSINT fallback (research dimension 12) with the action "Find on LinkedIn and connect," every row tagged `[LOW]`, and the unverified-reachability note. Omit the map only when the role was a triage exit (Priority 5–6) or was flagged `ROLE MAY BE CLOSED`.
 
 ```
 ## Outreach — <Company>

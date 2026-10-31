@@ -62,7 +62,7 @@ See the **[Pipelines Overview](https://github.com/spinningrachel/career-engine/w
 - **Desktop Commander MCP** — file operations and pandoc from sandboxed sessions (required for Cowork)
 - **`/skill-creator`** installed in Chat — builds your `career-data` skill during setup
 
-Feature-specific: **Notion** (any pipeline run that reads/writes Notion) and the optional **LinkedIn MCP** (better research; falls back to WebSearch).
+Feature-specific: **Notion** (any pipeline run that reads/writes Notion).
 
 Full details and the environment-by-environment breakdown: **[Prerequisites](https://github.com/spinningrachel/career-engine/wiki/Prerequisites)**.
 
@@ -84,6 +84,13 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 ---
 
 ## Changelog
+
+### 2026-10-31 — LinkedIn scraping removed
+
+**Removed (per the user: "Yes, plan the removal")**
+- **`linkedin-mcp` and all automated LinkedIn fetching** — LinkedIn's User Agreement (§8.2.2, §8.2.13) bars scrapers, bots and automated access, and LinkedIn warns of account restriction. The MCP tool grants, the `jobs-guest` endpoint fetch, and any fetch of a linkedin.com page are gone. A LinkedIn job link is now read as text only and the role is found through careers pages, ATS/job-board mirrors and search; if no public copy exists, `JD Fetch Status` is `LinkedIn-blocked` ("LinkedIn-only listing, no public mirror found"). Coach research and the outreach map use web sources only (rows tagged `[LOW]`); LinkedIn is no longer a sourcing board; `linkedin-coach` reads only your exported profile. Version 1.3.0.
+
+**Upgrading:** no action required. If you installed `linkedin-mcp`, the plugin no longer calls it — you can uninstall it. The first LinkedIn link in a run prints a one-line notice. Roles already marked `LinkedIn-blocked` can be retried by re-running intake or Prioritization. Expect more `LinkedIn-blocked` roles for postings that exist only on LinkedIn.
 
 ### 2026-10-31 — Manifest warning fix
 **Bug fixes**
