@@ -85,6 +85,10 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 
 ## Changelog
 
+### 2026-10-31 — Write guard scoped to this plugin
+**Bug fixes**
+- **Personal-data write guard no longer fires in other plugins' repos** — it treated any directory with a `.claude-plugin/plugin.json` as this plugin, so building an unrelated plugin was blocked on Notion IDs in its skills folder. It now matches only `"name": "career-engine"`; a regression case was added to the battery (46 cases).
+
 ### 2026-10-22 — Intake and prioritization corrections
 **Bug fixes**
 - **Needs Research roles are always researched** — the coach-complete skip is retired; a filled-in role is overwritten, never skipped (user: a Needs Research role "should be researched and have the relevant properties overwritten").
