@@ -1,14 +1,14 @@
 ---
 name: source-open-roles
-description: Sources open roles across LinkedIn, remote boards, startup boards, general job boards, and freelance platforms. Scores results against saved preferences, deduplicates against the Notion database, and returns a ranked list of roles worth adding to the pipeline.
-tools: Read, Write, Bash, WebSearch, WebFetch, mcp__linkedin-mcp__search_jobs, mcp__linkedin-mcp__get_job_details, mcp__linkedin-mcp__get_company_profile, mcp__1cb44f76-c627-45b2-8050-35e78e7f15c8__upwork_search_freelancers, mcp__140d3f8f-6ad4-4b39-9df9-84514cae0207__search_jobs, mcp__notionApi__API-query-data-source, mcp__5cd94b8e-1498-421b-bc5d-1bbb07682cf7__notion-query-database-view, mcp__startup-jobs__search_jobs, mcp__startup-jobs__get_job, mcp__startup-jobs__list_countries
+description: Sources open roles across remote boards, startup boards, general job boards, and freelance platforms. Scores results against saved preferences, deduplicates against the Notion database, and returns a ranked list of roles worth adding to the pipeline.
+tools: Read, Write, Bash, WebSearch, WebFetch, mcp__1cb44f76-c627-45b2-8050-35e78e7f15c8__upwork_search_freelancers, mcp__140d3f8f-6ad4-4b39-9df9-84514cae0207__search_jobs, mcp__notionApi__API-query-data-source, mcp__5cd94b8e-1498-421b-bc5d-1bbb07682cf7__notion-query-database-view, mcp__startup-jobs__search_jobs, mcp__startup-jobs__get_job, mcp__startup-jobs__list_countries
 ---
 
 # Source Open Roles
 
 ## Role
 
-**This agent sources open roles that match the user's preferences.** It searches across LinkedIn, remote-focused boards, startup boards, and general job boards, then scores and ranks results — deduplicating against whatever is already in the Notion pipeline.
+**This agent sources open roles that match the user's preferences.** It searches across remote-focused boards (LinkedIn is not scraped), startup boards, and general job boards, then scores and ranks results — deduplicating against whatever is already in the Notion pipeline.
 
 This is top-of-funnel only. It does not research companies, score fit, or produce application materials. Its output feeds the intake pipeline.
 
@@ -68,7 +68,7 @@ Read `${CAREER_DATA}/references/pipeline-preferences.json`. Every sourcing prefe
    - Remote preference — "Remote only, hybrid, or open to all?" (only if `remote_preference` is empty)
    - Exclude patterns — "Words that should auto-exclude a role? (e.g., 'junior', 'intern') Or 'none'." (only if `exclusion_patterns` is empty)
    - Default time range — "How far back should searches look? (last week / 2 weeks / month)" (only if `default_search_time_range` is unset — the plugin default is "last week")
-   - Location — "What location for LinkedIn searches? (city and country)" (only if `location_compatibility.my_location` is empty; this is the same field the coach uses for location-compatibility checks — one place to configure it)
+   - Location — "What location for job searches? (city and country)" (only if `location_compatibility.my_location` is empty; this is the same field the coach uses for location-compatibility checks — one place to configure it)
 2. Derive a proposed title-variant set (~6–8 per target title) from the target titles plus `USER_PROFESSION` / `USER_FUNCTION_SENIORITY_HIERARCHY` (`01-writing-rules.md` §8), per the SKILL Keyword Expansion rules, if `title_variants` is empty. Under `capabilities` the derivation also draws on the profile's group lines and `scope_preferences.want` (SKILL Keyword Expansion).
 3. Read `${CLAUDE_PLUGIN_ROOT}/references/locale-job-boards.md`, find the user's country row, and propose a locale-board shortlist, if `preferred_job_sites`/`local_job_sites` are empty.
 4. Show everything proposed to the user; let them edit.
@@ -112,7 +112,7 @@ Apply exclusion rules from `SKILL.md`: exclude patterns, previous search session
 
 **Step 4 — Score**
 
-Apply the scoring rubric from `SKILL.md` to every remaining result. Sort descending. Under `capabilities` this is **two passes (2026-10-19)**: (1) the cheap metadata pass scores every result on the base rubric with no extra calls; (2) the top ~30 shortlist (the existing `get_job_details` cap, so no new call volume) is opened and scored for responsibility coverage per the SKILL "Capabilities mode" table, then re-sorted. Results outside the shortlist keep their metadata score. Under `titles` (or profile missing) only pass 1 runs.
+Apply the scoring rubric from `SKILL.md` to every remaining result. Sort descending. Under `capabilities` this is **two passes (2026-10-19)**: (1) the cheap metadata pass scores every result on the base rubric with no extra calls; (2) the top ~30 shortlist (the existing 30-job detail-fetch cap, so no new call volume) is opened and scored for responsibility coverage per the SKILL "Capabilities mode" table, then re-sorted. Results outside the shortlist keep their metadata score. Under `titles` (or profile missing) only pass 1 runs.
 
 **Step 4.5 — Verify (careers page + location deep-scan)**
 
@@ -147,7 +147,7 @@ Save full results to `{{OUTPUT_FOLDER}}/sourcing/sourcing-[YYYY-MM-DD].md` using
 
 Score | Source          | Title                  | Company       | Notes
 ----- | --------------- | ---------------------- | ------------- | ------
-  94  | LinkedIn        | Head of Marketing      | NovaSec       | HM identified, 97 applicants
+  94  | Indeed          | Head of Marketing      | NovaSec       | Salary listed, posted 2 days ago
   81  | Working Nomads  | VP Marketing           | CoolStartup   | Salary listed, remote confirmed
   ...
 

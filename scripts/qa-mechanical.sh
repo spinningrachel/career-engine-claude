@@ -730,7 +730,6 @@ expect_ge "35e" "agents/qa-plugin.md" "Check 35e" 1
 expect_ge "35e" "agents/role-prioritizer.md" "Confirmed closure is a write, never a question" 1
 expect_ge "35e" "agents/role-prioritizer.md" "earned by searching" 1
 expect_ge "35e" "skills/database/SKILL.md" "| \`Closed\` |" 1
-expect_ge "35e" "skills/career-engine-intake/SKILL.md" "jobs-guest/jobs/api/jobPosting" 1
 expect_ge "35e" "skills/career-engine-intake/SKILL.md" "closed-confirmed" 4
 expect_ge "35e" "skills/career-engine-setup/SKILL.md" "Needs Editing, Closed" 1
 expect_ge "35e" "skills/career-engine-edit/SKILL.md" "Closure check before any drop" 1
@@ -746,8 +745,23 @@ expect_ge "35e" "agents/role-prioritizer.md" "A follow-up turn is still the run"
 expect_ge "35e" "agents/role-prioritizer.md" "IO River follow-up" 1
 expect_ge "35e" "hooks/hooks.json" "follow-up turn" 1
 expect_ge "35e" "skills/role-prioritizer/SKILL.md" "A follow-up turn is still the run" 1
-expect_ge "35e" "agents/career-coach.md" "jobs-guest/jobs/api/jobPosting" 1
-expect_ge "35e" "skills/career-engine-edit/SKILL.md" "job ID in any URL form" 1
+expect_ge "35e" "skills/career-engine-edit/SKILL.md" "a LinkedIn URL is never fetched" 1
+
+# ================================================================
+# Check 35f — LinkedIn is never scraped (2026-10-31, per the user: "Yes, plan the removal").
+# LinkedIn User Agreement §8.2.2 / §8.2.13 bar scrapers, bots and automated access, so no
+# agent/skill/reference/hook/settings file may grant or call linkedin-mcp tools or hit the
+# guest endpoint. Explanatory prose may still name the MCP; only the tool prefix and the
+# endpoint path are forbidden.
+# ================================================================
+for pat in "mcp__linkedin-mcp__" "jobs-guest/jobs/api"; do
+  for d in agents skills references hooks .claude; do
+    c=$(rcnt "$pat" "$d"); c=${c:-0}
+    if [ "$c" -eq 0 ]; then report "35f" 1 ""; else report "35f" 0 "'$pat' in $d: found $c, must be 0 (LinkedIn is never scraped)"; fi
+  done
+done
+expect_ge "35f" "skills/career-engine-intake/SKILL.md" "never fetched" 1
+expect_ge "35f" "CONNECTORS.md" "LinkedIn is not accessed" 1
 
 # ================================================================
 # Check 38 — Mechanical word count enforced, not self-estimated

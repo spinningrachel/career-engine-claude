@@ -1,7 +1,7 @@
 ---
 name: linkedin-coach
 description: "Optimise the user's LinkedIn presence across five modes: full profile audit, content review, content strategy, headline optimisation, and video introduction script. Use when the user asks to review their LinkedIn profile, optimise LinkedIn, write a LinkedIn headline, build a content strategy, review a LinkedIn post, or create a video introduction."
-allowed-tools: Read, Write, mcp__linkedin-mcp__get_my_profile, mcp__linkedin-mcp__get_person_profile
+allowed-tools: Read, Write
 ---
 
 # LinkedIn Coach
@@ -20,8 +20,7 @@ Comprehensive LinkedIn optimisation across five modes. Choose the one that fits 
 
 **Profile source ladder (for any mode that reads the profile):**
 1. **`references/linkedin-profile.md`** — the permanent profile reference, when present and not still templated (content containing the characters `{{` and `}}` means not yet provided). This is the canonical snapshot agents base recommendations on; the user replaces it with a new LinkedIn PDF export via update-refs whenever they change their profile.
-2. **LinkedIn MCP** (`get_my_profile`) — when the reference is absent and the MCP is connected. Offer to save the fetched content as `references/linkedin-profile.md` via update-refs so future runs have it.
-3. **Ask the user** to paste sections or share a PDF/screenshot — and note they can make it permanent by saying "update my references."
+2. **Ask the user** to paste sections or share a PDF/screenshot — and note they can make it permanent by saying "update my references."
 
 ## Capabilities
 
@@ -42,8 +41,7 @@ Comprehensive LinkedIn optimisation across five modes. Choose the one that fits 
 **Step 1 — Acquire the profile via the Profile source ladder** (defined at the top of this skill):
 
 1. Read `references/linkedin-profile.md` — if present and not templated, this is the profile source. Note its snapshot date in the audit output.
-2. Otherwise, if `mcp__linkedin-mcp__get_my_profile` is available: run `get_my_profile(sections="experience,education,skills,contact_info")` and use the result. Offer to save it as the permanent reference via update-refs.
-3. Otherwise ask: "Please paste your LinkedIn About section, current headline, and your most recent 3 experience entries — or share a PDF export. A PDF export can also become your permanent profile reference (say 'update my references'), so every future run analyses your real profile."
+2. Otherwise ask: "Please paste your LinkedIn About section, current headline, and your most recent 3 experience entries — or share a PDF export. A PDF export can also become your permanent profile reference (say 'update my references'), so every future run analyses your real profile."
 
 **Step 2 — Profile sections review**
 
