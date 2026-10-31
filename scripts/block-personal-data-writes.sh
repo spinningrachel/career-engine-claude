@@ -49,8 +49,18 @@ def in_plugin_repo(p):
     except Exception:
         return None
     while True:
-        if os.path.isfile(os.path.join(cur, ".claude-plugin", "plugin.json")):
-            return cur
+        manifest = os.path.join(cur, ".claude-plugin", "plugin.json")
+        if os.path.isfile(manifest):
+            # Only THIS plugin's repo. This hook is installed user-wide, so it also fires
+            # in sessions building unrelated plugins; any plugin.json used to qualify, and
+            # a different plugin's Notion IDs were blocked as if they were ours.
+            try:
+                with open(manifest, encoding="utf-8") as fh:
+                    if json.load(fh).get("name") == "career-engine":
+                        return cur
+            except Exception:
+                pass
+            return None
         parent = os.path.dirname(cur)
         if parent == cur:
             return None

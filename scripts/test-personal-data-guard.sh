@@ -84,6 +84,8 @@ t "bash printing an arrow"               "{\"tool_name\":\"Bash\",\"cwd\":\"$R\"
 t "grep for the prompt filename"         "{\"tool_name\":\"Bash\",\"cwd\":\"$R\",\"tool_input\":{\"command\":\"grep -rn 'update-prompt-' skills/\"}}" 0
 t "guard script edits itself"            "{\"tool_name\":\"Edit\",\"tool_input\":{\"file_path\":\"$R/scripts/personal_data_detect.py\",\"new_string\":\"r'($U/|/home/)[A-Za-z0-9._-]+/'\"}}" 0
 t "session scratch UUID path"            "{\"tool_name\":\"Bash\",\"cwd\":\"$R\",\"tool_input\":{\"command\":\"echo hi > /private/tmp/claude-503/0f4e55e3-8a25-4708-92c8-c58efc9bd67a/scratchpad/n.md\"}}" 0
+OP="$(mktemp -d)"; mkdir -p "$OP/.claude-plugin" "$OP/skills/x"; echo '{"name":"unrelated-plugin"}' > "$OP/.claude-plugin/plugin.json"
+t "unrelated plugin's skills dir + tracker id" "{\"tool_name\":\"Write\",\"tool_input\":{\"file_path\":\"$OP/skills/x/SKILL.md\",\"content\":\"db $NID\"}}" 0
 t "malformed payload (fail open)"        "not json" 0
 t "empty payload (fail open)"            "" 0
 

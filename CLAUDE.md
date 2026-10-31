@@ -149,7 +149,7 @@ This has failed in production more than once. Personal `update-prompt-*.md` file
 ln -sf ../../scripts/check-invariants.sh .git/hooks/pre-commit
 ```
 
-**Regression battery:** `scripts/test-personal-data-guard.sh` — 45 cases, 30 must-block and 15 must-allow, covering every evasion found in review (allowed-token-on-the-same-line, dashed and uppercase tracker IDs, a username beginning with a placeholder word, `NotebookEdit` bodies, MCP writes, Bash heredocs, `>|` clobber redirects, positional and in-place writers (`tee`, `dd of=`, `sed -i`, `perl -pi`, `open(…, 'w')`), a benign write beside an unparseable one, a `git` prefix in front of a write, and the same write attempted from three different working directories) and every false positive that would make the guard unusable. Run it after any change to the detectors:
+**Regression battery:** `scripts/test-personal-data-guard.sh` — 46 cases, 30 must-block and 16 must-allow, covering every evasion found in review (allowed-token-on-the-same-line, dashed and uppercase tracker IDs, a username beginning with a placeholder word, `NotebookEdit` bodies, MCP writes, Bash heredocs, `>|` clobber redirects, positional and in-place writers (`tee`, `dd of=`, `sed -i`, `perl -pi`, `open(…, 'w')`), a benign write beside an unparseable one, a `git` prefix in front of a write, and the same write attempted from three different working directories) and every false positive that would make the guard unusable. Run it after any change to the detectors:
 
 ```bash
 bash scripts/test-personal-data-guard.sh
