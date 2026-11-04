@@ -85,6 +85,11 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 
 ## Changelog
 
+### 2026-11-04 — Fetch ladder uses connected job tools
+
+**Bug fixes**
+- **"Unfetchable after the full ladder" without using the user's connectors** — the JD ladder only used `WebFetch`/`WebSearch`, and `role-prioritizer` was allowlisted to those two tools, so connected job connectors (JobsPipe, TheirStack, etc.) and scrapers (Exa, Nimble, Apify, HasData) were never called. Rung 2 is now a job-data-connector search (company + title) found via `ToolSearch`; careers-page and search rungs use any connected search/extract tool; the prioritizer's tool allowlist is replaced by a deny-list (`Agent`, `linkedin-mcp`) so it can reach them. User instruction: she has scrapers and many job connectors connected, so "unfetchable after the full ladder" cannot be true. LinkedIn is still never fetched.
+
 ### 2026-10-31 — LinkedIn scraping removed
 
 **Removed (per the user: "Yes, plan the removal")**
