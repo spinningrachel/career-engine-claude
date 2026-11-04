@@ -85,6 +85,21 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 
 ## Changelog
 
+### 2026-11-03 — Any job connector works; preferences optional
+
+**New features**
+- **Any connected job-search connector is used** — sourcing discovers whatever job connectors you have (no per-connector wiring), and the JD lookup searches them by company + title when a job link can't be opened, so a role found on one connector can be read even if its own link is blocked. `references/job-sourcing-mcp-registry.md` now lists free / no-login-for-search connectors with connect commands; setup and sourcing suggest a few when none is connected.
+- **Official job URL search** — if the saved link isn't the hiring company's own page, the lookup keeps searching (careers page, ATS, connectors, web) until an official URL is found and opened, or options run out.
+
+**Improvements**
+- **Job-search preferences are optional** — sourcing no longer interviews you when `pipeline-preferences.json` values are empty: set values are used as-is, empty ones are inferred from your capability profile and background, and an update-prompt is offered after the run.
+- **Pedantic access checks** — a single failed call or missing tool name no longer marks a connector unavailable; agents re-discover, retry with simpler parameters and read the error first.
+- **Fewer "blocked" reports** — `LinkedIn-blocked` / `Unfetchable` now appear only after every connector, the careers page, ATS mirrors and title + company search fail, and the report says what was searched.
+
+**Removed (per the user: "more flexible with or without specified job search preferences"; "even less reason for the agent to ever report back that the url was blocked")**
+- The sourcing preference interview, the registry's four-part "Wired-in" gate, and the fixed `tools:` allowlists on `source-open-roles` and `role-prioritizer` (replaced by a read-only rule).
+
+
 ### 2026-10-31 — LinkedIn scraping removed
 
 **Removed (per the user: "Yes, plan the removal")**

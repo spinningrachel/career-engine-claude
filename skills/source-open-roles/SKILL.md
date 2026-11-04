@@ -118,15 +118,13 @@ If the user specifies a mode keyword, apply it as an override on top of the tier
 
 ---
 
-## Job-Sourcing MCP Registry
+## Connected job connectors (any connector works)
 
-`${CLAUDE_PLUGIN_ROOT}/references/job-sourcing-mcp-registry.md` catalogs known MCP servers for job sourcing — which site each covers, how to connect it, its confirmed tool names, and whether it's wired into the Site Catalog below yet. Read it once per run, at Gate 2 (`agents/source-open-roles.md`), before any search begins.
+`${CLAUDE_PLUGIN_ROOT}/references/job-sourcing-mcp-registry.md` holds the **Discovery** procedure and a suggestion list of free / no-login-for-search connectors. Gate 2 (`agents/source-open-roles.md`) discovers every connected job-search connector with `ToolSearch` — a connector does not need to be listed in the registry to be used, and this agent has no `tools:` allowlist, so a newly connected one works immediately (read-only tools only).
 
-**Wired-in status is the full four-part definition in `job-sourcing-mcp-registry.md`'s "Two statuses" — confirmed tool name, a recorded `Canary`, a Site Catalog gate below ("prefer MCP if connected, else fall back"), and that row's tools (including the canary) granted in the agent's own `tools:` frontmatter, all four.** A row missing any one of them isn't Wired-in yet, whatever its status cell says — a registry row and a Site Catalog gate alone can't call a tool the agent was never granted, and a confirmed name with no recorded canary leaves Gate 2 nothing to call. Gate 2 runs each Wired-in row's canary tool call once to determine connection state (see `agents/source-open-roles.md` Gate 2); Step 2 (Search) then uses that same result rather than re-checking per search.
+**Every discovered connector is a source in Step 2.** Per target title/variant, call its search tool with the user's resolved location / remote / time-range preferences (from the JSON, or inferred at Gate 1 when empty) and fetch details for promising hits. A connector's results carry the connector as their `Source` and feed the same dedup and scoring as every other source. Site Catalog rows below that a connector already covers (e.g. Indeed, startup.jobs) are searched through the connector and skip the scraping fallback; if the connector is unavailable *after Gate 2's pedantic access checks*, fall back to the scraping method shown.
 
-**Candidate rows aren't granted in the agent's frontmatter** (whether or not their tool name happens to be confirmed), so their canary can't be called — they cannot be checked or suggested at runtime, and are informational only: a shortlist for the next person wiring one in. Never suggest a Candidate row in the run header.
-
-For a **Wired-in** row relevant to this run's sources that the Gate 2 check found unconnected, add one line to the run header: `Also available: [server] — connect with '[command]' for structured [site] results.` Never block the run on this, never repeat it mid-run, and never suggest a server irrelevant to this run's tiers/sites.
+If no job connector is connected, the run header carries up to 3 suggestions from the registry list (non-blocking, never repeated mid-run).
 
 ## Site Catalog
 
@@ -171,7 +169,7 @@ All fetched via `WebSearch` using the pattern: `site:<domain> "[title]" [time si
 
 | Site | Fetch method |
 |---|---|
-| startup.jobs | Prefer `mcp__startup-jobs__search_jobs` (keyword/role/country/remote/employment-type filters) + `mcp__startup-jobs__get_job` for full listing detail, if Gate 2's connection check found it connected (per `${CLAUDE_PLUGIN_ROOT}/references/job-sourcing-mcp-registry.md` — structured, no scraping; both tools are granted in this agent's own frontmatter). **Gate:** if not connected, fall back to `WebFetch("https://startup.jobs/?q=[title-urlencoded]&remote=true")` — the run header already noted the unconnected server at Gate 2, no need to repeat it here. |
+| startup.jobs | If a startup.jobs connector was discovered at Gate 2, search it (keyword/role/country/remote/employment-type filters) and fetch listing detail through it — structured, no scraping. **Gate:** if not connected after Gate 2's access checks, fall back to `WebFetch("https://startup.jobs/?q=[title-urlencoded]&remote=true")`. |
 | ChoppingBlock (Tier 1 — every run) | `WebFetch("https://www.choppingblock.ai/jobs?q=[title-urlencoded]")` — server-rendered, keyword search works (verified 2026-10-03, returns PMM listings). Optional filters: `&remote=`, `&country=`, `&seniority=`. Fallback `WebSearch("site:choppingblock.ai [title]")`. AI-native companies only. |
 | MoaiJobs | `WebFetch("https://www.moaijobs.com/")` + `WebSearch("site:moaijobs.com [title]")` |
 | CareerVault | `WebFetch("https://careervault.io/")` + `WebSearch("site:careervault.io [title]")` |
@@ -182,7 +180,7 @@ All fetched via `WebSearch` using the pattern: `site:<domain> "[title]" [time si
 
 | Site | Fetch method |
 |---|---|
-| Indeed | `WebSearch("site:indeed.com [title] [location or remote] job")` — do not attempt direct WebFetch (auth wall). If `mcp__140d3f8f-6ad4-4b39-9df9-84514cae0207__search_jobs` is connected, prefer it. |
+| Indeed | `WebSearch("site:indeed.com [title] [location or remote] job")` — do not attempt direct WebFetch (auth wall). If an Indeed connector was discovered at Gate 2, prefer it. |
 | Glassdoor | `WebSearch("site:glassdoor.com/job-listing [title]")` — blocks direct WebFetch; use WebSearch only. |
 | BuiltIn | `WebSearch("site:builtin.com [title] remote")` — blocks direct fetch; use WebSearch only. |
 | ZipRecruiter | `WebSearch("site:ziprecruiter.com [title] remote")` |
@@ -217,7 +215,7 @@ Use these to surface roles posted directly on company career pages via their ATS
 | CareerVault | See Startup section |
 | ChoppingBlock | See Startup section |
 | PitchMeAI | See Remote section |
-| TheirStack | Requires `mcp__theirstack__*` tools. Gate: if not connected, skip and note. |
+| TheirStack | Requires a TheirStack connector (discovered at Gate 2). Gate: if not connected, skip and note. |
 
 ---
 
