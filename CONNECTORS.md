@@ -22,23 +22,18 @@ Do not hardcode the full absolute path (e.g., `/Users/.../local-agent-mode-sessi
 | File system | Desktop Commander | Yes | MacOS-MCP |
 | Job search | Indeed, Dice, ZipRecruiter | Yes | — |
 | Document conversion | pandoc (CLI tool) | n/a — not an MCP server | — |
-| Startup-board job search | startup.jobs MCP | No (user-installed) | WebFetch scraping (default fallback) |
+| Job-search connectors | Any (see registry list) | No (user-installed) | WebSearch / WebFetch (default fallback) |
 
-### startup.jobs MCP — Optional
+### Job-search connectors — Optional, any connector works
 
-When connected, `source-open-roles` prefers this over scraping `startup.jobs` for structured, reliable results. Full catalog entry (confirmed tool names, canary check): `references/job-sourcing-mcp-registry.md`.
+Any job-search connector you connect is used automatically: `source-open-roles` sources from it, and the JD lookup (intake, coach, prioritizer, edit) searches it by company + title when a job link can't be opened — so a role found on one connector can be read even when its own link is blocked. Nothing needs to be named in the plugin; connect as many as you like.
 
-**Install:**
+Free / no-login-for-search suggestions (startup.jobs, workfinds.app, Curaiz, RVC Jobs, Relomote, ZipRecruiter, JobDataLake, and others) with connect commands: `references/job-sourcing-mcp-registry.md`. If none is connected, `career-engine-setup` and the first sourcing run after upgrading suggest a few for your location and function. Falls back to web search and page fetching when no connector is connected.
+
+Example install:
 ```bash
 claude mcp add --transport http startup-jobs https://api.startup.jobs/mcp
 ```
-
-**Configure with server name `startup-jobs`** (the name above — required so the resulting tool names match what the plugin expects). Gives the agent access to:
-- `mcp__startup-jobs__search_jobs` — filter listings by keyword, role, country, remote status, employment type
-- `mcp__startup-jobs__get_job` — full listing detail
-- `mcp__startup-jobs__list_countries` — used only as a cheap connection check
-
-Free tier: last 14 days of listings, 20 requests/minute, no API key required. `source-open-roles` falls back to `WebFetch` scraping if this MCP is not connected.
 
 ### LinkedIn — not accessed
 
