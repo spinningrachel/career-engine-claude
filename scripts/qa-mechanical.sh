@@ -1178,7 +1178,7 @@ expect_eq0 "75" "agents/source-open-roles.md" "Ask for whatever's still missing"
 expect_ge "75" "agents/source-open-roles.md" "Preferences are optional" 1
 expect_ge "75" "agents/source-open-roles.md" "Read-only tool use" 1
 expect_ge "75" "agents/role-prioritizer.md" "read/search tools only" 1
-expect_ge "75" "skills/career-engine-intake/SKILL.md" "Connected job connectors" 1
+expect_ge "75" "skills/career-engine-intake/SKILL.md" "Job-data connectors" 1
 expect_ge "75" "skills/career-engine-intake/SKILL.md" "Official-URL search" 1
 expect_ge "75" "agents/career-coach.md" "Connected job connectors" 1
 expect_ge "75" "skills/career-engine-edit/SKILL.md" "rung 2" 1
