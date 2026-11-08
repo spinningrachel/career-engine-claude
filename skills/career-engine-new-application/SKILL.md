@@ -109,7 +109,7 @@ Same design as Step 0.type: this is the **only** place this pipeline reads the r
 MODE: <role_matching — `capabilities` or `titles`>
 
 ## CV Title Preferences (the user's own — outranks the plan line for the same employer)
-<`cv_title_rules` lines first, one per entry: `<employer> — <keep | retitle-as "<title>"> [— <note>]`; then the legacy per-role property verbatim under a line `(legacy tracker field)`; or "none">
+<`cv_title_rules` lines first, one per entry: `<employer> — <keep | retitle-as "<title>"> [— <note>]` (or `<employer> — coach-led (no rule; the coach decides)`); then the legacy per-role property verbatim under a line `(legacy tracker field)`; or "none">
 
 ## CV Titles (the coach's plan, as the tracker holds it now — including any edits the user made)
 <verbatim, or "PLAN: none">
