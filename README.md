@@ -85,6 +85,18 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 
 ## Changelog
 
+### 2026-11-08 — Senior-role measure woven into the letter; run records and cleanup
+
+**New features**
+- **Run records** — finished runs are recorded in a log you choose at setup: an Excel workbook in a flat `agent-data` folder, a Notion database, or none. Pick the default columns (`references/run-log-schema.md`) or your own; with your own, the agent reads the live columns before every write and never adds, renames, or deletes one.
+- **Reports in one place** — feedback reports, LinkedIn updates, flagged-role revision logs, and run metrics are filed flat in `agent-data` (no subdirectories). Applications stay where they were.
+
+**Improvements**
+- **End-of-run cleanup (New Application, Edit, Intake)** — once every role is done, reports are filed and the log write is read back, the run deletes its scratch: `_pipeline` folders, `state.json`, `halted-roles.json`, verification and manifest files, and every non-`.docx` file in a role folder (the CV and cover letter markdown copies). Removal made on the user's 2026-11-08 instruction: "the agents leave behind a massive amount of files that aren't necessary". An interrupted run deletes nothing.
+- **Success measure no longer a bolted-on closing paragraph** — the outline marks one paragraph `MEASURE:`/`BRIDGE:` and the writer adds 1-2 sentences there. Gate 9 fails a standalone measure paragraph.
+- **Measures follow company stage and motion** — the coach derives Likely KPIs from `Company Stage`, first-hire status, and the real sales motion (a pre-PMM, direct-sales Series B is judged on pilots becoming contracts, renewals, and Sales' use of the messaging).
+- **Past metrics only when they match** — a past result is cited only when it is the same kind of measure as the KPI; otherwise `BRIDGE: none`. No-silent-removal note: the standalone `Para N-1` line and paragraph were replaced per the user's 2026-11-08 instruction quoted in `letter-core` §3b.
+
 ### 2026-11-04 — Fetch ladder uses connected job tools
 
 **Bug fixes**

@@ -98,7 +98,7 @@ If no run folder exists, report: "No pipeline runs found."
 cat "<most-recent-folder>/state.json"
 ```
 
-If state.json is missing, report: "state.json not found in `<folder>` — run may not have started or crashed before any role completed."
+If state.json is missing, check the folder for scratch (`_pipeline*` directories). **None present:** the run finished and was cleaned up by its closing step (`skills/run-records/SKILL.md`, 2026-11-08) — report "No unfinished run in `<folder>`; completed runs are recorded in your run log and `agent-data` reports." and stop. **Scratch present:** report "state.json not found in `<folder>` — run may not have started or crashed before any role completed."
 
 **Step S3 — Check files on disk**
 

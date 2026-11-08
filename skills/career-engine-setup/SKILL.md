@@ -631,6 +631,12 @@ Ask the user for their output folder path. This is where all pipeline output (CV
 
 Write the path as `output_folder` in `${CAREER_DATA}/references/pipeline-preferences.json` (the career-data config). Do NOT substitute `{{OUTPUT_FOLDER}}` into plugin files — the orchestrator resolves it from the config at runtime (R-38).
 
+**Agent data folder and run log (2026-11-08, per the user).** Ask: "Where should the agents keep their reports and a record of each run? I'll keep it in one flat folder (no subdirectories) next to your output folder called `agent-data`, or you can give another path." Write it as `agent_data_folder` (blank = `agent-data` next to `output_folder`). Then ask where the run log should live:
+- **Excel workbook** — one `.xlsx` in that folder, created now with the default sheets and columns (`references/run-log-schema.md`). Create it with `python3 ${CLAUDE_PLUGIN_ROOT}/skills/run-records/scripts/xlsx_log.py init "<folder>/Applications Log.xlsx"` (needs `openpyxl`; if it is missing, say so and offer Notion or no log).
+- **Notion database** — a log database the user creates from the same columns; ask for its ID and write it as `run_records.notion_database_id`.
+- **No log** — reports only.
+Then ask: "Use the default columns, or your own? If your own, edit the workbook/database however you like and I'll read its columns before every write instead of assuming them." Write `run_records.destination` (`workbook`|`notion`|`none`) and `run_records.schema_mode` (`default`|`flexible`). All optional; skipping every question leaves the defaults.
+
 **CV Type — mandatory question, never skipped.** Ask: "Which CV format do you want the pipeline to produce?
 - **Detailed** (recommended default) — the existing full CV, one to two pages depending on your career length.
 - **Brief** — a one-page, two-column condensed CV.
@@ -738,6 +744,8 @@ Write the answers into `target_titles` (array, priority order), `remote_preferen
   {
     "gap_handling": "enabled",
     "output_folder": "<the absolute path the user gave>",
+    "agent_data_folder": "<path, or empty for agent-data next to output_folder>",
+    "run_records": {"destination": "workbook|notion|none", "schema_mode": "default|flexible", "workbook_file": "Applications Log.xlsx", "notion_database_id": ""},
     "database_backend": "notion",
     "database_id": "<32-char DB id, or empty for non-database trackers>",
     "database_new_view_url": "<New view URL, or empty>",
@@ -830,7 +838,7 @@ Ask: "Have you added the permissions block? You can do this now and come back, o
 
 **Token usage tracking (optional but recommended):**
 
-The pipeline tracks actual token consumption per run. Each run writes a `run-metrics-<date>.json` file to your output folder with structural metrics (roles processed, agents invoked). A Stop hook then fills in the real token counts and an estimated cost.
+The pipeline tracks actual token consumption per run. Each run writes a `run-metrics-<date>.json` file to your `agent-data` folder with structural metrics (roles processed, agents invoked). A Stop hook then fills in the real token counts and an estimated cost.
 
 The hook ships with the plugin and **registers itself** via `hooks/hooks.json`, so on a current Claude Code there is nothing to configure — confirm by checking that `run-metrics-*.json` files show numeric `token_counts` after a run (not `"pending"` or `"unknown"`).
 
