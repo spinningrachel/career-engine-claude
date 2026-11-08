@@ -1186,6 +1186,22 @@ expect_ge "75" "skills/career-engine-setup/SKILL.md" "Job-search connectors" 1
 expect_ge "75" "agents/qa-plugin.md" "Check 75" 1
 
 # ================================================================
+# Check 76 — Core Company Facts replaces Landscape's Company & Org section (2026-11-08, per the user)
+# ================================================================
+expect_ge "76" "skills/career-coach/coach-output.md" "Core Company Facts:" 1
+expect_ge "76" "skills/career-coach/coach-output.md" "No \`## Company & Org\` section" 1
+expect_ge "76" "skills/career-coach/coach-analysis.md" "Core Company Facts" 2
+expect_ge "76" "skills/career-engine-intake/SKILL.md" "Core Company Facts" 3
+expect_ge "76" "skills/gatekeeper-checks/coach-gates.md" "Core Company Facts format and Landscape purity" 1
+expect_ge "76" "skills/database/SKILL.md" "Core Company Facts" 1
+expect_ge "76" "references/job-applications-template.csv" "Core Company Facts" 1
+expect_ge "76" "skills/career-coach/coach-research.md" "Company facts and competitors — source ladder" 1
+expect_ge "76" "skills/career-coach/coach-research.md" "Competitors are chosen by product category and buyer" 1
+expect_ge "76" "skills/gatekeeper-checks/coach-gates.md" "Competitor category fit" 1
+c76=$(grep -n "^  ## Company & Org" "$TARGET/skills/career-coach/coach-output.md" 2>/dev/null | wc -l | tr -d ' ')
+if [ "$c76" -eq 0 ]; then report "76" 1 ""; else report "76" 0 "coach-output.md Landscape template still has a Company & Org heading"; fi
+
+# ================================================================
 # Check 73 — Manifest version is bumped on every shipped build (2026-10-15)
 # The CLI caches a marketplace plugin under <cache>/<marketplace>/<plugin>/<version>/.
 # Two fixes shipped at version 1.0.0; `claude plugin update` kept serving the 1.0.0

@@ -85,6 +85,17 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 
 ## Changelog
 
+### 2026-11-08 — Core Company Facts
+
+**New features**
+- **Core Company Facts property** — the coach now fills a seven-line company brief for every researched role: Founded, Headquarters, Leadership (founders), USP (the role's product line only), Key Scale & Adoption, Funding, Valuation. Add a text property named `Core Company Facts` to your tracker; without it the facts are skipped.
+
+**Improvements**
+- **Plain-language CV Titles label** — lines taken from your saved rules now read "set in your preferences file (pipeline-preferences.json)" instead of "user-stated" (your words: "no user will understand that in a million years. why does'nt it just say that that's what the json says?"), and the gatekeeper verifies the rule exists.
+- **`coach-led` title rule** — `cv_title_rules` entries now take `keep`, `retitle-as` or `coach-led` (the coach decides for each role). Only the first two are locks.
+- **Better competitors and company facts** — the coach now cross-checks Crunchbase, PitchBook, Growjo, RocketReach, company pages and a Google/Gemini query (no connectors needed), and picks competitors by product category and buyer instead of company size; the country flag on competitors is removed (per your instruction: "yes get rid of it"); the old "prioritize country-present competitors first" rule is replaced because the Competitors section was "rather faulty". Gatekeeper item 17 fails off-category competitors.
+- **Landscape ends after User Voice** — per your instruction ("remove the section that appears at the end called Company & Org. Instead, the coach should also populate the new Core Company Facts property"), the `## Company & Org` section is removed; company basics live only in `Core Company Facts`. The gatekeeper now fails a Landscape that still carries it and fails any Core Company Facts block that isn't exactly the seven lines.
+
 ### 2026-11-08 — Senior-role measure woven into the letter; run records and cleanup
 
 **New features**

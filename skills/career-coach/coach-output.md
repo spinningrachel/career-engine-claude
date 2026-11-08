@@ -60,6 +60,14 @@ Return findings in this exact structure for every role received.
 - **Keywords:** Critical: <terms> | Important: <terms> | Nice-to-have: <terms> | Unmatched: <only terms with no career-data basis, with the update-or-accept note — omit the segment when all terms matched (2026-07-28)>
 - **Strategy:** `IC` | `Strategic` | `Hybrid`
 - **Company Stage:** <stage> [HIGH/LOW]
+- **Core Company Facts:** (2026-11-08 — exactly these seven labeled lines, in this order, nothing else; `coach-analysis.md` → `Core Company Facts` is the authority. Bare values only: no sources, no `[HIGH]`/`[LOW]` tags, no brackets, no search narrative, no candidate references.)
+  - Founded: <year>
+  - Headquarters: <top 1–3 primary locations>
+  - Leadership: <founder name — role; one per founder; founders only>
+  - USP: <1–2 sentences MAX, about ONLY the product or product line this role is hired for>
+  - Key Scale & Adoption: <one line of the strongest published scale figures, e.g. "Used by over 1,600 enterprise customers and trusted by more than 250,000 AI builders and IT teams globally.">
+  - Funding: <last recorded sum>, <last known stage with a trailing "+", e.g. "$22M, Series A+"; the stage part is omitted when unknown>
+  - Valuation: <last recorded estimate>
 - **Role Type:** <types>
 - **Relationship type:** <type>
 - **Gap handling:** <[Gap]: [handling] — one line per gap, or N/A; omitted when gap handling is disabled> <PLUS, in BOTH modes (2026-07-28): `Keyword gap: [term] — no career-data basis; update career-data and re-run intake, or expect this at screen.` — one line per Unmatched keyword, omitted when all keywords matched>
@@ -78,16 +86,16 @@ Return findings in this exact structure for every role received.
 
   **Calibrate length to company familiarity.** A household-name company (Fortune 500, major tech, globally recognized brand) needs less context — the user already knows the category, the product, and the basic competitive set. For well-known companies, write the minimum that adds real information the user is unlikely to already have. For startups and unknown companies, more context is warranted. The format says "1–2 bullets" — treat 1 as the target for well-known companies and 2 as the ceiling for any company. Never pad a section to fill the maximum.
 
-  **Competitor grouping.** Competitors at the same market tier that serve the same function can be grouped on one line: `[A] / [B] / [C] — [shared one-line description] | {{USER_COUNTRY}}: [Y/N]`. Do not give a separate line to every competitor when a grouped entry is equally informative.
+  **Competitor grouping.** Competitors at the same market tier that serve the same function can be grouped on one line: `[A] / [B] / [C] — [shared one-line description]`. Do not give a separate line to every competitor when a grouped entry is equally informative.
 
-  **Culture does not belong here.** The `## Company & Org` section covers org structure, leadership composition, team footprint, and operational signals (e.g., reporting lines, known reorgs, team size). Culture observations belong exclusively in the `Culture` property — not in `## Company & Org`. Writing culture content in both places is duplication.
+  **Culture does not belong here.** Landscape is market intelligence only (competitors, market signals, user voice). Culture observations belong exclusively in the `Culture` property; basic company facts (founded, HQ, leadership, USP, scale, funding, valuation) belong exclusively in the `Core Company Facts` property — never repeated in Landscape.
 
   Use this section structure. Keep it scannable — one tight bullet per point, each sourced:
 
   ```
   ## Competitors
-  [Competitor] — [one-line description] | {{USER_COUNTRY}}: [Y/N]
-  [minimum 3, maximum 5 at the same market tier; group peers on one line where appropriate]
+  [Competitor] — [one-line description]
+  [minimum 3, maximum 5 — same product category and buyer as the role's product line, same market tier; group peers on one line where appropriate]
 
   ## Market Signals
   - [1 bullet target, 2 max: funding, M&A, category shifts, consolidation pressure — dated and sourced]
@@ -95,12 +103,11 @@ Return findings in this exact structure for every role received.
   ## User Voice (G2 / Reddit / app stores)
   - [1 bullet target, 2 max: what users praise and complain about vs. alternatives — each sourced. Skip section if no public reviews found.]
 
-  ## Company & Org
-  - [1 bullet target, 2 max: org structure, leadership, team composition, reporting lines, known reorgs — each sourced. No culture content here.]
-
   ## Location Hypotheses
   [OPTIONAL — include ONLY when `Location` is Unknown after the deep-scan + dimension-9 fallback. 1-2 bullets: where the company demonstrably operates (offices, team distribution, hiring pattern) and the best-supported hypothesis for this role's location. This is the ONE sanctioned non-business Landscape section (2026-07-23).]
   ```
+
+  **No `## Company & Org` section — retired 2026-11-08, per the user: "remove the section that appears at the end called Company & Org. Instead, the coach should also populate the new Core Company Facts property."** Landscape ends after `## User Voice` (plus `## Location Hypotheses` only when `Location` is `Unknown`).
 
   **No `## Career Path` section — retired 2026-07-23, per the user: "Coach is also including unnecessarily in Landscape 'career path' — noone asked. Landscape is business only."**
 - **Culture:** 2–3 **one-line bullets, a blank line between them** (never a paragraph), each a sourced observation about **working style and operating environment** — how decisions get made, what they reward, hiring philosophy, named perks/benefits/development programs, pace, and any burn-out or culture-warning signal. Source named inline (Glassdoor / LinkedIn / Reddit / Careers-About). For a sub-unit with thin signal, use the **parent company's** culture and note it as such. `N/A` only if all sources returned nothing usable.
@@ -161,7 +168,9 @@ Rules:
 
 **`Why I Want This Role` — RETIRED as a coach-context surface (2026-07-23, per the user's direct instruction: the coach context block was "repeating the same info it put in almost every other property, unnecessarily... this is useless and will risk context explosion").** The coach returns NO `**Coach context**` / Screen-points block, and intake prepends nothing above the user's WIWTR content. The ONLY coach-produced content that reaches the WIWTR field is the `letter_plan` (`[LETTER OUTLINE]`) block, written below the user's content per intake Step 0.9a Write C. Everything the old context block carried already lives in its own property (`Role emphasis`, `Culture`, `Gap handling`, `Strategy`) — writers read those directly.
 
-**`Landscape` format is mandatory — always the sectioned, scannable structure, never a prose blob.** Every Landscape write uses the `## Competitors` / `## Market Signals` / `## User Voice` / `## Company & Org` headings (plus `## Location Hypotheses` only when `Location` is `Unknown`) with one tight sourced bullet per point. A wall of paragraphs is a format failure even if the content is right. Landscape is business only — no career-path content (retired 2026-07-23), and no `## Recruitment Signals` section (retired 2026-10-22, per the user: nobody reads it). **Company news and funding belong in `## Market Signals`** (dated, sourced) — there is no `Recent news` or `Funding context` property and none is returned. **Outreach and hiring-manager information belongs in the outreach map in the page body** (Step 0.9e), never in a property the tracker may not have; a coach field with no matching text-type tracker property (missing, or present as a relation the user maintains herself) is simply not written, silently — so the outreach map must always carry the hiring-manager and contact details.
+**`Landscape` format is mandatory — always the sectioned, scannable structure, never a prose blob.** Every Landscape write uses the `## Competitors` / `## Market Signals` / `## User Voice` headings (plus `## Location Hypotheses` only when `Location` is `Unknown`) with one tight sourced bullet per point. A wall of paragraphs is a format failure even if the content is right. Landscape is business only — no career-path content (retired 2026-07-23), and no `## Recruitment Signals` section (retired 2026-10-22, per the user: nobody reads it). **Company news and funding belong in `## Market Signals`** (dated, sourced) — there is no `Recent news` or `Funding context` property and none is returned. **Outreach and hiring-manager information belongs in the outreach map in the page body** (Step 0.9e), never in a property the tracker may not have; a coach field with no matching text-type tracker property (missing, or present as a relation the user maintains herself) is simply not written, silently — so the outreach map must always carry the hiring-manager and contact details.
+
+**`Core Company Facts` — seven lines, bare values, always overwritten (2026-11-08, per the user's direct instruction).** Exactly `Founded` / `Headquarters` / `Leadership` / `USP` / `Key Scale & Adoption` / `Funding` / `Valuation`, in that order, no other line or section. `Leadership` is founders only (name — role). `USP` covers ONLY the product or product line the role is recruited for, 1–2 sentences. Research effort and negatives follow the same rules as every other property (`coach-research.md` → Terse negatives): a line reads `Not disclosed` only after the full research ladder ran; never a search narrative. It is company facts only — never the candidate, never culture, never role analysis, never market commentary (those live in their own properties).
 
 **`Landscape` is always overwritten**, same as nearly every other property here: intake replaces whatever is already in Notion with your fresh section-format content — it does not prepend or preserve the prior version.
 

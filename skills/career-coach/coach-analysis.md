@@ -184,9 +184,10 @@ Surface this reading in `Role emphasis`, and let it guide the `Strategy` letter-
 | `CV Type` | Variant mode only — the coach's Detailed/Brief call for this role, written by intake to the user's per-role `CV Type` select (write-only-to-empty; the user's hand-set value always wins). |
 | `CV Titles` | The role-tailoring plan — one line naming the level the target role reads at, then one disposition line per employer in her record (Retitle / Descriptor / Keep / Fold). The cv-writer executes it verbatim; the user reviews and may edit it in her tracker. |
 | `Role summary` | The plain-language "what the job is in practice" — scope, stage, ownership areas, constraints (solo, budget), business timing. The version you'd tell a friend. ≤400 chars. |
-| `Landscape` | A structured market + company + product brief: snapshot (location, size, founders), product (what it is, how it works), buyers/personas, GTM motion, funding/stage, org context, competitive frame. |
+| `Landscape` | A structured market brief in sections: competitors, market signals (incl. dated news/funding), user voice. Company basics live in `Core Company Facts`, not here. |
 | `Keywords` | A prioritized requirements map from the JD — Critical / Important / Nice-to-have, hard-capped. For ATS targeting, proof-point selection, and go/no-go on a missing "Critical". |
 | `Strategy` | Letter-type Select — `IC` / `Strategic` / `Hybrid`. Sets the cover-letter structure only. |
+| `Core Company Facts` | Seven labeled lines of bare company facts — Founded, Headquarters, Leadership (founders), USP (the role's product line only), Key Scale & Adoption, Funding, Valuation. Nothing else. |
 | `Company Stage` | Maturity label — Seed / Series A–C / Public / PE-backed / Stealth / Other. |
 | `Role Type` | Multi-select shape — Builder (0→1, first hire) / Scaler (growth, existing motion) / Leader (team/org ownership) / Specialist (narrow lane). |
 | `Relationship type` | Full time / Part time / Temporary / Fractional. |
@@ -205,9 +206,9 @@ Surface this reading in `Role emphasis`, and let it guide the `Strategy` letter-
 ---
 
 **Required — must be populated for every role that passes the pre-flight check:**
-`Role emphasis` · `JD proof` · `Keywords` · `Strategy` · `Role Type` · `Relationship type` · `Gap handling` · `Landscape`
+`Role emphasis` · `JD proof` · `Keywords` · `Strategy` · `Role Type` · `Relationship type` · `Gap handling` · `Landscape` · `Core Company Facts`
 
-All eight fields are non-negotiable when gap handling is enabled (seven when disabled — `Gap handling` drops out entirely). The cv-writer and letter-writer cannot run without them. If you cannot produce a confident value, produce a [LOW]-tagged best estimate — do not leave any field blank.
+All nine fields are non-negotiable when gap handling is enabled (eight when disabled — `Gap handling` drops out entirely). The cv-writer and letter-writer cannot run without them. If you cannot produce a confident value, produce a [LOW]-tagged best estimate — do not leave any field blank.
 
 If `GAP_HANDLING = disabled` (set in the Settings pre-flight), leave `Gap handling` unpopulated and skip all gap analysis — do not write `N/A`. If gap handling is enabled and there are no material gaps, write `N/A` — when enabled, an empty field signals an error, not a clean match.
 
@@ -292,7 +293,11 @@ One line per employer in her role record (`02-professional-background.md` and it
 3. **Every `basis:` is a fact from her role record.** If the only support is inference, the disposition is Descriptor at most; if there is none, Fold. For a career shift, put the creativity into which documented work you surface as the basis — never into the facts themselves. When nothing supports more, fall back to what her career-data says.
 4. **Every employer appears on a line.** A missing employer is a hidden employer.
 
-**The user's standing title rules (`cv_title_rules` in `pipeline-preferences.json`) and the legacy per-role `CV Title Preferences` field are authoritative.** When `queue.md` carries a `USER CV TITLE PREFERENCES` section for the role (rules first, then the legacy field, labelled), apply it as written — a title she states for an employer is that employer's line, marked `| basis: user-stated`, exempt from the limits above (it is her statement about her own title). Standing preferences in her career-data (`01-writing-rules.md`) apply the same way.
+**The user's standing title rules (`cv_title_rules` in `pipeline-preferences.json`) and the legacy per-role `CV Title Preferences` field are authoritative.** When `queue.md` carries a `USER CV TITLE PREFERENCES` section for the role (rules first, then the legacy field, labelled), apply it as written — a title she states for an employer is that employer's line, marked `| basis: set in your preferences file (pipeline-preferences.json)`, exempt from the limits above (it is her statement about her own title). Standing preferences in her career-data (`01-writing-rules.md`) apply the same way.
+
+**`coach-led` entries (2026-11-08, per the user: "for the coach to retitle based on its judgement, the new value in the preferences json should be coach-led").** An employer listed as `coach-led` — or absent from the rules — has NO rule: the coach decides per role under the dispositions above, and such a line never carries the preferences-file label.
+
+**`basis: set in your preferences file (pipeline-preferences.json)` — plain words a user understands, no internal jargon — is reserved for lines copied from that section — never a reason the coach invents (2026-11-08, per the user: a Keep marked "user-stated" for the employer that mattered most, with no way for her to tell where the instruction came from).** Every other Keep carries `reason:` and a role-fact reason. When a standing rule makes a Keep that contradicts the retitling this role calls for, still apply the rule, but name the rule in the line so the user can see where it came from and edit it.
 
 **Her own CV structure rules outrank the plan.** Where her career-data states structure rules of its own (roles that always get a standalone slot, entries flagged mandatory, how a given employer may be placed), never `Fold` against them.
 
@@ -340,6 +345,20 @@ Strategy is always written. It is not subject to the write-only-to-empty rule �
 When scoring priority across multiple roles, weight: Company culture and stage fit (40%) + the user's documented credential match (40%) + role level and growth trajectory (20%). A role that scores high on culture and credentials but offers a lateral move ranks above a role with a step up but culture misalignment or credential stretch.
 
 ---
+
+**`Core Company Facts`** — Always produced for every full-research role. Exactly seven lines, in this order, bare values, nothing else (no sources, no confidence tags, no search narrative, no candidate references, no culture):
+
+```
+Founded: [year]
+Headquarters: [top 1–3 primary locations]
+Leadership: [founders' names and roles only]
+USP: [1–2 sentences max — ONLY the product/product line this role is recruited for]
+Key Scale & Adoption: [strongest published scale figures, e.g. "Used by over 1,600 enterprise customers and trusted by more than 250,000 AI builders and IT teams globally."]
+Funding: [last recorded sum], [last known stage with a trailing "+", e.g. "Series A+"; omit the stage part when unknown]
+Valuation: [last recorded estimate]
+```
+
+Sourcing: company site (About / press / customers), the funding and market-signal research already done for `Landscape`, Crunchbase-style summaries. Run the full ladder before writing `Not disclosed` on any line. `Leadership` lists founders only, even if the CEO is not a founder. `USP` is scoped to the role's product: a multi-product company's line describes the one the JD hires for, never the whole portfolio. This property is the only home for these facts — do not repeat them in `Landscape`, `Role summary`, or `Culture`.
 
 **`Company Stage`** — One of: `Seed`, `Series A`, `Series B`, `Series C`, `Public`, `PE-backed`. Use funding research as the primary source. Omit rather than guess if genuinely unknown.
 
