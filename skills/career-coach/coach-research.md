@@ -14,8 +14,18 @@ Load this file first for every coach invocation that requires role research (Opt
 
 **Research principles:**
 - Keep research objective and evidence-led. Conclusions must be traceable to a named source. Do not interpolate, speculate, or fill gaps with assumptions.
-- Use OSINT (Open Source Intelligence) techniques: company websites, LinkedIn, Crunchbase, press releases, job boards, Glassdoor, GitHub, regulatory filings, news archives. Prefer primary sources over aggregators.
+- Use OSINT (Open Source Intelligence) techniques: company websites, LinkedIn, Crunchbase, press releases, job boards, Glassdoor, GitHub, regulatory filings, news archives. Prefer primary sources over aggregators for claims about the role, the culture and the product; for company facts (funding, valuation, headcount, founders, competitors) the aggregators below ARE the standard sources.
 - Market conditions change. Do not rely on cached knowledge about a company's status, funding, or headcount — verify against the most recent available source and flag the date of the evidence.
+
+### Company facts and competitors — source ladder (2026-11-08, per the user: a real run returned data-platform giants as competitors of an MLOps and security company; "the coach should be checking online information via any/all sites that provide such information like pitchbook, crunchbase, rocketreach, and growjo... users don't need to set up connectors")
+
+This ladder feeds `Core Company Facts`, `Company Stage`, and the `## Competitors` section. No connector or login is required — everything below is plain `WebSearch`/`WebFetch`. Run EVERY rung that applies before returning any negative (the effort floor above applies in full):
+1. **Aggregators (query each by name; read what the page actually shows):** Crunchbase, PitchBook, Growjo, RocketReach, Tracxn, CB Insights, Dealroom, Wikipedia. Take founded year, HQ, founders, last round, total raised and valuation from them; where two disagree, prefer the most recently dated figure and the one a primary source (company press release, SEC/regulatory filing) confirms.
+2. **Company's own pages:** About, Customers/Case studies, Press/Newsroom, Careers — for founders, headquarters, product line, and published scale figures (`Key Scale & Adoption` is almost always a number the company states about itself).
+3. **A plain-language query to Google's AI answer / Gemini via Google search** (e.g. `who are the main competitors of <company> for <product category>`, `<company> funding valuation founders headquarters`) — a fast cross-check and a way to surface names the aggregators miss. It is a lead, never a sole source: confirm each fact on rung 1 or 2.
+4. **Category sources for competitors:** G2 / Capterra / Gartner Peer Insights "alternatives to <company>" pages, the aggregators' own "competitors" tabs, and analyst category pages.
+
+**Competitors are chosen by product category and buyer, never by country or by company size.** First name (internally, in the Research confidence block) the category of the ONE product or product line this role is recruited for and the buyer who purchases it (e.g. MLOps / AI-infrastructure platform bought by ML and platform teams — not "data platforms"). A listed competitor must sell into that same category to that same buyer. A larger or more famous adjacent company (a data-warehouse or cloud giant, a general platform) is NOT a competitor merely because it overlaps at the edges. Where a company straddles two categories (e.g. infrastructure and security), cover both with the strongest names of each.
 
 ### Six research dimensions
 
@@ -34,10 +44,11 @@ Enterprise, mid-market, or SMB? Primary target buyer?
 
 **4. Competitive landscape**
 Exactly 5 competitors:
-- **Prioritize {{USER_COUNTRY}}-present competitors first.** Fill as many of the 5 slots as possible with companies that have offices in {{USER_COUNTRY}} or are {{USER_COUNTRY}}-founded. Only fill remaining slots with non-{{USER_COUNTRY}} competitors if there aren't 5 {{USER_COUNTRY}}-present options at the same market tier.
-- Match the hiring company's actual market tier. SMB company → list SMB competitors, not enterprise players that happen to overlap.
+- **Same product category and buyer first (see the source ladder above).** Every competitor sells the category of the role's product line to the same buyer. Never fill a slot with an adjacent-category giant to reach a count — fewer true competitors beats padding.
+- **No country criterion.** Where a company sits never selects, orders, or flags a competitor (the former country-presence preference and Y/N flag were removed 2026-11-08, per the user's direct instruction: "yes get rid of it" — it filled slots with off-category names).
+- Match the hiring company's actual market tier within that category. SMB company → SMB competitors, not enterprise players that happen to overlap.
 - Real, known brands only. No obscure or invented names.
-- For each: name, one-line description, {{USER_COUNTRY}} office (Yes / No).
+- For each: name and one-line description.
 
 **5. What this role actually means in context**
 IC vs. team lead, reporting chain if findable, what the key JD phrases mean for *this* company specifically. The same title at a 10-person stealth startup means something entirely different than at a 300-person company — founding role vs. inheriting a team and process. Translate the JD into what the person will actually spend their time doing.

@@ -186,6 +186,7 @@ Load `skills/career-coach/SKILL.md` and follow it exactly for:
 - Analysis Parts 0–3: priority scoring, writing guidance, strategic properties, patterns
 - Gap handling rules — all the calibration rules for preferred requirements, domain vs. product-category gaps
 - Screening-fit check — compare the user's `screening_answers` (standing answers to travel / relocation / clearance / comp floor / availability) against the JD; emit a one-line match-or-conflict note in `Patterns`. Flag-only, never a gate; skip entirely if `screening_answers` is absent or empty
+- The `Core Company Facts` property (2026-11-08) — exactly seven bare-value lines (Founded, Headquarters, Leadership, USP, Key Scale & Adoption, Funding, Valuation) for every full-research role, nothing else; `Landscape` no longer carries a Company & Org section
 - The `CV Titles` role-tailoring plan (2026-09-17) — one disposition line per employer in her record, for every full-research role; Retitle is the default, the four fixed limits are not negotiable
 - Output format
 - Notion writeback rules

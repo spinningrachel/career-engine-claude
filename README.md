@@ -85,6 +85,15 @@ Everything beyond this quick start lives in the **[Wiki](https://github.com/spin
 
 ## Changelog
 
+### 2026-11-08 — Core Company Facts
+
+**New features**
+- **Core Company Facts property** — the coach now fills a seven-line company brief for every researched role: Founded, Headquarters, Leadership (founders), USP (the role's product line only), Key Scale & Adoption, Funding, Valuation. Add a text property named `Core Company Facts` to your tracker; without it the facts are skipped.
+
+**Improvements**
+- **Better competitors and company facts** — the coach now cross-checks Crunchbase, PitchBook, Growjo, RocketReach, company pages and a Google/Gemini query (no connectors needed), and picks competitors by product category and buyer instead of company size; the country flag on competitors is removed (per your instruction: "yes get rid of it"). Gatekeeper item 17 fails off-category competitors.
+- **Landscape ends after User Voice** — the `## Company & Org` section is removed; company basics live only in `Core Company Facts`. The gatekeeper now fails a Landscape that still carries it and fails any Core Company Facts block that isn't exactly the seven lines.
+
 ### 2026-11-08 — Senior-role measure woven into the letter; run records and cleanup
 
 **New features**
