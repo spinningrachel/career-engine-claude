@@ -440,6 +440,17 @@
         "skills/career-engine-new-application/SKILL.md",
         "skills/career-engine-orchestrator/orchestrator-post-run.md"
       ]
+    },
+    {
+      "id": "term-run-records",
+      "_comment": "2026-11-08, per the user: reports live flat in agent-data, the run is recorded in the user's chosen log (default or flexible schema), then scratch is deleted. The skill name is the contract: all three pipelines' closing steps, setup, and the post-run orchestrator cite it; a rename in one place leaves a pipeline writing scratch it never cleans.",
+      "term": "skills/run-records/SKILL.md",
+      "files": [
+        "skills/career-engine-orchestrator/orchestrator-post-run.md",
+        "skills/career-engine-edit/SKILL.md",
+        "skills/career-engine-intake/SKILL.md",
+        "skills/career-engine-new-application/SKILL.md"
+      ]
     }
   ],
   "context_sets": [

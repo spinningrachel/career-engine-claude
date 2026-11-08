@@ -2,7 +2,7 @@
 
 **Load this file after all per-role pipeline steps complete, OR when the per-role loop stops early due to a hard external blocker** (rate/spend limit, connection loss, or any non-retryable error unrelated to letter/CV quality) **— run every step below scoped to whatever roles actually completed, never skip this sequence because the run didn't reach the full queue.** It covers post-run validation, the LinkedIn updates file, revision log, bullet approval, run metrics, and final chat delivery. Every "all roles" reference below means "all roles that completed this run," not the original queue size, whenever the run was interrupted.
 
-**Every file read or write in this document (Step 8b's CV markdown reads, Step 8c's `linkedin-updates` write, Step 9's revision log write, Step 9c's `run-metrics` write) routes through whichever access path (A or B) `orchestrator-queue.md`'s *Mandatory path verification* already confirmed for this run — never re-verify or default to a raw `cat`/`awk` bash heredoc if this run is on Path B.** On Path B, perform these same reads and writes through the host filesystem tool discovered at preflight, targeting the same output-folder paths shown below — the `bash`/`awk` snippets in this file illustrate the Path A form only.
+**Every file read or write in this document (Step 8b's CV markdown reads, Step 8c's `linkedin-updates` write, Step 9's revision log write, Step 9c's `run-metrics` write, which targets `agent_data_folder` rather than the output folder) routes through whichever access path (A or B) `orchestrator-queue.md`'s *Mandatory path verification* already confirmed for this run — never re-verify or default to a raw `cat`/`awk` bash heredoc if this run is on Path B.** On Path B, perform these same reads and writes through the host filesystem tool discovered at preflight, targeting the same output-folder paths shown below — the `bash`/`awk` snippets in this file illustrate the Path A form only.
 
 ---
 
@@ -174,10 +174,10 @@ Run after Step 9 (revision log). For every role completed this run that produced
 
 ## Step 9c — Run metrics
 
-Run after Step 9b. Write a `run-metrics-<YYYY-MM-DD>.json` file to the run output folder. This file records structural metrics for the run. Actual token counts are appended by a Stop hook configured during setup — the hook writes to this same file when the session ends.
+Run after Step 9b. Write a `run-metrics-<YYYY-MM-DD>.json` file to `agent_data_folder` (resolved per `skills/run-records/SKILL.md` §0 — create it if missing; flat, no subdirectories). It is written there directly, never moved later, because the Stop hook finds the file by the path of this write. This file records structural metrics for the run. Actual token counts are appended by a Stop hook configured during setup — the hook writes to this same file when the session ends.
 
 ```bash
-cat > "<output_dir>/run-metrics-$(date +%Y-%m-%d).json" << 'JSON_EOF'
+cat > "<agent_data_folder>/run-metrics-$(date +%Y-%m-%d).json" << 'JSON_EOF'
 {
   "run_date": "<YYYY-MM-DD>",
   "pipeline": "<New Applications|Edit|Intake>",
@@ -213,28 +213,36 @@ Fill all values from the run state. Set each agent count from the actual invocat
 
 ---
 
+## Step 10 — File reports, record the run, clean up (2026-11-08, per the user)
+
+Load `skills/run-records/SKILL.md` and follow it: file this run's reports flat in `agent_data_folder`, write the run to the user's chosen log (Notion database or workbook, default or flexible schema), then delete the run's scratch files. **Order matters:** first read everything the Final Chat Delivery below needs from `state.json` and `halted-roles.json` (the completed count, the flagged-role addendum, the interrupted-run details) and compose the message; only then run Step 10, because its cleanup deletes both files. Then append the Records line (`run-records` §4) to the message and send it.
+
+Step 10 runs on clean and interrupted runs alike. On an interrupted run it files and records but **deletes nothing** (state.json is the resume record). It never blocks delivery: a failure is reported in the Records line.
+
+---
+
 ## Final Chat Delivery
 
 **Hard gate — before sending the final confirmation, verify the files this run's completion form requires:**
-- **Clean run:** `linkedin-updates-<YYYY-MM-DD>.md` exists in the output folder and is nonzero. If it is missing or zero bytes: run Step 8 now. If Step 8 fails on retry, include the full file content inline in chat with the note "LinkedIn updates file write failed — content follows."
-- **Interrupted run:** all three of `linkedin-updates-<YYYY-MM-DD>.md`, `revision-log-<YYYY-MM-DD>.md`, and `run-metrics-<YYYY-MM-DD>.json` exist in the output folder and are nonzero (revision-log's own non-blocking rule at Step 9 and run-metrics's clean-run non-blocking rule at Step 9c are both superseded here — on an interrupted run all three block). For any that are missing: re-run that step now. If it still fails on retry, include its full content inline in chat with a "<file> write failed — content follows" note, matching the linkedin-updates handling above.
+- **Clean run:** `linkedin-updates-<YYYY-MM-DD>.md` exists and is nonzero (in the output folder before Step 10 files it, in `agent_data_folder` after). If it is missing or zero bytes: run Step 8 now. If Step 8 fails on retry, include the full file content inline in chat with the note "LinkedIn updates file write failed — content follows."
+- **Interrupted run:** all three of `linkedin-updates-<YYYY-MM-DD>.md`, `revision-log-<YYYY-MM-DD>.md`, and `run-metrics-<YYYY-MM-DD>.json` exist and are nonzero (`run-metrics` is always in `agent_data_folder`; the other two in the output folder before Step 10 and `agent_data_folder` after; revision-log's own non-blocking rule at Step 9 and run-metrics's clean-run non-blocking rule at Step 9c are both superseded here — on an interrupted run all three block). For any that are missing: re-run that step now. If it still fails on retry, include its full content inline in chat with a "<file> write failed — content follows" note, matching the linkedin-updates handling above.
 
 **Step 8 runs ONLY on new-application pipeline runs.** Do not produce a LinkedIn updates file for `--edit`, `--coach-skills`, `--now`, or any other mode.
 
 After Step 9c completes and Step 8 is confirmed, deliver a single confirmation line in chat:
 
 **Clean run (all queued roles either completed clean or delivered flagged per the Absolute Constraints' flag-and-deliver policy — no external blocker):**
-`All N roles processed. Files are in your output folder and Notion rows are updated. LinkedIn updates file: linkedin-updates-<YYYY-MM-DD>.md`
+`All N roles processed. Your CV and cover letter files are in your output folder, reports are in agent-data, and Notion rows are updated. LinkedIn updates file: linkedin-updates-<YYYY-MM-DD>.md`
 
 **`N` is derived mechanically, never from conversational memory:** count the entries in this run's `state.json` marked `completed` (the same file each role's Step 7b append wrote at the moment it finished — the completion twin of the flagged-roles ledger `halted-roles.json`). A real run misreported its own role count in the final confirmation because the number was recalled from memory of a many-turn run instead of read back from the persisted record; the halted list already had this discipline, the completed count did not. If the `state.json` count disagrees with what you remember processing, the file wins — and the discrepancy itself is worth a line in the revision log.
 
 **Mandatory flagged-role addendum — read directly from `$OUTPUT_DIR/halted-roles.json` (the same file `roles_halted` in run-metrics was populated from, above — do not reconstruct this list from memory), one line per entry, appended directly under either form above, never omitted when the file exists and is non-empty:**
 `[Company] — [Role Title]: blocked, not delivered — [reason] — see [revision_log].`
-A flagged role SHIPPED its md and DOCX AND advanced its Notion status exactly like a clean role (flag-and-deliver policy, 2026-07-17 amendment); this line — `[Company] — [Role Title]: ⚠ delivered with unresolved violations — [specific violation(s)] — review before sending; see <revision-log>` — plus the halted-roles.json entry and the feedback file's warning section are where its flagged state is reported, so it cannot be silently missed. If a role was flagged on the CV but its cover letter (or vice versa) passed cleanly, say so explicitly rather than reporting the whole role as flagged.
+A flagged role SHIPPED its md and DOCX AND advanced its Notion status exactly like a clean role (flag-and-deliver policy, 2026-07-17 amendment); this line — `[Company] — [Role Title]: ⚠ delivered with unresolved violations — [specific violation(s)] — review before sending; see <the role's revision log in agent-data, filed by Step 10>` — plus the halted-roles.json entry and the feedback file's warning section are where its flagged state is reported, so it cannot be silently missed. If a role was flagged on the CV but its cover letter (or vice versa) passed cleanly, say so explicitly rather than reporting the whole role as flagged.
 
-**Interrupted run (a hard external blocker stopped the loop early):** the confirmation may expand to name what completed, what didn't, and why — but only *after* Steps 8-9c have already run for the completed roles, never as a substitute for them. State plainly: which roles are fully done (files written, Notion updated), which roles were delivered flagged per the policy above, which role was mid-chain when the blocker hit (Notion left untouched, nothing half-written), which roles never started, and the concrete unblock step (e.g. "raise or reset the limit at claude.ai/settings/usage, then say 'continue the remaining roles'"). The run-metrics, revision-log, and linkedin-updates files for the completed roles must already exist in the output folder before this message is sent — confirm they do, the same way Step 8's hard gate above already requires.
+**Interrupted run (a hard external blocker stopped the loop early):** the confirmation may expand to name what completed, what didn't, and why — but only *after* Steps 8-9c have already run for the completed roles, never as a substitute for them. State plainly: which roles are fully done (files written, Notion updated), which roles were delivered flagged per the policy above, which role was mid-chain when the blocker hit (Notion left untouched, nothing half-written), which roles never started, and the concrete unblock step (e.g. "raise or reset the limit at claude.ai/settings/usage, then say 'continue the remaining roles'"). The run-metrics, revision-log, and linkedin-updates files for the completed roles must already exist before this message is sent (`run-metrics` in `agent_data_folder`; the other two in the output folder, or `agent_data_folder` once Step 10 has filed them) — confirm they do, the same way Step 8's hard gate above already requires.
 
-Nothing else beyond one of these two forms plus two sanctioned addenda: the mandatory flagged-role addendum above, and the `⚙️ Config health` block (`orchestrator-queue.md` → Config-health notification) when `CONFIG_HEALTH` is non-empty — that block is emitted here, appended under either form, so the two contracts never conflict: the delivery forms stay rigid and the config-health notice still reaches the user at the end of every affected run. All other feedback, validation results, and decisions are in the revision log files in the output folder.
+Nothing else beyond one of these two forms plus two sanctioned addenda: the mandatory flagged-role addendum above, and the `⚙️ Config health` block (`orchestrator-queue.md` → Config-health notification) when `CONFIG_HEALTH` is non-empty — that block is emitted here, appended under either form, so the two contracts never conflict: the delivery forms stay rigid and the config-health notice still reaches the user at the end of every affected run. All other feedback, validation results, and decisions are in the reports filed in `agent_data_folder` (and the run log).
 
 ---
 
