@@ -1168,6 +1168,24 @@ expect_ge "74" "skills/career-coach/coach-analysis.md" "USER SCOPE PREFERENCES" 
 expect_ge "74" "skills/source-open-roles/SKILL.md" "Capabilities mode" 1
 expect_ge "74" "agents/qa-plugin.md" "Check 74" 1
 
+# Check 75 — Connector-agnostic sourcing + JD connector rung (2026-11-03, per the user)
+# ================================================================
+expect_ge "75" "references/job-sourcing-mcp-registry.md" "Discovery" 1
+expect_ge "75" "references/job-sourcing-mcp-registry.md" "pedantic" 1
+expect_eq0 "75" "references/job-sourcing-mcp-registry.md" "Wired-in"
+expect_eq0 "75" "agents/source-open-roles.md" "mcp__startup-jobs__"
+expect_eq0 "75" "agents/source-open-roles.md" "Ask for whatever's still missing"
+expect_ge "75" "agents/source-open-roles.md" "Preferences are optional" 1
+expect_ge "75" "agents/source-open-roles.md" "Read-only tool use" 1
+expect_ge "75" "agents/role-prioritizer.md" "read/search tools only" 1
+expect_ge "75" "skills/career-engine-intake/SKILL.md" "Job-data connectors" 1
+expect_ge "75" "skills/career-engine-intake/SKILL.md" "Official-URL search" 1
+expect_ge "75" "agents/career-coach.md" "Connected job connectors" 1
+expect_ge "75" "skills/career-engine-edit/SKILL.md" "rung 2" 1
+expect_ge "75" "skills/career-engine-setup/SKILL.md" "Job-search connectors" 1
+expect_ge "75" "agents/qa-plugin.md" "Check 75" 1
+
+# ================================================================
 # Check 73 — Manifest version is bumped on every shipped build (2026-10-15)
 # The CLI caches a marketplace plugin under <cache>/<marketplace>/<plugin>/<version>/.
 # Two fixes shipped at version 1.0.0; `claude plugin update` kept serving the 1.0.0

@@ -1,7 +1,6 @@
 ---
 name: source-open-roles
 description: Sources open roles across remote boards, startup boards, general job boards, and freelance platforms. Scores results against saved preferences, deduplicates against the Notion database, and returns a ranked list of roles worth adding to the pipeline.
-tools: Read, Write, Bash, WebSearch, WebFetch, mcp__1cb44f76-c627-45b2-8050-35e78e7f15c8__upwork_search_freelancers, mcp__140d3f8f-6ad4-4b39-9df9-84514cae0207__search_jobs, mcp__notionApi__API-query-data-source, mcp__5cd94b8e-1498-421b-bc5d-1bbb07682cf7__notion-query-database-view, mcp__startup-jobs__search_jobs, mcp__startup-jobs__get_job, mcp__startup-jobs__list_countries
 ---
 
 # Source Open Roles
@@ -20,6 +19,7 @@ This is top-of-funnel only. It does not research companies, score fit, or produc
 - Does not produce fit analysis, coaching, or writing
 - Does not click Apply on any platform
 - Does not surface Upwork or Fiverr listings as ranked roles — only as contract signals in a separate section
+- **Read-only tool use (2026-11-03).** This agent declares no `tools:` allowlist, so it can call any connected job-search connector (a new connector works without a plugin edit). In exchange it only ever calls read/search/fetch tools: never an apply, submit, tracker/saved-job, alert-subscribe, reminder, message, email, profile-edit, or other write tool on any connector, and never a Notion write. Database access is limited to the dedup query.
 
 ## Invocations
 
@@ -47,7 +47,7 @@ Load before any search begins:
 |---|---|
 | `skills/source-open-roles/SKILL.md` | Search mode definitions, full site catalog with fetch methods, scoring rubric, deduplication rules, exclusion rules |
 | `${CLAUDE_PLUGIN_ROOT}/references/locale-job-boards.md` | Per-country starter catalog of local boards (ATS, VC portfolio boards, aggregators) for **Tier 5 — Locale boards**. Match the user's country row; fall back to the generic row |
-| `${CLAUDE_PLUGIN_ROOT}/references/job-sourcing-mcp-registry.md` | Known job-sourcing MCP servers — which site each covers, connect command, wired-in vs. candidate. Drives the Site Catalog's per-server gates and the run header's unconnected-server suggestion |
+| `${CLAUDE_PLUGIN_ROOT}/references/job-sourcing-mcp-registry.md` | Discovery procedure for connected job connectors (any connector works) plus the free / no-login-for-search suggestion list with connect commands. Drives Gate 2's connector discovery and the run header's "connect one" suggestion |
 | `${CAREER_DATA}/references/capability-profile.md` (optional, 2026-10-19) | The user's title-free capability lines. Under `role_matching = capabilities` it widens search terms (Keyword Expansion) and drives the Step 4 coverage pass. Absent or still templated (`{{`) → titles rubric plus a header notice. Never create or edit it here |
 | `${CAREER_DATA}/references/pipeline-preferences.json` | The single source of truth for every sourcing preference: `target_titles`, `title_variants` (the variant set Keyword Expansion searches), `remote_preference`, `exclusion_patterns`, `default_search_time_range`, `seniority_floor`, `target_function`, `industry_fit`, `company_stage_fit`, `employment_type_preference`, `coaching_prioritization`, `location_compatibility.my_location`, `preferred_job_sites`, `local_job_sites`, `database_id`, `role_matching` (`capabilities` default | `titles`), `scope_preferences` (`want`/`avoid`), and `screening_answers` (a populated field that conflicts with a JD down-ranks + labels the role, never excludes it; `compensation_floor` doubles as the salary floor — there is no separate min-salary field). Skip `screening_answers` entirely if absent or empty |
 
@@ -59,28 +59,22 @@ Load before any search begins:
 
 Read `${CAREER_DATA}/references/pipeline-preferences.json`. Every sourcing preference lives here — there is no separate local preferences file. Check `target_titles`, `title_variants`, `remote_preference`, `exclusion_patterns`, `default_search_time_range`, and `location_compatibility.my_location`. Also read the optional matching keys (2026-10-19; never a stop when absent): `role_matching` (absent or anything but `titles` = `capabilities`), `scope_preferences.want`/`.avoid`, and — when mode is `capabilities` — `capability-profile.md`. Profile missing or templated under `capabilities` → `MATCHING = titles rubric (profile missing)` and the header says so.
 
-**If all of the above are already populated:** proceed directly to Gate 2 with these values.
+**Preferences are optional (2026-11-03, per the user: "more flexible with or without specified job search preferences in the json").** The run never stops to ask for them. Each value is resolved independently:
 
-**If any are empty (first run for this user, or the fields were never seeded):** propose values, then write through the update-prompt path — never directly (R-37 / single-build applies here exactly as it does to any other `career-data` field):
+1. **Set in the JSON → used as-is.** A stored preference is never overridden by inference. It becomes the query sent to every source and connector: titles + variants, `my_location`, `remote_preference`, `default_search_time_range`. `exclusion_patterns` and `scope_preferences.avoid` are applied to the merged results.
+2. **Empty or absent → inferred for this run**, first source that yields a value wins: `capability-profile.md` (group lines → search terms) → `01-writing-rules.md` §1 and §8 (`USER_PROFESSION`, `USER_FUNCTION_SENIORITY_HIERARCHY`, target roles, location) → the background files → plain defaults (time range last 30 days, no exclusion patterns, `remote_preference` open to all, location unrestricted). `title_variants` are derived per the SKILL Keyword Expansion rules (~6–8 per target title). Locale boards come from the user's country row in `${CLAUDE_PLUGIN_ROOT}/references/locale-job-boards.md` when `preferred_job_sites`/`local_job_sites` are empty and a location is known.
+3. **Nothing inferable** (e.g. no title or capability signal anywhere): search the user's `USER_PROFESSION` at seniority per the hierarchy; if even that is absent, run a broad function-agnostic scan of connected connectors and say so in the header.
+4. **Header line.** The run header (Gate 2) gains `Inferred: [list of values filled in, with where each came from] — set them in pipeline-preferences.json to override.` Omit the line when nothing was inferred.
+5. **Database ID** — first `pipeline-preferences.json` → `database_id` (legacy `notion_database_id`); if empty, skip deduplication with a one-line note. Do not ask.
+6. **After the run, never before:** if anything was inferred, offer a **career-data update-prompt** (canonical `references/career-data-update-prompt-format.md` format) that writes the values into `pipeline-preferences.json`. Do not write `career-data` directly (R-37 / single-build). If written to disk it goes to `<output_folder>/_career-data-updates/update-prompt-sourcing-prefs-<YYYYMMDD>.md` — `output_folder` resolved from `${CAREER_DATA}/references/pipeline-preferences.json`, asking the user only if it cannot be resolved. **Never write it inside the plugin repo, under `${CLAUDE_PLUGIN_ROOT}`, or to the current working directory** — it carries personal data (top of `references/career-data-update-prompt-format.md`).
 
-1. Ask for whatever's still missing, in sequence (wait for all answers before proceeding):
-   - Target titles — "What job titles are you targeting?" (only if `target_titles` is empty)
-   - Remote preference — "Remote only, hybrid, or open to all?" (only if `remote_preference` is empty)
-   - Exclude patterns — "Words that should auto-exclude a role? (e.g., 'junior', 'intern') Or 'none'." (only if `exclusion_patterns` is empty)
-   - Default time range — "How far back should searches look? (last week / 2 weeks / month)" (only if `default_search_time_range` is unset — the plugin default is "last week")
-   - Location — "What location for job searches? (city and country)" (only if `location_compatibility.my_location` is empty; this is the same field the coach uses for location-compatibility checks — one place to configure it)
-2. Derive a proposed title-variant set (~6–8 per target title) from the target titles plus `USER_PROFESSION` / `USER_FUNCTION_SENIORITY_HIERARCHY` (`01-writing-rules.md` §8), per the SKILL Keyword Expansion rules, if `title_variants` is empty. Under `capabilities` the derivation also draws on the profile's group lines and `scope_preferences.want` (SKILL Keyword Expansion).
-3. Read `${CLAUDE_PLUGIN_ROOT}/references/locale-job-boards.md`, find the user's country row, and propose a locale-board shortlist, if `preferred_job_sites`/`local_job_sites` are empty.
-4. Show everything proposed to the user; let them edit.
-5. Database ID — first check `pipeline-preferences.json` → `database_id` (legacy `notion_database_id`); if set, use it and do not ask. Only if the main config has no database id, ask: "Your job-tracking database ID? (in Notion, the UUID in the database URL after the last `/`). Or 'skip' to disable deduplication."
-6. **Do not write `career-data` directly** (R-37 / single-build): emit a **career-data update-prompt** (canonical `references/career-data-update-prompt-format.md` format) that writes every confirmed value into its `pipeline-preferences.json` field (`target_titles`, `title_variants`, `remote_preference`, `exclusion_patterns`, `default_search_time_range`, `location_compatibility.my_location`, `preferred_job_sites`, `local_job_sites`, `database_id` if provided). The user applies it via Chat → repackage → reinstall. **Where the file goes (2026-08-12):** if you write the prompt to disk rather than printing it in chat, it goes to `<output_folder>/_career-data-updates/update-prompt-sourcing-prefs-<YYYYMMDD>.md` — `output_folder` resolved from `${CAREER_DATA}/references/pipeline-preferences.json` (R-37), asking the user if it cannot be resolved. **Never write it inside the plugin repo, under `${CLAUDE_PLUGIN_ROOT}`, or to the current working directory** — it carries her personal data. Full rule at the top of `references/career-data-update-prompt-format.md`.
-7. For *this* run, proceed with the proposed (in-memory) values so the run isn't blocked while the seed is applied.
-
-This single gate covers both a brand-new sourcing user and an existing user whose config predates this field set — the only difference is how much is already populated.
+A brand-new user and an existing user with a sparse config follow the same path — the only difference is how many values are inferred.
 
 **Gate 2 — Mode resolution**
 
-Resolve the search mode per the rules in `SKILL.md`. Before displaying the run header, run the **wired-in MCP connection check**: for each Wired-in row in `job-sourcing-mcp-registry.md` relevant to this run's tiers/sites, attempt its listed canary tool call once (e.g. startup.jobs: `mcp__startup-jobs__list_countries` with no arguments — cheap, read-only, side-effect-free). A successful response means connected (the Site Catalog's per-site gate will prefer that server in Step 2); a tool-not-found or connection error means not connected. Do this once per row per run, never per-search.
+Resolve the search mode per the rules in `SKILL.md`. Before displaying the run header, run **connector discovery** per `${CLAUDE_PLUGIN_ROOT}/references/job-sourcing-mcp-registry.md` → Discovery: use `ToolSearch` (keywords such as `search jobs`, `job search`, `get job`, `job details`, `jobs`) to find every connected tool that searches or reads job postings, from any server, and keep only those that return real postings (identify by server/description, never the bare tool name — several unrelated servers expose `search_jobs`). Exclude tools that act (apply, save, alert, message, profile edit). Registry canaries, where listed, are a quick probe, not a gate: a connector absent from the registry is used all the same.
+
+**Be pedantic about access.** A failed call, an empty result, or a missing tool name never settles that a connector is unavailable — from experience this signal is often wrong, and moving on too early drops real sources. Before marking a connector unavailable: re-run `ToolSearch` for it by server name and by purpose; call it once with a minimal known-good query (a single target title, no filters); retry once with alternate parameters; read the error text (auth required vs. no results vs. bad parameters) and act on it (an auth error is reported to the user as "needs authorization" with the server name, not as "no access"). Record what was tried; the run header lists each connector as `connected`, `needs authorization`, or `unavailable (tried: …)`. The same rule applies to a page fetch that fails once.
 
 Display before searching:
 
@@ -88,7 +82,9 @@ Display before searching:
 > Matching: [capabilities (profile: N lines) | capabilities (profile missing — titles rubric; say "generate my capability profile" to the career coach) | titles]
 > Titles: [list] | Variants: [expanded variant set used this run] | Mode: [mode] | Time range: [value] | Remote: [value]
 > Sources: [list of sites being searched this run, including any Tier 5 locale boards]
-> Also available: [server] — connect with '[command]' for structured [site] results. *(only if the connection check above found a relevant, unconnected Wired-in server this run; omit the line entirely otherwise — never suggest a Candidate row — it isn't granted in this agent's `tools:` frontmatter, so it has no canary to check)*
+> Connectors: [each discovered connector with its state]
+> Inferred: [values filled in because the JSON had none, and their source — omit if none]
+> Also available: if no job connector is connected, up to 3 free / no-login-for-search suggestions from the registry's list, each with its connect command, picked for the user's location and function. *(Non-blocking; omit when at least one job connector is connected, unless the user asks.)*
 
 ---
 

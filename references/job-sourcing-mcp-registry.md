@@ -1,22 +1,39 @@
 ---
 name: job-sourcing-mcp-registry
-description: Catalog of known job-sourcing MCP servers — which site each covers, how to connect it, and whether source-open-roles has a wired-in gate for it yet. Public server data only — no personal data.
+description: How agents discover any connected job-search connector, plus a suggestion list of free / no-login-for-search job connectors with connect instructions. Public server data only — no personal data.
 ---
 
-# Job-Sourcing MCP Registry
+# Job-Sourcing Connector Registry
 
-A catalog of MCP servers that expose structured job-search access to a specific board or aggregator, kept separate from the Site Catalog in `skills/source-open-roles/SKILL.md` so a new server can be recorded here the moment it's found, without waiting for a full wire-in.
+**Any connected job-search connector works** (2026-11-03, per the user: "there are now a bazillion official connectors for job searching available on llm platforms"). This file is not a gate. Agents do not need a connector to be listed here to use it; the list below exists to *suggest* connectors to a user who has none, and to record each one's quirks.
 
-**Two statuses:**
-- **Wired-in** — has ALL four of: a confirmed tool name (see below), a recorded `Canary` (the table column — one confirmed tool, no-argument or safely-defaulted, side-effect-free, for Gate 2 to call as a connection probe), a Site Catalog gate in `skills/source-open-roles/SKILL.md` (prefer it when connected, fall back to WebFetch/WebSearch otherwise), and that row's tools — including the canary — granted in `agents/source-open-roles.md`'s own `tools:` frontmatter. All four are required — a registry row and a Site Catalog gate alone can't call a tool the agent was never granted; a granted tool with no Site Catalog gate is never preferred over scraping; a confirmed name with no recorded canary leaves Gate 2 nothing to call even if the fetch tools themselves are granted. A row missing any of the four is a Candidate, whatever its table cell says.
-- **Candidate** — not (yet) granted in `agents/source-open-roles.md`'s frontmatter, whether or not its tool name happens to be confirmed — so it has no canary to call. Not runtime-checked and never suggested in the run header — informational only, a shortlist for the next person wiring one in.
+## Discovery (used by `source-open-roles` Gate 2 and by the JD ladder's connector rung in intake, the coach, the prioritizer and edit)
 
-**How `source-open-roles` uses this file:** at Gate 2 (mode resolution, before any search), run each Wired-in row's `Canary` call once, for every row relevant to this run's tiers/sites (see `agents/source-open-roles.md` Gate 2 for the exact mechanism) to determine connection state — attempt-and-fail during Step 2 Search isn't available yet at that point in the run. List any Wired-in row that's relevant but not connected as a one-line suggestion in the run header — never blocking, never repeated mid-run, never a Candidate row.
+1. `ToolSearch` with keywords `search jobs`, `job search`, `get job`, `job details`, `jobs`, `remote jobs`. Load the schemas of every hit.
+2. Keep a tool only if it returns real job postings, identified by its **server name/description** — never by the bare tool name (unrelated servers also expose `search_jobs`). Exclude acting tools: apply, submit, save/track, alert-subscribe, reminders, messaging, profile/resume edits.
+3. Search tools take keyword/title + location/remote/date filters (names differ per connector — read each schema); detail tools take the connector's own job id from a search result. Never pass a job key taken from a third-party URL.
+4. **Be pedantic about access.** One failed call, an empty result, or an absent tool name does not mean "no access." Before marking a connector unavailable: re-run `ToolSearch` for it by server name and purpose, call it once with a minimal query (one title, no filters), retry once with alternate parameters, read the error (authorization needed vs. no results vs. bad parameters). Authorization needed is reported as "needs authorization" naming the server — not as "unavailable". Record what was tried.
+5. No job connector found at all → say so once (never blocking) and suggest up to 3 rows from the list below, chosen for the user's location and function.
 
-**Adding a row.** A server only belongs here if it's a real, named MCP endpoint for job search (not a general web-search or scraping tool). Record the connect command exactly as a user would run it. **Confirming a tool name** — either is acceptable, neither is "inventing" it: (a) the server's own published documentation states its tool names (cite the doc URL in the row), or (b) someone actually connected it and observed the real tool names. Until one of those happens, leave `Tool name` blank and note "confirm after connecting" — do not guess. Once confirmed: pick a `Canary` (see the four-part definition above) and record it in the table; add the specific tool(s) this pipeline actually needs — plus the canary, if not already among them — to `agents/source-open-roles.md`'s `tools:` frontmatter; and add a gate to the Site Catalog. A row is Wired-in only once all four parts of that definition are done — a confirmed name alone doesn't make a row Wired-in.
+## Suggested connectors (free for job seekers; search needs no sign-in unless noted)
 
-| Server | Covers | Server URL | Connect | Tool name (confirmed) | Canary | Status |
-|---|---|---|---|---|---|---|
-| startup.jobs | startup.jobs (Startup / tech sites in the Site Catalog) | `https://api.startup.jobs/mcp` | `claude mcp add --transport http startup-jobs https://api.startup.jobs/mcp` | `mcp__startup-jobs__search_jobs`, `mcp__startup-jobs__get_job` — per the vendor's own docs at `https://startup.jobs/mcp` (2026-09-10): 8 read-only tools total (`search_jobs`, `get_job`, `get_company`, `get_company_jobs`, `list_roles`, `list_countries`, `job_trends`, `salary_benchmarks`); this pipeline uses the two named here. Granted in `agents/source-open-roles.md` frontmatter. | `mcp__startup-jobs__list_countries` (no arguments, side-effect-free; also granted in the frontmatter) | Wired-in |
+"Login for search" is what the vendor's own listing/instructions state; `unverified` means the listing does not say — check on first connect and correct the row. Connect via Customize → Connectors (search the name) or the command shown.
 
-**Note on tool-name stability.** A server added via `claude mcp add` gets whatever server name the user (or this file's suggested connect command) gives it — the resulting tool names (`mcp__<server-name>__*`) are only as stable as that name. Always use the exact server name this file's `Connect` column specifies, so the tool names the Site Catalog gate checks for actually match. A claude.ai directory connector (opaque hash IDs, e.g. the existing Upwork/Indeed rows in the Site Catalog) is a different mechanism — those IDs are assigned by the connector directory, not chosen at connect time, and don't belong in this file.
+| Connector | Strong for | Login for search | Connect |
+|---|---|---|---|
+| workfinds.app | Jobs pulled from company career sites and ATSs, filter by country/arrangement/type/date | none (listing: "All data is public; no sign-in") | Connectors directory → "workfinds" |
+| startup.jobs | Startup / tech roles, 8 read-only tools incl. `search_jobs`, `get_job` (vendor docs `https://startup.jobs/mcp`) | none stated | `claude mcp add --transport http startup-jobs https://api.startup.jobs/mcp` |
+| Curaiz Remote Jobs | Fresh remote jobs (≤30 days), matched by role description + applicant location | unverified | `claude mcp add --transport http curaiz https://www.curaiz.com/mcp` |
+| RVC Jobs | Digital roles in US, EMEA, worldwide remote; salary and language filters | none for search (applying on RVC needs sign-in) | `claude mcp add --transport http rvc https://app.rvc.global/mcp/claude` |
+| Relomote | Remote jobs by the user's country; relocation / visa-sponsorship roles | unverified | `claude mcp add --transport http relomote https://relomote.com/mcp` |
+| ZipRecruiter | General board, broad US coverage | unverified | `claude mcp add --transport http ziprecruiter https://api.ziprecruiter.com/mcp` |
+| JobDataLake | 1M+ enriched listings from 40+ ATS platforms, hourly | free tier (500 calls/day) with an API key from jobdatalake.com | Connectors directory → "JobDataLake" |
+| emprego.com | Portuguese-language / Portugal market | unverified | Connectors directory → "emprego" |
+| Indeed (directory connector) | General board, worldwide | unverified | Connectors directory → "Indeed" |
+| JobsPipe | 30+ boards, public employment services, career sites; also company hiring intelligence | account with plan credits (free allowance varies) | `claude mcp add --transport http jobspipe https://mcp.jobspipe.dev/mcp` |
+
+**Not suggested by default** (need an account or are not seeker-oriented): TheirStack (credits), FoundRole and Wobo (account/OAuth, they also write to the user's profile and tracker), Greenhouse/Remote/Darwinbox (employer-side tools).
+
+## Maintaining this list
+
+A row belongs here only if it is a real MCP endpoint for job search. Record the connect command as a user would run it and the Login-for-search value exactly as the vendor states it — do not guess. Tool names are not recorded: discovery reads them from the connected server, so a vendor renaming a tool breaks nothing. The server name a user gives `claude mcp add` determines the `mcp__<server-name>__*` tool prefix; discovery handles any name.

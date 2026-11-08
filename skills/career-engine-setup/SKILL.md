@@ -906,6 +906,10 @@ If the user changes or adds rules: capture the custom rules in plain language an
 
 Confirm: "Phase 7 complete. Job-preferences rules are configured."
 
+### Phase 7 — Job-search connectors (2026-11-03)
+
+Discover connected job-search connectors per `references/job-sourcing-mcp-registry.md` → Discovery (pedantic access checks apply — a failed call is not "no access"). If none is connected, show up to 3 free / no-login-for-search suggestions from that file's list, picked for the user's location and function, each with its connect command. One short message, never blocking, never repeated in this setup run. Connected connectors are used automatically by sourcing and by the JD lookup; no config is written for them. Job-search preferences (`target_titles`, `remote_preference`, etc.) stay optional — sourcing infers anything left empty.
+
 ---
 
 ## Pipeline Orientation

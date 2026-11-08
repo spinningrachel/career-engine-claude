@@ -128,36 +128,6 @@
           "start": "## Coach Output Check"
         }
       ]
-    },
-    {
-      "id": "startup-jobs-tools",
-      "members": [
-        "mcp__startup-jobs__search_jobs",
-        "mcp__startup-jobs__get_job",
-        "mcp__startup-jobs__list_countries"
-      ],
-      "locations": [
-        {
-          "file": "agents/source-open-roles.md",
-          "start": "tools: Read",
-          "end": "# Source Open Roles"
-        },
-        {
-          "file": "references/job-sourcing-mcp-registry.md"
-        },
-        {
-          "file": "skills/source-open-roles/SKILL.md",
-          "start": "### Startup / tech sites",
-          "skip_members": [
-            "mcp__startup-jobs__list_countries"
-          ]
-        },
-        {
-          "file": "CONNECTORS.md",
-          "start": "### startup.jobs MCP"
-        }
-      ],
-      "_comment": "2026-09-10: every startup-jobs MCP tool named as in-use anywhere (Site Catalog, registry, CONNECTORS.md) must also appear in the agent's own tools: frontmatter grant — a subagent's tool access is a static allowlist, so a tool named everywhere but there can never actually be called. This is the exact gap the first QA pass on this feature caught. SKILL.md's Site Catalog row only needs the two fetch tools (search_jobs/get_job) — the canary name itself is deliberately generic there (see the Job-Sourcing MCP Registry section), named explicitly only in the agent frontmatter, the registry's Canary column, and CONNECTORS.md."
     }
   ],
   "defined_terms": [
@@ -281,17 +251,6 @@
         "skills/career-engine-setup/SKILL.md",
         "CLAUDE.md"
       ]
-    },
-    {
-      "id": "term-job-sourcing-mcp-wired-in",
-      "term": "Wired-in",
-      "files": [
-        "references/job-sourcing-mcp-registry.md",
-        "skills/source-open-roles/SKILL.md",
-        "agents/source-open-roles.md",
-        "CLAUDE.md"
-      ],
-      "_comment": "2026-09-10: the job-sourcing MCP registry's four-part Wired-in definition (confirmed tool name + recorded Canary + Site Catalog gate + tools: frontmatter grant, canary included) must be restated consistently, not just mention the word — this is a presence tripwire, not a semantic check; a QA judgment pass still has to verify the definitions actually agree. Canonical definition lives in references/job-sourcing-mcp-registry.md's 'Two statuses'."
     },
     {
       "id": "term-manual-entry-coach-only",
@@ -440,6 +399,28 @@
         "skills/career-engine-new-application/SKILL.md",
         "skills/career-engine-orchestrator/orchestrator-post-run.md"
       ]
+    },
+    {
+      "id": "term-connector-discovery",
+      "term": "job-sourcing-mcp-registry.md",
+      "files": [
+        "agents/source-open-roles.md",
+        "agents/career-coach.md",
+        "agents/role-prioritizer.md",
+        "skills/career-engine-intake/SKILL.md",
+        "skills/source-open-roles/SKILL.md"
+      ],
+      "_comment": "2026-11-03: any connected job connector is used. Every site that searches connectors (sourcing Gate 2, intake rung 2, coach step 2b, prioritizer via the intake ladder) must point at the registry's Discovery procedure — the single place that defines how connectors are found and the pedantic-access rule."
+    },
+    {
+      "id": "term-connector-pedantic-access",
+      "term": "pedantic",
+      "files": [
+        "agents/source-open-roles.md",
+        "skills/career-engine-intake/SKILL.md",
+        "references/job-sourcing-mcp-registry.md"
+      ],
+      "_comment": "2026-11-03, per the user: agents must be pedantic about checking access because a single failed call or missing tool name often wrongly signals no access. The retry-before-unavailable rule must appear in the sourcing gate, the intake ladder rung, and the registry's Discovery section."
     },
     {
       "id": "term-run-records",
