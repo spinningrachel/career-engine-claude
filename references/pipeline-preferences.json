@@ -10,6 +10,14 @@
   "database_edit_view_url": "",
   "output_folder": "",
   "draft_dir_url_base": "skip",
+  "agent_data_folder": "",
+  "run_records": {
+    "destination": "none",
+    "schema_mode": "default",
+    "workbook_file": "Applications Log.xlsx",
+    "notion_database_id": "",
+    "description": "OPTIONAL. Where finished runs are recorded and where reports live. agent_data_folder = one flat folder (no subdirectories) holding the reports (feedback, LinkedIn updates, run metrics) and, for destination 'workbook', the workbook; blank = a folder named agent-data next to output_folder. destination: 'workbook' (an .xlsx in agent_data_folder), 'notion' (a Notion log database, notion_database_id), or 'none' (reports only). schema_mode: 'default' = the columns in references/run-log-schema.md; 'flexible' = your own workbook/database is the schema and the agent reads it before every write. Never a run blocker."
+  },
   "output_dir_prefix": "applications",
   "default_language": "English",
   "gap_handling": "enabled",

@@ -423,7 +423,7 @@ CL_DOCX="<output_dir>/<company_dir>/<coverletter-filename>.docx"
 
 Non-blocking: if the move or patch fails, log the failure and continue — the files remain in the original folder and the pipeline proceeds.
 
-**`$PIPE` cleanup:** After the move, remove the `_pipeline/` scratch directory — but **only if Hebrew localization (Step E9H) is not running for this role** (i.e., `Languages` is empty or does not include `Hebrew`). If Hebrew localization will run, delay `$PIPE` cleanup until after Step E9H completes. Cleanup: Path A: `rm -rf "$PIPE"`; Path B: host file tool delete. Non-blocking — log and continue if removal fails. The output folder after cleanup contains only the moved DOCXs (in `$EDIT_DIR`) and the unchanged originals (state.json, feedback.md, revision logs).
+**`$PIPE` cleanup:** After the move, remove the `_pipeline/` scratch directory — but **only if Hebrew localization (Step E9H) is not running for this role** (i.e., `Languages` is empty or does not include `Hebrew`). If Hebrew localization will run, delay `$PIPE` cleanup until after Step E9H completes. Cleanup: Path A: `rm -rf "$PIPE"`; Path B: host file tool delete. Non-blocking — log and continue if removal fails. The output folder after this per-role cleanup still holds the moved DOCXs (in `$EDIT_DIR`) and the originals (state.json, feedback.md, revision logs, markdown copies). **Those are filed or deleted once, at the end of the run, by the Final chat delivery's closing step below (`skills/run-records/SKILL.md`, 2026-11-08, per the user)** — never per role, because `state.json` and the flag ledger must survive until every role is terminal.
 
 **Step E9H — Additional language localization (conditional)**
 
@@ -549,6 +549,8 @@ Use the same format as the main pipeline (see career-engine-new-application Step
 **`Needs Editing` always takes precedence over state.json.** A role's Notion Status is the source of truth for what mode to run. If a role is marked `Needs Editing`, it runs the editing pipeline using the Notion entry as source material — even if it also appears in state.json from an earlier session.
 
 ## Final chat delivery
+
+**Closing step (2026-11-08, per the user: the agents leave behind "a massive amount of files that aren't necessary").** Compose the delivery message below first (it reads `state.json` and `halted-roles.json`), then load `skills/run-records/SKILL.md` and run it for this edit run: file the reports flat in `agent_data_folder`, record the run in the user's chosen log, delete the scratch files (only on a fully completed run), then append its Records line to the message and send it.
 
 **First, release unfinished claims (2026-10-21):** set `Agent Status = No Status` on every role claimed at Step E0 that did not reach its Status write. Never touch a role this run did not claim.
 

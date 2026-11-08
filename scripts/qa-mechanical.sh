@@ -364,9 +364,10 @@ expect_ge "21s" "skills/career-coach/coach-output.md" "3–4 bullets, most impor
 expect_ge "21s" "skills/gatekeeper-checks/cv-gates.md" "CV-TOTAL-WORDCOUNT" 1
 expect_ge "21s" "skills/gatekeeper-checks/cv-gates.md" "890" 1
 expect_ge "21s" "skills/writer-craft/cv.md" "Whole CV ≤ 890 words" 1
-expect_ge "21s" "skills/letter-core/SKILL.md" "Senior roles — one paragraph on what success looks like" 1
+expect_ge "21s" "skills/letter-core/SKILL.md" "the measure is woven into the argument, never its own paragraph" 1
 expect_ge "21s" "skills/gatekeeper-checks/letter-gates.md" "Success measure (senior roles only" 1
-expect_ge "21s" "skills/gatekeeper-checks/coach-gates.md" "senior role with no success-measure line" 1
+expect_ge "21s" "skills/gatekeeper-checks/coach-gates.md" "MEASURE:" 1
+expect_ge "21s" "skills/career-coach/coach-analysis.md" "Derive them from the company's stage and motion" 1
 # 2026-07-24: the coach's Opener line is a verbatim bank-variant copy/paste (per the user's direct instruction)
 expect_ge "21s" "agents/career-coach.md" "COPY/PASTE selection, never composition" 1
 expect_ge "21s" "skills/gatekeeper-checks/coach-gates.md" "not a verbatim bank copy" 1
@@ -1202,6 +1203,17 @@ else report "73" 0 "plugin.json version '$V_PLUGIN' != marketplace.json version 
 expect_ge "73" "scripts/check-invariants.sh" "version-bump" 1
 expect_ge "73" "agents/qa-plugin.md" "Check 73" 1
 expect_ge "73" "skills/plugin-builder/SKILL.md" "bump" 1
+
+# 2026-11-08: run records + cleanup (per the user: flat agent-data folder, workbook-or-Notion log, scratch deleted at the end)
+expect_ge "75" "skills/run-records/SKILL.md" "Clean up" 1
+expect_ge "75" "skills/run-records/SKILL.md" "never a blocklist" 1
+expect_ge "75" "skills/run-records/SKILL.md" "no subdirectories" 1
+expect_ge "75" "skills/run-records/scripts/xlsx_log.py" "def cmd_upsert" 1
+expect_ge "75" "references/run-log-schema.md" "flexible" 1
+expect_ge "75" "references/pipeline-preferences.json" "agent_data_folder" 1
+expect_ge "75" "references/pipeline-preferences.json" "run_records" 1
+expect_ge "75" "skills/career-engine-orchestrator/orchestrator-post-run.md" "Step 10" 1
+expect_ge "75" "skills/career-engine-setup/SKILL.md" "Agent data folder and run log" 1
 
 echo "qa-mechanical: $PASS passed, $FAIL failed"
 

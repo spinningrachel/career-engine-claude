@@ -657,4 +657,4 @@ After Step 7f, remove the `_pipeline/` directory for this role. All content need
 
 If the deletion fails, log it in the final delivery ("_pipeline cleanup failed for [Company] — delete manually") and continue. This step must never block delivery.
 
-The output folder after cleanup contains only: final DOCX files, the feedback markdown, the revision log markdown, and (for Hebrew runs) the Hebrew DOCX files.
+Until the run's closing step the role folder still holds the feedback markdown, the revision log, and the CV/cover-letter markdown copies; **those and every other run-level scratch file (`state.json`, `halted-roles.json`, verification files) are filed or deleted by the orchestrator's Step 10 (`skills/career-engine-orchestrator/orchestrator-post-run.md` → `skills/run-records/SKILL.md`, 2026-11-08, per the user)** — never here, because `state.json` and the flag ledger must survive until every role is terminal. After Step 10 a role folder holds only its DOCX files (Hebrew DOCX included).
